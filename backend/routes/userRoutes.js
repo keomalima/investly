@@ -4,7 +4,6 @@ import {
   loginUser,
   logoutUser,
 } from '../controllers/userControllers.js';
-import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -12,6 +11,5 @@ const router = express.Router();
 router.post('/', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
-router.get('/dashboard', protect);
 
 export default router;
