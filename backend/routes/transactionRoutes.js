@@ -8,7 +8,7 @@ import { protect } from '../middleware/auth.js';
 const router = express.Router();
 
 //Define the routes paths and its controllers
-router.get('/', protect, getTransactions);
+router.get('/:id', protect, getTransactions);
 router.post('/add', protect, addTransaction);
 
 export default router;

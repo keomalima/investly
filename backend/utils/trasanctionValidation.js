@@ -5,9 +5,9 @@ export function validateTransactions(transaction) {
     'user_id',
     'date',
     'type',
-    'stock_ticker',
+    'ticker',
     'stock_price',
-    'quantity',
+    'shares',
     'currency',
   ];
 
@@ -18,8 +18,8 @@ export function validateTransactions(transaction) {
     }
   });
 
-  if (transaction.stock_ticker && transaction.stock_ticker.length > 5) {
-    errors.stock_ticker = 'Stock ticker cannot exceed 5 characters';
+  if (transaction.ticker && transaction.ticker.length > 5) {
+    errors.ticker = 'Stock ticker cannot exceed 5 characters';
   }
 
   if (transaction.type && !['buy', 'sell'].includes(transaction.type)) {

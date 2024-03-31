@@ -15,23 +15,11 @@ const Transaction = sequelize.define('transaction', {
     type: DataTypes.ENUM('buy', 'sell'),
     allowNull: false,
   },
-  stock_ticker: {
-    type: DataTypes.STRING(10), // String with a max length of 10
-    allowNull: false,
-  },
-  currency: {
-    type: DataTypes.STRING(3),
-    allowNull: false,
-  },
-  quantity: {
+  shares: {
     type: DataTypes.DECIMAL, // Flexible decimal precision
     allowNull: false,
   },
   stock_price: {
-    type: DataTypes.DECIMAL(10, 4),
-    allowNull: false,
-  },
-  total_cost: {
     type: DataTypes.DECIMAL(10, 4),
     allowNull: false,
   },
@@ -40,6 +28,14 @@ const Transaction = sequelize.define('transaction', {
     allowNull: false,
     references: {
       model: 'users',
+      key: 'id',
+    },
+  },
+  stock_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'stocks',
       key: 'id',
     },
   },
