@@ -1,8 +1,6 @@
 export function validateTransactions(transaction) {
-  console.log(transaction);
   const errors = {};
   const requiredFields = [
-    'user_id',
     'date',
     'type',
     'ticker',

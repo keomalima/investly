@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
+import Stock from './stockModel.js';
 
 const Transaction = sequelize.define('transaction', {
   id: {
@@ -39,6 +40,10 @@ const Transaction = sequelize.define('transaction', {
       key: 'id',
     },
   },
+});
+
+Transaction.belongsTo(Stock, {
+  foreignKey: 'stock_id',
 });
 
 export default Transaction;
