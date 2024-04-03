@@ -2,34 +2,10 @@ import Transaction from '../models/transactionModel.js';
 import Stock from '../models/stockModel.js';
 import { validateTransactions } from '../utils/trasanctionValidation.js';
 import { getPortolioMetrics } from '../utils/porfolioMetrics.js';
-import { fundsValidation } from '../utils/fundsValidation.js';
-
-// @desc Gets the data for the dashboard
-// @route POST /api/transaction/portolio
-// @access Private
-const getPortolio = async (req, res) => {
-  try {
-    const transactions = await Transaction.findAll({
-      where: { user_id: req.user.id },
-      include: Stock,
-    });
-
-    const averagePrice = getPortolioMetrics(transactions);
-
-    res.status(201).json({
-      transactions,
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Something went wrong' });
-  }
-};
+import { hasSufficientFunds } from '../utils/hasSufficientFunds.js';
 
 const testMethod = async (req, res) => {
   const transactionData = req.body;
-
-  if (transactionData.type === 'sell') {
-    await fundsValidation(transactionData, req.user.id);
-  }
 };
 
 // @desc Gets all the transactions from the user
@@ -64,13 +40,15 @@ const addTransaction = async (req, res) => {
     return res.status(400).json({ errors: validationErrors });
   }
 
+  //checks if theres suficient funds in case of a sell transaction
+  if (transactionData.type === 'sell') {
+    if (!(await hasSufficientFunds(transactionData, req.user.id))) {
+      return res.status(409).json({ error: 'Insufficient shares to sell' });
+    }
+  }
+
   // Adds transactions to the database
   try {
-    //checks if theres suficient funds in case of a sell transaction
-    if (transactionData.type === 'sell') {
-      await fundsValidation(transactionData, req.user.id);
-    }
-
     // Checks if there stock exists and create one if not
     const [stock, created] = await Stock.findOrCreate({
       where: { ticker: transactionData.ticker },
@@ -103,8 +81,7 @@ const addTransaction = async (req, res) => {
       currency: stock.currency,
     });
   } catch (error) {
-    res.status(500);
-    throw new Error('Something went wrong');
+    res.status(500).json({ error: 'Something went wrong' });
   }
 };
 
