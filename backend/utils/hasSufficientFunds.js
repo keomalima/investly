@@ -2,7 +2,7 @@ import Transaction from '../models/transactionModel.js';
 import Stock from '../models/stockModel.js';
 import { Sequelize } from 'sequelize';
 
-export async function hasSufficientFunds(transaction, id, res) {
+export async function hasSufficientFunds(transaction, id, type, shares) {
   // Searches for the stock in the database
   const getStock = await Stock.findOne({
     where: { ticker: transaction.ticker },
@@ -34,6 +34,11 @@ export async function hasSufficientFunds(transaction, id, res) {
     ? getAvailableShares.get('available_shares')
     : 0;
 
-  // Returns true or false
-  return available_shares - transaction.shares >= 0;
+  if (type === 'edit') {
+    const actual_shares =
+      parseFloat(available_shares) + parseFloat(shares) - transaction.shares;
+    return actual_shares >= 0;
+  } else {
+    return parseFloat(available_shares) - transaction.shares >= 0;
+  }
 }

@@ -1,13 +1,5 @@
-export function validateTransactions(transaction) {
+export function validateTransactions(transaction, requiredFields) {
   const errors = {};
-  const requiredFields = [
-    'date',
-    'type',
-    'ticker',
-    'stock_price',
-    'shares',
-    'currency',
-  ];
 
   // Loops the required fields and checks errors
   requiredFields.forEach((field) => {

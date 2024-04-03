@@ -1,18 +1,22 @@
 import express from 'express';
 import {
-  addTransaction,
-  getPortolio,
-  getTransactions,
-  testMethod,
+  addNewTransaction,
+  deleteTransactionById,
+  getAllTransactions,
+  updateTransactionById,
 } from '../controllers/transactionControllers.js';
 import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
 //Define the routes paths and its controllers
-router.get('/', protect, getTransactions);
-router.post('/test', protect, testMethod);
-router.get('/portfolio', protect, getPortolio);
-router.post('/add', protect, addTransaction);
+router
+  .route('/:id')
+  .put(protect, updateTransactionById)
+  .delete(protect, deleteTransactionById);
+router
+  .route('/')
+  .get(protect, getAllTransactions)
+  .post(protect, addNewTransaction);
 
 export default router;
