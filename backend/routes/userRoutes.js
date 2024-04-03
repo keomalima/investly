@@ -1,15 +1,18 @@
 import express from 'express';
 import {
-  registerUser,
-  loginUser,
+  registerNewUser,
+  authUser,
   logoutUser,
+  updateUserById,
 } from '../controllers/userControllers.js';
+import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
 //Define the routes paths and its controllers
-router.post('/', registerUser);
-router.post('/login', loginUser);
+router.post('/', registerNewUser);
+router.post('/auth', authUser);
 router.post('/logout', logoutUser);
+router.put('/', protect, updateUserById);
 
 export default router;

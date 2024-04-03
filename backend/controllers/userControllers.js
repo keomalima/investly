@@ -5,7 +5,7 @@ import generateToken from '../utils/generateToken.js';
 // @desc Register new user
 // @route POST /api/users
 // @access Public
-const registerUser = async (req, res) => {
+const registerNewUser = async (req, res) => {
   // Obtains the email and password from the request
   const { email, password, username } = req.body;
   const saltRounds = 10;
@@ -38,7 +38,7 @@ const registerUser = async (req, res) => {
 // @desc Login existing user
 // @route POST /api/users/login
 // @access Public
-const loginUser = async (req, res) => {
+const authUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
 
@@ -55,6 +55,46 @@ const loginUser = async (req, res) => {
   }
 };
 
+// @desc Updates a user
+// @route PUT /api/users
+// @access Public
+const updateUserById = async (req, res) => {
+  const user_id = req.user.id;
+
+  try {
+    const user = await User.findByPk(user_id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
+    // Update username and email if provided
+    user.username = req.body.username || user.name;
+    user.email = req.body.email || user.email;
+
+    // Update password if provided
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      id: user_id,
+      username: user.username,
+      email: user.email,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error:
+        'An unexpected error occurred while updating the user. Please try again later.',
+    });
+  }
+};
+
 // @desc Logout user
 // @route POST /api/users/logout
 // @access Public
@@ -67,4 +107,4 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
-export { registerUser, loginUser, logoutUser };
+export { registerNewUser, authUser, logoutUser, updateUserById };
