@@ -1,41 +1,45 @@
-export function getPortolioMetrics(transactions) {
-  // Filter for transactions with type 'buy'
-  const bought_shares = transactions.filter(
-    (transaction) => transaction.dataValues.type === 'buy'
-  );
+import { Sequelize } from 'sequelize';
+import Transaction from '../models/transactionModel.js';
+import Stock from '../models/stockModel.js';
 
-  if (bought_shares.length === 0) {
-    return { averagePrice: 0, total_current_share: 0 };
-  }
-
-  const sold_shares = transactions.filter(
-    (transaction) => transaction.dataValues.type === 'sell'
-  );
-
-  const weightedPrices = bought_shares.map((transaction) => {
-    return (
-      parseFloat(transaction.dataValues.shares) *
-      parseFloat(transaction.dataValues.stock_price)
-    );
+export async function getMetrics(userId) {
+  // Search and calculates user metrics for the portolio dashboard
+  const getMetrics = await Transaction.findAll({
+    attributes: [
+      'user_id',
+      'stock_id',
+      [Sequelize.col('stock.ticker'), 'ticker'],
+      [Sequelize.col('stock.company'), 'company'],
+      [Sequelize.col('stock.logo_url'), 'logo_url'],
+      [
+        Sequelize.literal(
+          `SUM(CASE WHEN type = 'buy' THEN shares ELSE -1 * shares END)`
+        ),
+        'current_shares',
+      ],
+      [
+        Sequelize.literal(
+          `SUM(CASE WHEN type = 'buy' THEN shares * stock_price END) / SUM (CASE WHEN type = 'buy' THEN shares END)`
+        ),
+        'average_price',
+      ],
+      [
+        Sequelize.literal(
+          `CASE WHEN SUM(CASE WHEN type = 'buy' THEN shares END) > 0 THEN SUM(CASE WHEN type = 'buy' THEN shares * stock_price END) / SUM(CASE WHEN type = 'buy' THEN shares END) ELSE NULL END,
+	SUM(CASE WHEN type = 'buy' THEN shares ELSE -1 * shares END) * SUM(CASE WHEN type = 'buy' THEN shares * stock_price END) / SUM (CASE WHEN type = 'buy' THEN shares END)`
+        ),
+        'total_cost',
+      ],
+    ],
+    include: {
+      model: Stock,
+      attributes: [],
+      required: true,
+    },
+    where: { user_id: userId },
+    group: ['user_id', 'stock_id', 'ticker', 'company', 'logo_url'],
   });
 
-  const total_bought_shares = bought_shares.reduce(
-    (acc, transaction) => acc + parseFloat(transaction.dataValues.shares),
-    0
-  );
-
-  const total_sold_shares = sold_shares.reduce(
-    (acc, transaction) => acc + parseFloat(transaction.dataValues.shares),
-    0
-  );
-
-  const total_cost = bought_shares.reduce(
-    (acc, transaction) => acc + parseFloat(transaction.dataValues.stock_price),
-    0
-  );
-
-  const averagePrice = total_cost / total_bought_shares;
-  const total_current_shares = total_bought_shares - total_sold_shares;
-
-  return { averagePrice, total_current_shares };
+  console.log(getMetrics);
+  return getMetrics;
 }

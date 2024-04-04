@@ -9,7 +9,7 @@ import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
-//Define the routes paths and its controllers
+//Define the route paths and its controllers
 router
   .route('/:id')
   .put(protect, updateTransactionById)
