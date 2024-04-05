@@ -15,11 +15,21 @@ const getPortfolio = async (req, res) => {
     // Calls an external api to get data from the companies
     const stockData = await getStockData(stock_tickers);
 
-    res.status(201).json({
+    //Merges the data from the database and API call data
+    stockData.forEach((ticker) => {
+      const stockLiveData = getPortfolioMetrics.find(
+        (obj) =>
+          obj.dataValues.ticker.toUpperCase() == ticker.symbol.toUpperCase()
+      );
+
+      stockLiveData.dataValues.current_price = ticker.price;
+      stockLiveData.dataValues.exchangeShortName = ticker.exchangeShortName;
+    });
+
+    res.status(200).json({
       getPortfolioMetrics,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error:
         'An unexpected error occurred while retrieving portofolio metrics. Please try again later.',
