@@ -40,6 +40,5 @@ export async function getMetrics(userId) {
     group: ['user_id', 'stock_id', 'ticker', 'company', 'logo_url'],
   });
 
-  console.log(getMetrics);
   return getMetrics;
 }
