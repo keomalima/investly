@@ -30,7 +30,6 @@ const registerNewUser = async (req, res) => {
       username: user.username,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: 'Something went wrong' });
   }
 };

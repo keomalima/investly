@@ -8,6 +8,6 @@ const router = express.Router();
 let cache = apicache.middleware;
 
 //Define the route paths and its controllers
-router.get('/', protect, cache('2 minutes'), getPortfolio);
+router.get('/', protect, cache('1 day'), getPortfolio);
 
 export default router;

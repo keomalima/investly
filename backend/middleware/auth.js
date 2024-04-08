@@ -19,7 +19,6 @@ const protect = async (req, res, next) => {
       req.user = await User.findByPk(decoded.userId);
       next(); // Proceed to the route handler
     } catch (error) {
-      console.error('Error in auth middleware:', error);
       res.status(401).json({ error: 'Not authorized, invalid token' });
     }
   } else {

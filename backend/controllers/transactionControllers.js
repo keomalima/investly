@@ -1,5 +1,6 @@
 import Transaction from '../models/transactionModel.js';
 import Stock from '../models/stockModel.js';
+import apicache from 'apicache';
 import { validateTransactions } from '../utils/trasanctionValidation.js';
 import { hasSufficientFunds } from '../utils/hasSufficientFunds.js';
 
@@ -79,6 +80,9 @@ const addNewTransaction = async (req, res) => {
       shares: transactionData.shares,
       stock_price: transactionData.stock_price,
     });
+
+    // Cleans the cache when a transaction is added
+    apicache.clear();
 
     // Returns the json to the frontend
     res.status(201).json({
@@ -181,6 +185,9 @@ const updateTransactionById = async (req, res) => {
     });
 
     const updatedTransaction = await getTransaction.save();
+
+    //Cleans the cache when a new transaction is updated
+    apicache.clear();
 
     res.status(201).json({
       id: transaction_id,

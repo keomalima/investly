@@ -34,6 +34,7 @@ export async function hasSufficientFunds(transaction, id, type, shares) {
     ? getAvailableShares.get('available_shares')
     : 0;
 
+  // When user is editing a transaction this will take in considerantion the new shares value for the calculation
   if (type === 'edit') {
     const actual_shares =
       parseFloat(available_shares) + parseFloat(shares) - transaction.shares;
