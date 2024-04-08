@@ -3,6 +3,7 @@ import Stock from '../models/stockModel.js';
 import apicache from 'apicache';
 import { validateTransactions } from '../utils/trasanctionValidation.js';
 import { hasSufficientFunds } from '../utils/hasSufficientFunds.js';
+import { paginationValidation } from '../utils/paginationValidation.js';
 
 // @desc Gets all the transactions from the user
 // @route POST /api/transactions
@@ -12,16 +13,8 @@ const getAllTransactions = async (req, res) => {
   const pageAsNumber = Number.parseInt(req.query.page);
   const sizeAsNumber = Number.parseInt(req.query.size);
 
-  // Defines validation for pagination
-  let page = 0;
-  if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-    page = pageAsNumber;
-  }
-
-  let size = 10;
-  if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-    size = sizeAsNumber;
-  }
+  // Validates the pagination params
+  const { page, size } = paginationValidation(pageAsNumber, sizeAsNumber);
 
   try {
     const transactions = await Transaction.findAndCountAll({

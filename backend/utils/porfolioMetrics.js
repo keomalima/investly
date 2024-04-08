@@ -2,9 +2,11 @@ import { Sequelize } from 'sequelize';
 import Transaction from '../models/transactionModel.js';
 import Stock from '../models/stockModel.js';
 
-export async function getMetrics(userId) {
+export async function getMetrics(userId, page, size) {
   // Search and calculates user metrics for the portolio dashboard
   const getMetrics = await Transaction.findAll({
+    limit: size,
+    offset: page * size,
     attributes: [
       'user_id',
       'stock_id',
