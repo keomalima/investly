@@ -5,6 +5,7 @@ import { getMetrics } from '../utils/porfolioMetrics.js';
 // @route GET /api/portfolio
 // @access Private
 const getPortfolio = async (req, res) => {
+  // This method is being cached every 5 minutes to reduce database queries and external API calls
   try {
     // Get some metrics from the database
     const getPortfolioMetrics = await getMetrics(req.user.id);
@@ -15,15 +16,15 @@ const getPortfolio = async (req, res) => {
     // Calls an external api to get data from the companies
     const stockData = await getStockData(stock_tickers);
 
-    //Merges the data from the database and API call data
-    stockData.forEach((ticker) => {
-      const stockLiveData = getPortfolioMetrics.find(
-        (obj) =>
-          obj.dataValues.ticker.toUpperCase() == ticker.symbol.toUpperCase()
-      );
+    // Create a dictionary to store stock current prices
+    const pricesByTicker = {};
+    stockData.forEach((stock) => (pricesByTicker[stock.symbol] = stock.price));
 
-      stockLiveData.dataValues.current_price = ticker.price;
-      stockLiveData.dataValues.exchangeShortName = ticker.exchangeShortName;
+    //Merges the data from the database and API call data
+    getPortfolioMetrics.forEach((metric) => {
+      metric.dataValues.current_price = pricesByTicker[metric.dataValues.ticker]
+        ? pricesByTicker[metric.dataValues.ticker]
+        : 0;
     });
 
     res.status(200).json({
@@ -37,6 +38,4 @@ const getPortfolio = async (req, res) => {
   }
 };
 
-const testRoute = async (req, res) => {};
-
-export { getPortfolio, testRoute };
+export { getPortfolio };
