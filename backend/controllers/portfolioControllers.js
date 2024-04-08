@@ -9,6 +9,7 @@ const getPortfolio = async (req, res) => {
   try {
     // Get some metrics from the database
     const getPortfolioMetrics = await getMetrics(req.user.id);
+
     //Obtains the all the users tickers
     const stock_tickers = getPortfolioMetrics.map(
       (ticker) => ticker.dataValues.ticker

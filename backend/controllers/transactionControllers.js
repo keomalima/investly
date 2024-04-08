@@ -8,8 +8,25 @@ import { hasSufficientFunds } from '../utils/hasSufficientFunds.js';
 // @route POST /api/transactions
 // @access Private
 const getAllTransactions = async (req, res) => {
+  // Retrieves the page and size from the params of the request
+  const pageAsNumber = Number.parseInt(req.query.page);
+  const sizeAsNumber = Number.parseInt(req.query.size);
+
+  // Defines validation for pagination
+  let page = 0;
+  if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+    page = pageAsNumber;
+  }
+
+  let size = 10;
+  if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+    size = sizeAsNumber;
+  }
+
   try {
-    const transactions = await Transaction.findAll({
+    const transactions = await Transaction.findAndCountAll({
+      limit: size,
+      offset: page * size,
       where: { user_id: req.user.id },
       include: Stock,
       order: [['date', 'DESC']],
@@ -17,6 +34,8 @@ const getAllTransactions = async (req, res) => {
 
     res.status(201).json({
       transactions,
+      totalPages: Math.ceil(transactions.count / size),
+      page,
     });
   } catch (error) {
     res.status(500).json({
