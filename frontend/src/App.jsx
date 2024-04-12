@@ -1,5 +1,5 @@
 import './App.css';
-import DashboardScreen from './screens/DashboardScreen';
+import DashboardScreen from './screens/dashboard/DashboardScreen';
 
 function App() {
   return (

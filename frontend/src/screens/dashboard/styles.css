@@ -1,0 +1,11 @@
+.metrics-container {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 960px) {
+    .metrics-container .grid-4{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}

@@ -1,25 +1,17 @@
-.navbar_container {
-    max-width: 1400px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 50px;
-}
-
 .navbar {
     height: 80px;
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
 }
 
-
-li a:hover {
+.navbar li a:hover {
     border-bottom: 1px var(--secondary-color) solid;
 }
 
-a:hover {
+.navbar a:hover {
     color: var(--secondary-color)
 }
 
-a {
+.navbar a {
     padding: 5px;
     margin: 0 5px;
 }
@@ -27,7 +19,7 @@ a {
 
 /* Search box */
 
-form {
+.navbar form {
     color: #555;
     display: flex;
     padding: 2px;
@@ -76,10 +68,9 @@ form {
     background-color: rgba(0, 0, 0, 0.07);
 }
 
-
 /* Tablets and under */
-@media(max-width: 960px) {
-    p {
+@media screen and (max-width: 960px) {
+    .navbar p {
         display: none
     }
 
@@ -87,12 +78,16 @@ form {
         width: 200px;
     }
 
+    .nav_icon{
+        animation: rotation 2s linear ;
+    }
+
 }
 
 /* Animation */
 
-.icon:hover {
-    animation: rotation 5s linear infinite;
+.nav_icon:hover {
+    animation: rotation 2s linear;
 }
 
 @keyframes rotation {

@@ -3,10 +3,10 @@ import './styles.css';
 const Navbar = () => {
   return (
     <nav className='navbar'>
-      <div className='navbar_container flex'>
+      <div className='container flex'>
         <div className='flex'>
           <svg
-            className='icon'
+            className='nav_icon'
             xmlns='http://www.w3.org/2000/svg'
             width='40px'
             height='40px'
