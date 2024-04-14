@@ -30,26 +30,45 @@ const StockForm = () => {
       <div className='container-form-body'>
         <div className='flex'>
           <div>
-            <p>Shares</p>
-            <input placeholder='Ex: 2' className='search-box-form' />
+            <p className='xss'>Shares</p>
+            <input
+              type='number'
+              step='any'
+              placeholder='Ex: 2'
+              className='search-box-form'
+            />
           </div>
           <div>
-            <p>Type</p>
-            <input placeholder='Ex: Buy' className='search-box-form' />
+            <p className='xss'>Type</p>
+            <select className='search-box-form'>
+              <option value=''>Choose an option</option>
+              <option value='buy'>Buy</option>
+              <option value='sell'>Sell</option>
+            </select>
           </div>
         </div>
         <div className='flex'>
           <div>
-            <p>Date</p>
-            <input placeholder='Ex: 15.02.2024' className='search-box-form' />
+            <p className='xss'>Date</p>
+            <input
+              type='date'
+              placeholder='Ex: 15.02.2024'
+              className='search-box-form'
+            />
           </div>
           <div>
-            <p>Price</p>
-            <input placeholder='Ex: 125.23' className='search-box-form' />
+            <p className='xss'>Price</p>
+            <input
+              type='number'
+              step='any'
+              placeholder='Ex: 125.23'
+              className='search-box-form'
+            />
           </div>
         </div>
       </div>
       <div className='container-form-footer'>
+        <p className='error-form'>* Please insert correctly the fields</p>
         <button className='btn'>Buy / Sell</button>
       </div>
     </div>
