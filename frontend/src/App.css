@@ -57,6 +57,14 @@ p {
   height: 100%;
 }
 
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  height: 100%;
+}
+
 .card {
   background-color: #fff;
   color: #333;
@@ -64,8 +72,6 @@ p {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   padding: 20px 30px;
   margin: 10px;
-  
-  
 }
 
 .btn {
@@ -74,6 +80,8 @@ p {
   cursor: pointer;
   background: #000;
   color: #fff;
+  font-size:medium;
+  font-weight: 600;
   border: none;
   border-radius: 5px;
 }
@@ -103,6 +111,10 @@ p {
 
 /* Text weight */
 
+.extra-light {
+  font-weight: 200;
+}
+
 .light {
   font-weight: 300;
 }
@@ -111,7 +123,11 @@ p {
   font-weight: 400;
 }
 
-.semi_bold{
+.strong{
+  font-weight: 500;
+}
+
+.semi-bold{
   font-weight: 600;
 }
 
@@ -183,6 +199,11 @@ p {
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .grid-3 {

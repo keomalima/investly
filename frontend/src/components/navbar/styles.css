@@ -85,7 +85,6 @@
 }
 
 /* Animation */
-
 .nav_icon:hover {
     animation: rotation 2s linear;
 }
