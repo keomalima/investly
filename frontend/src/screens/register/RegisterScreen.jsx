@@ -22,40 +22,42 @@ const RegisterScreen = () => {
           <p className='normal strong'>Register</p>
           <p className='xs light'>Input your details below</p>
         </div>
-        <div className='register-input-container'>
-          <p className='xss light placeholder-container'>Email address</p>
-          <input
-            type='email'
-            placeholder='Enter username'
-            className='input-box-form'
-          />
-        </div>
-        <div className='register-input-container'>
-          <p className='xss light placeholder-container'>Username</p>
-          <input
-            type='text'
-            placeholder='Enter username'
-            className='input-box-form'
-          />
-        </div>
-        <div className='register-input-container'>
-          <p className='xss light'>Password</p>
-          <input
-            type='password'
-            placeholder='Enter password'
-            className='input-box-form'
-          />
-        </div>
-        <div className='register-body-container'>
-          <p className='error-message'>*Error message</p>
-          <button className='btn my-1'>Register</button>
-          <p className='light xss'>
-            Already have an account?{' '}
-            <Link to={'/login'}>
-              <span className='strong'>Sign in.</span>
-            </Link>
-          </p>
-        </div>
+        <form className='register-input-container register-form-container'>
+          <div className='register-input-container'>
+            <p className='xss light placeholder-container'>Email address</p>
+            <input
+              type='email'
+              placeholder='Enter username'
+              className='input-box-form'
+            />
+          </div>
+          <div className='register-input-container'>
+            <p className='xss light placeholder-container'>Username</p>
+            <input
+              type='text'
+              placeholder='Enter username'
+              className='input-box-form'
+            />
+          </div>
+          <div className='register-input-container'>
+            <p className='xss light'>Password</p>
+            <input
+              type='password'
+              placeholder='Enter password'
+              className='input-box-form'
+            />
+          </div>
+          <div className='register-input-container'>
+            <p className='error-message'>*Error message</p>
+            <button className='btn my-1'>Register</button>
+            <p className='light xss'>
+              Already have an account?{' '}
+              <Link to={'/login'}>
+                <span className='strong'>Sign in.</span>
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );

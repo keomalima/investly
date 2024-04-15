@@ -41,6 +41,11 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
+    
+}
+
+.register-form-container{
+    gap:10px
 }
 
 .input-box-form:focus {

@@ -8,6 +8,13 @@ import generateToken from '../utils/generateToken.js';
 const registerNewUser = async (req, res) => {
   // Obtains the email and password from the request
   const { email, password, username } = req.body;
+
+  if (!email || !password || !username) {
+    return res
+      .status(409)
+      .json({ error: 'Email, username and password are required' });
+  }
+
   const saltRounds = 10;
 
   try {
@@ -39,6 +46,11 @@ const registerNewUser = async (req, res) => {
 // @access Public
 const authUser = async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(409).json({ error: 'Email and password are required' });
+  }
+
   const user = await User.findOne({ where: { email } });
 
   if (user && (await user.matchPassword(password))) {

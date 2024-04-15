@@ -1,6 +1,41 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
 
 const LoginScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  console.log(isLoading);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+    }
+  }, [navigate, userInfo]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate('/');
+    } catch (err) {
+      setError(err?.data?.error);
+      console.log(err?.data?.error || err.data);
+    }
+  };
+
   return (
     <div className='flex-center register-container'>
       <div className='card register-card'>
@@ -21,32 +56,43 @@ const LoginScreen = () => {
           <p className='normal strong'>Login</p>
           <p className='xs light'>Input your details below</p>
         </div>
-        <div className='register-input-container'>
-          <p className='xss light placeholder-container'>Email address</p>
-          <input
-            type='email'
-            placeholder='Enter username'
-            className='input-box-form'
-          />
-        </div>
-        <div className='register-input-container'>
-          <p className='xss light'>Password</p>
-          <input
-            type='password'
-            placeholder='Enter password'
-            className='input-box-form'
-          />
-        </div>
-        <div className='register-body-container'>
-          <p className='error-message'>*Error message</p>
-          <button className='btn my-1'>Login</button>
-          <p className='light xss'>
-            Does not have an account?{' '}
-            <Link to={'/register'}>
-              <span className='strong'>Register.</span>
-            </Link>
-          </p>
-        </div>
+        <form
+          className='register-input-container register-form-container'
+          onSubmit={submitHandler}
+        >
+          <div className='register-input-container'>
+            <p className='xss light placeholder-container'>Email address</p>
+            <input
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder='Enter username'
+              className='input-box-form'
+            />
+          </div>
+          <div className='register-input-container'>
+            <p className='xss light'>Password</p>
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Enter password'
+              className='input-box-form'
+            />
+          </div>
+          <div className='register-input-container'>
+            {error && <p className='error-message xs'>*{error}</p>}
+            <button className='btn my-1' type='submit' disabled={isLoading}>
+              Login
+            </button>
+            <p className='light xss'>
+              Does not have an account?{' '}
+              <Link to={'/register'}>
+                <span className='strong'>Register.</span>
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );
