@@ -68,7 +68,7 @@ const StockForm = () => {
         </div>
       </div>
       <div className='container-form-footer'>
-        <p className='error-form'>* Please insert correctly the fields</p>
+        <p className='error-message'>* Please insert correctly the fields</p>
         <button className='btn'>Buy / Sell</button>
       </div>
     </div>

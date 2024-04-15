@@ -62,7 +62,6 @@ p {
   justify-content: center;
   align-items: center;
   gap: 15px;
-  height: 100%;
 }
 
 .card {
@@ -152,6 +151,10 @@ p {
   font-size: 1rem;
 }
 
+.normal{
+  font-size: 1.3rem;
+}
+
 .md {
   font-size: 2rem;
 }
@@ -188,6 +191,12 @@ p {
 .alert-error {
   background-color: var(--error-color);
   color: #fff;
+}
+
+.error-message {
+  display: flex;
+  align-self: start;
+  color: var(--error-color)
 }
 
 

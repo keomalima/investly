@@ -65,12 +65,6 @@
     align-items: center;
 }
 
-.error-form{
-    display: flex;
-    align-self: start;
-    color: var(--error-color)
-}
-
 
 .stock-form-card:hover {
     background-color: rgba(0, 0, 0, 0.05);
