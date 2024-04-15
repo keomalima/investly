@@ -2,13 +2,18 @@ import './styles.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
+import { useGetStockDataMutation } from '../../slices/stock/stockApiSlice';
 import { logout } from '../../slices/auth/authSlice';
+import { setStock } from '../../slices/stock/stockSlice';
+import { useState } from 'react';
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const [ticker, setTicker] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
+  const [getStockData] = useGetStockDataMutation();
 
   const logoutHandler = async () => {
     try {
@@ -17,6 +22,16 @@ const Navbar = () => {
       navigate('/login');
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const searchStock = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await getStockData(ticker).unwrap();
+      dispatch(setStock(res));
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -44,10 +59,13 @@ const Navbar = () => {
           </ul>
         </div>
         <div className='flex'>
-          <form>
+          <form onSubmit={searchStock}>
             <input
               className='search_box_input'
               type='search'
+              maxLength={4}
+              value={ticker}
+              onChange={(e) => setTicker(e.target.value)}
               placeholder='Quote a stock'
             />
             <button className='search_box_btn' type='submit'>

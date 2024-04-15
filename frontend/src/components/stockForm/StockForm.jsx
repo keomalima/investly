@@ -25,7 +25,6 @@ const StockForm = () => {
         setError('All fields must be completed');
         return;
       }
-      console.log(shares, type, date, price);
     } catch (err) {
       setError(err?.data?.error);
     }
