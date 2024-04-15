@@ -1,4 +1,6 @@
-const Login = () => {
+import { Link } from 'react-router-dom';
+
+const LoginScreen = () => {
   return (
     <div className='flex-center register-container'>
       <div className='card register-card'>
@@ -38,11 +40,16 @@ const Login = () => {
         <div className='register-body-container'>
           <p className='error-message'>*Error message</p>
           <button className='btn my-1'>Login</button>
-          <p className='light xss'>Doesn't have an account? Register.</p>
+          <p className='light xss'>
+            Does not have an account?{' '}
+            <Link to={'/register'}>
+              <span className='strong'>Register.</span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginScreen;

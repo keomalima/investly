@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './styles.css';
 
 const RegisterScreen = () => {
@@ -48,7 +49,12 @@ const RegisterScreen = () => {
         <div className='register-body-container'>
           <p className='error-message'>*Error message</p>
           <button className='btn my-1'>Register</button>
-          <p className='light xss'>Already have an account? Sign in.</p>
+          <p className='light xss'>
+            Already have an account?{' '}
+            <Link to={'/login'}>
+              <span className='strong'>Sign in.</span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>
