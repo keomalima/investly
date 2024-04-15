@@ -56,7 +56,7 @@ const Navbar = () => {
           </form>
         </div>
         <div className='flex'>
-          <p>{userInfo.name}</p>
+          <p>{userInfo && userInfo.name}</p>
           <a className='btn-outline' onClick={logoutHandler}>
             Logout
           </a>
