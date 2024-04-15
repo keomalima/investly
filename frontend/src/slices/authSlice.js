@@ -6,6 +6,7 @@ const initialState = {
     : null,
 };
 
+// Creates slices for the user API methods
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -14,13 +15,17 @@ const authSlice = createSlice({
       state.userInfo = action.payload;
       localStorage.setItem('userInfo', JSON.stringify(action.payload));
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.userInfo = null;
       localStorage.removeItem('userInfo');
+    },
+    register: (state, action) => {
+      state.userInfo = action.payload;
+      localStorage.setItem('userInfo', JSON.stringify(action.payload));
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, register } = authSlice.actions;
 
 export default authSlice.reducer;

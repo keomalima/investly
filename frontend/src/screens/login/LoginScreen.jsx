@@ -16,8 +16,7 @@ const LoginScreen = () => {
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  console.log(isLoading);
-
+  //If the user token is still validy, it goes to the home page
   useEffect(() => {
     if (userInfo) {
       navigate('/');
@@ -32,7 +31,6 @@ const LoginScreen = () => {
       navigate('/');
     } catch (err) {
       setError(err?.data?.error);
-      console.log(err?.data?.error || err.data);
     }
   };
 
@@ -65,6 +63,7 @@ const LoginScreen = () => {
             <input
               type='email'
               value={email}
+              required
               onChange={(e) => setEmail(e.target.value)}
               placeholder='Enter username'
               className='input-box-form'
@@ -75,6 +74,7 @@ const LoginScreen = () => {
             <input
               type='password'
               value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
               placeholder='Enter password'
               className='input-box-form'

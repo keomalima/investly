@@ -88,6 +88,7 @@ p {
 .btn-outline {
   background-color: transparent;
   border: 1px #fff solid;
+  cursor: pointer;
 }
 
 .btn:hover {

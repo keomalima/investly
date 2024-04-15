@@ -1,7 +1,46 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles.css';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRegisterMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
 
 const RegisterScreen = () => {
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  //If the user token is still validy, it goes to the home page
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+    }
+  }, [navigate, userInfo]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      if (password != confirmPassword) {
+        setError('Password must match');
+        return;
+      }
+      const res = await register({ email, username, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate('/');
+    } catch (err) {
+      setError(err?.data?.error);
+    }
+  };
+
   return (
     <div className='flex-center register-container'>
       <div className='card register-card'>
@@ -22,11 +61,18 @@ const RegisterScreen = () => {
           <p className='normal strong'>Register</p>
           <p className='xs light'>Input your details below</p>
         </div>
-        <form className='register-input-container register-form-container'>
+        <form
+          className='register-input-container register-form-container'
+          autoComplete='off'
+          onSubmit={submitHandler}
+        >
           <div className='register-input-container'>
             <p className='xss light placeholder-container'>Email address</p>
             <input
               type='email'
+              value={email}
+              required
+              onChange={(e) => setEmail(e.target.value)}
               placeholder='Enter username'
               className='input-box-form'
             />
@@ -35,6 +81,9 @@ const RegisterScreen = () => {
             <p className='xss light placeholder-container'>Username</p>
             <input
               type='text'
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder='Enter username'
               className='input-box-form'
             />
@@ -43,13 +92,29 @@ const RegisterScreen = () => {
             <p className='xss light'>Password</p>
             <input
               type='password'
+              value={password}
+              required
+              onChange={(e) => setPassword(e.target.value)}
               placeholder='Enter password'
               className='input-box-form'
             />
           </div>
           <div className='register-input-container'>
-            <p className='error-message'>*Error message</p>
-            <button className='btn my-1'>Register</button>
+            <p className='xss light'>Confirm Password</p>
+            <input
+              type='password'
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder='Enter password'
+              className='input-box-form'
+            />
+          </div>
+          <div className='register-input-container'>
+            {error && <p className='error-message xs'>*{error}</p>}
+            <button className='btn my-1' type='submit' disabled={isLoading}>
+              Register
+            </button>
             <p className='light xss'>
               Already have an account?{' '}
               <Link to={'/login'}>
