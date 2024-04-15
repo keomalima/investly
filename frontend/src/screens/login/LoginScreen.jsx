@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from '../../slices/usersApiSlice';
-import { setCredentials } from '../../slices/authSlice';
+import { useLoginMutation } from '../../slices/auth/usersApiSlice';
+import { setCredentials } from '../../slices/auth/authSlice';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');

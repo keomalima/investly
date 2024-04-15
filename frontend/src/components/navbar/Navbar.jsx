@@ -1,8 +1,8 @@
 import './styles.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useLogoutMutation } from '../../slices/usersApiSlice';
-import { logout } from '../../slices/authSlice';
+import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
+import { logout } from '../../slices/auth/authSlice';
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
 

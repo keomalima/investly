@@ -1,4 +1,4 @@
-import { apiSlice } from './apiSlice';
+import { apiSlice } from '../apiSlice';
 const USERS_URL = '/api/users';
 
 // Responsible for connecting the frontend and backend

@@ -2,8 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './styles.css';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRegisterMutation } from '../../slices/usersApiSlice';
-import { setCredentials } from '../../slices/authSlice';
+import { useRegisterMutation } from '../../slices/auth/usersApiSlice';
+import { setCredentials } from '../../slices/auth/authSlice';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
