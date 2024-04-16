@@ -33,7 +33,7 @@ const DashboardScreen = () => {
     <div>
       <Navbar />
       <div className='metrics-container container'>
-        {!openCard && (
+        {openCard && (
           <div className='flex-center'>
             <StockCard />
           </div>

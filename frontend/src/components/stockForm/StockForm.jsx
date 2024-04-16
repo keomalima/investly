@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import './styles.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaCheckCircle } from 'react-icons/fa';
 import { useAddTransactionMutation } from '../../slices/transaction/transactionApiSlice';
+import { resetStock } from '../../slices/stock/stockSlice';
 
 const StockForm = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
@@ -19,8 +21,10 @@ const StockForm = () => {
 
   const { stockDat } = useSelector((state) => state.stockData);
   const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  const [addTransaction, { isLoading, isError }] = useAddTransactionMutation();
+  const [addTransaction, { isLoading, isSuccess, isError }] =
+    useAddTransactionMutation();
 
   const [shares, setShares] = useState('');
   const [type, setType] = useState('buy');
@@ -55,6 +59,9 @@ const StockForm = () => {
         user_id: userInfo.id,
       }).unwrap();
       setError('');
+      setTimeout(() => {
+        dispatch(resetStock());
+      }, 1300);
     } catch (err) {
       if (err.data.error) {
         setError(err?.data?.error);
@@ -73,6 +80,7 @@ const StockForm = () => {
               <p className='xss'>Shares</p>
               <input
                 type='number'
+                min='0'
                 value={shares}
                 onChange={(e) => setShares(e.target.value)}
                 step='any'
@@ -119,11 +127,18 @@ const StockForm = () => {
       )}
       <div className='container-form-footer'>
         {error && <p className='error-message xs'>*{error}</p>}
-        <button className='btn' type='submit'>
-          {!formVisible
-            ? 'Buy / Sell'
-            : type.charAt(0).toUpperCase() + type.slice(1)}
-        </button>
+        {isSuccess ? (
+          <div className='container-form-footer'>
+            <FaCheckCircle size={45} color='#A3B18A' />
+            <p className='alert-success light'>Transaction added!</p>
+          </div>
+        ) : (
+          <button className='btn' type='submit'>
+            {!formVisible
+              ? 'Buy / Sell'
+              : type.charAt(0).toUpperCase() + type.slice(1)}
+          </button>
+        )}
       </div>
     </form>
   );

@@ -185,8 +185,7 @@ p {
 }
 
 .alert-success {
-  background-color: var(--success-color);
-  color: #fff;
+  color: var(--success-color)
 }
 
 .alert-error {

@@ -1,5 +1,4 @@
 import './styles.css';
-import './styles.css';
 import { IoIosClose } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import StockForm from '../stockForm/StockForm';
