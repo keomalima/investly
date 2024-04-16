@@ -31,7 +31,7 @@ const Navbar = () => {
       const res = await getStockData(ticker).unwrap();
       dispatch(setStock(res));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

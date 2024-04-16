@@ -11,7 +11,6 @@ const transactionSlice = createSlice({
   reducers: {
     setTransactions: (state, action) => {
       state.userTransactions = action.payload;
-      localStorage.setItem('userTransactions', JSON.stringify(action.payload));
     },
   },
 });

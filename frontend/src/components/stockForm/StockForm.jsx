@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import './styles.css';
-import { FaApple } from 'react-icons/fa';
-import { IoIosClose } from 'react-icons/io';
 
 const StockForm = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
@@ -11,14 +9,15 @@ const StockForm = () => {
   const [date, setDate] = useState(currentDate);
   const [price, setPrice] = useState('');
   const [error, setError] = useState('');
-  const [cardStyle, setCardStyle] = useState('hide-stock-card');
-  const [bodyStyle, setBodyStyle] = useState('hide-stock-card');
+  const [formVisible, setFormVisible] = useState(false);
 
+  // Submits the transaction
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      if (bodyStyle == 'hide-stock-card') {
-        setBodyStyle('container-form-body');
+      // Checks if the form cards is open, if not opens it
+      if (formVisible == false) {
+        setFormVisible(true);
         return;
       }
       if (!shares || !type || !date || !price) {
@@ -30,36 +29,10 @@ const StockForm = () => {
     }
   };
 
-  const hideCard = () => {
-    setCardStyle('hide-stock-card');
-  };
-
   return (
-    <div className={`${cardStyle} card`}>
-      <div className='container-form-header'>
-        <div className='logo-flex'>
-          <p className='sm strong'>Stock Quote</p>
-          <FaApple size={18} />
-        </div>
-        <IoIosClose onClick={hideCard} />
-      </div>
-      <form onSubmit={submitHandler}>
-        <div className='container-form-subheader'>
-          <div className='flex-column-form'>
-            <p className='strong md mb'>AAPL</p>
-            <p className='semi-bold'>$125.24</p>
-            <p className='light xs'>Current Price</p>
-          </div>
-          <div className='flex-column-form'>
-            <div className='flex-column-form'>
-              <p className='semi-bold'>Apple Inc. </p>
-              <p className='xs light mb'>Tecnology</p>
-              <p className='semi-bold'>+2.3%</p>
-              <p className='xs light'>Today</p>
-            </div>
-          </div>
-        </div>
-        <div className={`${bodyStyle}`}>
+    <form onSubmit={submitHandler}>
+      {formVisible && (
+        <div className='container-form-body'>
           <div className='flex'>
             <div>
               <p className='xss'>Shares</p>
@@ -108,14 +81,16 @@ const StockForm = () => {
             </div>
           </div>
         </div>
-        <div className='container-form-footer'>
-          {error && <p className='error-message xs'>*{error}</p>}
-          <button className='btn' type='submit'>
-            {type.charAt(0).toUpperCase() + type.slice(1)}
-          </button>
-        </div>
-      </form>
-    </div>
+      )}
+      <div className='container-form-footer'>
+        {error && <p className='error-message xs'>*{error}</p>}
+        <button className='btn' type='submit'>
+          {!formVisible
+            ? 'Buy / Sell'
+            : type.charAt(0).toUpperCase() + type.slice(1)}
+        </button>
+      </div>
+    </form>
   );
 };
 

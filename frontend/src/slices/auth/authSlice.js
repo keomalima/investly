@@ -6,7 +6,7 @@ const initialState = {
     : null,
 };
 
-// Creates slices for the user API methods
+// Creates slices and actions for the user
 const authSlice = createSlice({
   name: 'auth',
   initialState,

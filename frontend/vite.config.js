@@ -12,7 +12,7 @@ export default defineConfig({
         changeOrigin: true,
       },
       '/other-api': {
-        target: 'https://financialmodelingprep.com/',
+        target: 'https://5faa93b0b5c645001602ac7d.mockapi.io/',
         changeOrigin: true,
       },
     },

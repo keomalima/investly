@@ -7,12 +7,15 @@ import { useGetTransactionsMutation } from '../../slices/transaction/transaction
 import { setTransactions } from '../../slices/transaction/transactionSlice';
 
 import './styles.css';
+import StockCard from '../../components/stockCard/StockCard';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
 
   const [getTransactions, { isLoading }] = useGetTransactionsMutation();
+  const { openCard } = useSelector((state) => state.stockData);
 
+  // fetches the transactions and portfolio data
   useEffect(() => {
     const fetchTransactions = async () => {
       const res = await getTransactions().unwrap();
@@ -26,9 +29,11 @@ const DashboardScreen = () => {
     <div>
       <Navbar />
       <div className='metrics-container container'>
-        <div className='flex-center'>
-          <StockForm />
-        </div>
+        {openCard && (
+          <div className='flex-center'>
+            <StockCard />
+          </div>
+        )}
         <div className='grid-4'>
           <MetricCard />
           <MetricCard />

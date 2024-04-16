@@ -1,19 +1,15 @@
 import { stockApiSlice } from '../apiStockSlice';
 
-const BASE_URL = '/api/v3/profile/';
+const BASE_URL = '/api/v1';
 
-// Responsible for connecting the frontend and backend
+// Responsible for making the API call for the stocks
 export const stockDataSlice = stockApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStockData: builder.mutation({
-      query: (symbol) => ({
-        url: `${BASE_URL}${symbol}`,
+      query: () => ({
+        url: `${BASE_URL}/stock`,
         method: 'GET',
-        params: {
-          apikey: 'i5fhTi4Ybn4kkkskdHNQ5JQbb5fXy6iC',
-        },
       }),
-      keepUnusedDataFor: 5, // Set keepUnusedDataFor option for the endpoint
     }),
   }),
 });
