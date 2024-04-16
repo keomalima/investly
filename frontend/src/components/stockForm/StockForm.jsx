@@ -1,11 +1,26 @@
 import { useState } from 'react';
 import './styles.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAddTransactionMutation } from '../../slices/transaction/transactionApiSlice';
 
 const StockForm = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
 
-  const { stockData } = useSelector((state) => state.stockData);
+  const stockData = [
+    {
+      symbol: 'AAPL',
+      price: 172.69,
+      companyName: 'Apple Inc.',
+      currency: 'USD',
+      sector: 'Technology',
+      image: 'https://financialmodelingprep.com/image-stock/AAPL.png',
+    },
+  ];
+
+  const { stockDat } = useSelector((state) => state.stockData);
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [addTransaction, { isLoading, isError }] = useAddTransactionMutation();
 
   const [shares, setShares] = useState('');
   const [type, setType] = useState('buy');
@@ -29,8 +44,23 @@ const StockForm = () => {
         setError('All fields must be completed');
         return;
       }
+
+      await addTransaction({
+        date,
+        type,
+        ticker: stockData[0].symbol,
+        shares,
+        stock_price: price,
+        currency: stockData[0].currency,
+        user_id: userInfo.id,
+      }).unwrap();
+      setError('');
     } catch (err) {
-      setError(err?.data?.error);
+      if (err.data.error) {
+        setError(err?.data?.error);
+      } else {
+        setError('An error has occured, please try again later');
+      }
     }
   };
 

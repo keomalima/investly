@@ -10,7 +10,15 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    addTransaction: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetTransactionsMutation } = transactionsApiSlice;
+export const { useGetTransactionsMutation, useAddTransactionMutation } =
+  transactionsApiSlice;
