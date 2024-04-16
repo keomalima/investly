@@ -19,23 +19,35 @@ const StockCard = () => {
       <div className='container-form-header'>
         <div className='logo-flex'>
           <p className='sm strong'>Stock Quote</p>
-          <FaApple size={18} />
+          {stockData.length > 0 ? (
+            <img src={stockData[0].image} className='image-logo' />
+          ) : (
+            <FaApple size={18} />
+          )}
         </div>
         <IoIosClose className='btn-outline' onClick={closeCard} size={25} />
       </div>
       <div className='container-form-subheader'>
         <div className='flex-column-form'>
           <p className='strong md mb'>
-            {stockData ? stockData[0].ticker : 'AAPL'}
+            {stockData.length > 0 ? stockData[0].symbol : 'AAPL'}
           </p>
-          <p className='semi-bold'>{stockData ? stockData[0].price : 0}</p>
+          <p className='semi-bold'>
+            ${stockData.length > 0 ? stockData[0].price : 0}
+          </p>
           <p className='light xs'>Current Price</p>
         </div>
         <div className='flex-column-form'>
           <div className='flex-column-form'>
-            <p className='semi-bold'>Apple Inc. </p>
-            <p className='xs light mb'>Tecnology</p>
-            <p className='semi-bold'>+2.3%</p>
+            <p className='semi-bold'>
+              {stockData.length > 0 ? stockData[0].companyName : 'Apple Inc.'}
+            </p>
+            <p className='xs light mb'>
+              {stockData.length > 0 ? stockData[0].sector : 'Technology'}
+            </p>
+            <p className='semi-bold'>
+              ${stockData.length > 0 ? stockData[0].changes : '%'}
+            </p>
             <p className='xs light'>Today</p>
           </div>
         </div>

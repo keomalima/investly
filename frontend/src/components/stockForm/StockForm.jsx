@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import './styles.css';
+import { useSelector } from 'react-redux';
 
 const StockForm = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
 
+  const { stockData } = useSelector((state) => state.stockData);
+
   const [shares, setShares] = useState('');
   const [type, setType] = useState('buy');
   const [date, setDate] = useState(currentDate);
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(
+    stockData.length > 0 ? stockData[0].price : ''
+  );
   const [error, setError] = useState('');
   const [formVisible, setFormVisible] = useState(false);
 

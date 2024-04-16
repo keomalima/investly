@@ -13,7 +13,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
-  const [getStockData] = useGetStockDataMutation();
+  const [getStockData, { isLoading, isError, error }] =
+    useGetStockDataMutation();
 
   const logoutHandler = async () => {
     try {
@@ -31,7 +32,7 @@ const Navbar = () => {
       const res = await getStockData(ticker).unwrap();
       dispatch(setStock(res));
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -63,7 +64,8 @@ const Navbar = () => {
             <input
               className='search_box_input'
               type='search'
-              maxLength={4}
+              required
+              maxLength={5}
               value={ticker}
               onChange={(e) => setTicker(e.target.value)}
               placeholder='Quote a stock'

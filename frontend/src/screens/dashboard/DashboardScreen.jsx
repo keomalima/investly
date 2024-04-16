@@ -18,12 +18,16 @@ const DashboardScreen = () => {
   // fetches the transactions and portfolio data
   useEffect(() => {
     const fetchTransactions = async () => {
-      const res = await getTransactions().unwrap();
-      dispatch(setTransactions({ ...res }));
+      try {
+        const res = await getTransactions().unwrap();
+        dispatch(setTransactions({ ...res }));
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchTransactions();
-  }, [dispatch, getTransactions]);
+  }, [dispatch]); // Remove getTransactions dependency
 
   return (
     <div>
