@@ -4,6 +4,7 @@ import transactionReducer from './slices/transaction/transactionSlice';
 import { apiSlice } from './slices/apiSlice';
 import stockReducer from './slices/stock/stockSlice';
 import { stockApiSlice } from './slices/apiStockSlice';
+import portfolioSlice from './slices/portfolio/portfolioSlice';
 
 // Create redux store and sets its reducers
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     auth: authReducer,
     transactionData: transactionReducer,
     stockData: stockReducer,
+    portfolioMetrics: portfolioSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

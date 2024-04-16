@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  userTransactions: 0,
+  userTransactions: null,
 };
 
 // Creates slices for the user API methods

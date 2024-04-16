@@ -5,10 +5,10 @@ import StockForm from '../stockForm/StockForm';
 import { resetStock } from '../../slices/stock/stockSlice';
 
 const StockCard = () => {
-  const { stockDat } = useSelector((state) => state.stockData);
+  const { stockData } = useSelector((state) => state.stockData);
   const dispatch = useDispatch();
 
-  const stockData = [
+  const stockDat = [
     {
       symbol: 'AAPL',
       price: 172.69,
@@ -37,18 +37,16 @@ const StockCard = () => {
             <IoIosClose className='btn-outline' onClick={closeCard} size={25} />
           </div>
           <div className='container-form-subheader'>
-            <div className='flex-column-form'>
+            <div>
               <p className='strong md mb'>{stockData[0].symbol}</p>
               <p className='semi-bold'>${stockData[0].price}</p>
               <p className='light xs'>Current Price</p>
             </div>
             <div className='flex-column-form'>
-              <div className='flex-column-form'>
-                <p className='semi-bold'>{stockData[0].companyName}</p>
-                <p className='xs light mb'>{stockData[0].sector}</p>
-                <p className='semi-bold'>${stockData[0].changes}</p>
-                <p className='xs light'>Today</p>
-              </div>
+              <p className='semi-bold'>{stockData[0].companyName}</p>
+              <p className='xs light mb'>{stockData[0].sector}</p>
+              <p className='semi-bold'>${stockData[0].changes}</p>
+              <p className='xs light'>Today</p>
             </div>
           </div>
           <StockForm />

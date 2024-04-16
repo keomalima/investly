@@ -8,7 +8,7 @@ import { resetStock } from '../../slices/stock/stockSlice';
 const StockForm = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
 
-  const stockData = [
+  const stockDat = [
     {
       symbol: 'AAPL',
       price: 172.69,
@@ -19,7 +19,7 @@ const StockForm = () => {
     },
   ];
 
-  const { stockDat } = useSelector((state) => state.stockData);
+  const { stockData } = useSelector((state) => state.stockData);
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -52,6 +52,8 @@ const StockForm = () => {
       await addTransaction({
         date,
         type,
+        logo_url: stockData[0].image,
+        company: stockData[0].companyName,
         ticker: stockData[0].symbol,
         shares,
         stock_price: price,
@@ -116,6 +118,7 @@ const StockForm = () => {
               <input
                 type='number'
                 value={price}
+                min='0'
                 onChange={(e) => setPrice(e.target.value)}
                 step='any'
                 placeholder='Ex: 125.23'

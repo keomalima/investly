@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  stockData: 0,
+  stockData: null,
   openCard: false,
 };
 
