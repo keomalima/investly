@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  portFolioMetrics: null,
+  portfolioMetrics: null,
 };
 
 // Creates slices for the user API methods
@@ -10,7 +10,7 @@ const portfolioSlice = createSlice({
   initialState,
   reducers: {
     setPortfolioMetrics: (state, action) => {
-      state.portFolioMetrics = action.payload;
+      state.portfolioMetrics = action.payload;
     },
   },
 });

@@ -20,7 +20,7 @@ router
   .delete(protect, deleteTransactionById);
 router
   .route('/')
-  .get(protect, cache('1 day'), getAllTransactions)
+  .get(protect, getAllTransactions)
   .post(protect, addNewTransaction);
 
 export default router;
