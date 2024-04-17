@@ -16,5 +16,13 @@ export function validateTransactions(transaction, requiredFields) {
     errors.type = 'Type must be either "buy" or "sell"';
   }
 
+  if (transaction.shares && transaction.shares <= 0) {
+    errors.type = 'Share value must be positive';
+  }
+
+  if (transaction.stock_price && transaction.price <= 0) {
+    errors.type = 'Price value must be positive';
+  }
+
   return errors;
 }

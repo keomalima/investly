@@ -13,7 +13,7 @@ const DashboardScreen = () => {
   const dispatch = useDispatch();
 
   const [metricsData, setMetricsData] = useState([]);
-  const [getTransactions, { isLoading }] = useGetTransactionsMutation();
+  const [getTransactions, { isLoading, error }] = useGetTransactionsMutation();
   const [getPortolioMetrics] = useGetPortfolioMetricsMutation();
   const { openCard } = useSelector((state) => state.stockData);
 
@@ -32,7 +32,7 @@ const DashboardScreen = () => {
     };
 
     fetchTransactions();
-  }, [dispatch]);
+  }, []);
 
   return (
     <div>
@@ -46,7 +46,7 @@ const DashboardScreen = () => {
         <div className='grid-4'>
           <MetricCard title={'Total Profit'} />
           <MetricCard title={'Portfolio Value'} />
-          <MetricCard title={'Total Invested'} totalInvested={totalInvested} />
+          <MetricCard title={'Total Invested'} />
           <MetricCard title={'Return'} />
         </div>
       </div>

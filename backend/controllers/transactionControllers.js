@@ -59,7 +59,7 @@ const addNewTransaction = async (req, res) => {
     requiredFields
   );
   if (Object.keys(validationErrors).length > 0) {
-    return res.status(400).json({ errors: validationErrors });
+    return res.status(400).json({ error: validationErrors });
   }
 
   //checks if theres suficient funds in case of a sell transaction
@@ -148,7 +148,7 @@ const updateTransactionById = async (req, res) => {
 
     // Check if the transaction belongs to the user
     if (getTransaction.get('user_id') !== req.user.id) {
-      return res.status(403).json({
+      return res.status(401).json({
         error:
           'You are not authorized to perform this action. Please ensure you have the necessary permissions.',
       });
@@ -226,7 +226,7 @@ const deleteTransactionById = async (req, res) => {
 
     // Check if the transaction belongs to the user
     if (getTransaction.get('user_id') !== req.user.id) {
-      return res.status(403).json({
+      return res.status(401).json({
         error:
           'You are not authorized to perform this action. Please ensure you have the necessary permissions.',
       });

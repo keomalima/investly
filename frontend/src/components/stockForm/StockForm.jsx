@@ -23,7 +23,7 @@ const StockForm = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [addTransaction, { isLoading, isSuccess, isError }] =
+  const [addTransaction, { isLoading, isSuccess, error }] =
     useAddTransactionMutation();
 
   const [shares, setShares] = useState('');
@@ -32,7 +32,7 @@ const StockForm = () => {
   const [price, setPrice] = useState(
     stockData.length > 0 ? stockData[0].price : ''
   );
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [formVisible, setFormVisible] = useState(false);
 
   // Submits the transaction
@@ -45,7 +45,7 @@ const StockForm = () => {
         return;
       }
       if (!shares || !type || !date || !price) {
-        setError('All fields must be completed');
+        setErrorMessage('All fields must be completed');
         return;
       }
 
@@ -60,15 +60,17 @@ const StockForm = () => {
         currency: stockData[0].currency,
         user_id: userInfo.id,
       }).unwrap();
-      setError('');
+      setErrorMessage('');
       setTimeout(() => {
         dispatch(resetStock());
       }, 1300);
     } catch (err) {
-      if (err.data.error) {
-        setError(err?.data?.error);
+      if (err.data.error.type) {
+        setErrorMessage(err?.data?.error.type);
+      } else if (err.data.error) {
+        setErrorMessage(err?.data?.error);
       } else {
-        setError('An error has occured, please try again later');
+        setErrorMessage('An error has occured, please try again later');
       }
     }
   };
@@ -82,7 +84,6 @@ const StockForm = () => {
               <p className='xss'>Shares</p>
               <input
                 type='number'
-                min='0'
                 value={shares}
                 onChange={(e) => setShares(e.target.value)}
                 step='any'
@@ -129,7 +130,7 @@ const StockForm = () => {
         </div>
       )}
       <div className='container-form-footer'>
-        {error && <p className='error-message xs'>*{error}</p>}
+        {errorMessage && <p className='error-message xs'>*{errorMessage}</p>}
         {isSuccess ? (
           <div className='container-form-footer'>
             <FaCheckCircle size={45} color='#A3B18A' />

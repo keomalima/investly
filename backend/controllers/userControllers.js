@@ -42,7 +42,7 @@ const registerNewUser = async (req, res) => {
 };
 
 // @desc Login existing user
-// @route POST /api/users/login
+// @route POST /api/users/auth
 // @access Public
 const authUser = async (req, res) => {
   const { email, password } = req.body;

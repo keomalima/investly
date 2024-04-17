@@ -19,10 +19,10 @@ const protect = async (req, res, next) => {
       req.user = await User.findByPk(decoded.userId);
       next(); // Proceed to the route handler
     } catch (error) {
-      res.status(401).json({ error: 'Not authorized, invalid token' });
+      res.status(403).json({ error: 'Not authorized, invalid token' });
     }
   } else {
-    res.status(401).json({ error: 'Not authorized, token missing' });
+    res.status(403).json({ error: 'Not authorized, token missing' });
   }
 };
 
