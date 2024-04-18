@@ -9,6 +9,7 @@ import StockCard from '../../components/stockCard/StockCard';
 import { useGetPortfolioMetricsMutation } from '../../slices/portfolio/portfolioApiSlice';
 import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
 import { calculatePortfolioMetrics } from '../../utils/metricsCalculations';
+import SearchBox from '../../components/searchBox/SearchBox';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ const DashboardScreen = () => {
 
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
-  const { userTransactions } = useSelector((state) => state.transactionData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
   // Gets the API methods
@@ -57,28 +57,37 @@ const DashboardScreen = () => {
             <StockCard />
           </div>
         )}
-        <div className='grid-4'>
-          <MetricCard
-            title={'Total Profit'}
-            value={metrics.profit}
-            isLoading={isLoading}
-          />
-          <MetricCard
-            title={'Portfolio Value'}
-            value={metrics.totalPortfolio}
-            isLoading={isLoading}
-          />
-          <MetricCard
-            title={'Total Invested'}
-            isLoading={isLoading}
-            value={metrics.totalInvested}
-          />
-          <MetricCard
-            title={'Return'}
-            isLoading={isLoading}
-            value={metrics.portfolioReturn}
-          />
-        </div>
+        {!getTransactions ? (
+          <div className='grid-4'>
+            <MetricCard
+              title={'Total Profit'}
+              value={metrics.profit}
+              isLoading={isLoading}
+            />
+            <MetricCard
+              title={'Portfolio Value'}
+              value={metrics.totalPortfolio}
+              isLoading={isLoading}
+            />
+            <MetricCard
+              title={'Total Invested'}
+              isLoading={isLoading}
+              value={metrics.totalInvested}
+            />
+            <MetricCard
+              title={'Return'}
+              isLoading={isLoading}
+              value={metrics.portfolioReturn}
+            />
+          </div>
+        ) : (
+          !openCard && (
+            <div className='search-box-dashboard'>
+              <p>Nothing here. Quote a stock to start!</p>
+              <SearchBox />
+            </div>
+          )
+        )}
       </div>
     </div>
   );

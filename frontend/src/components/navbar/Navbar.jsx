@@ -2,20 +2,16 @@ import './styles.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
-import { useGetStockDataMutation } from '../../slices/stock/stockApiSlice';
 import { logout } from '../../slices/auth/authSlice';
-import { setStock } from '../../slices/stock/stockSlice';
-import { useState } from 'react';
-import { getStockDataAPI } from '../../utils/apiCall';
+import SearchBox from '../searchBox/SearchBox';
+
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { userTransactions } = useSelector((state) => state.transactionData);
-  const [ticker, setTicker] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
-  const [getStockData, { isError, isLoading }] = useGetStockDataMutation();
 
   const logoutHandler = async () => {
     try {
@@ -24,19 +20,6 @@ const Navbar = () => {
       navigate('/login');
     } catch (err) {
       console.error(err);
-    }
-  };
-
-  const searchStock = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await getStockDataAPI(ticker);
-      //const res = await getStockData(ticker).unwrap();
-      dispatch(setStock(res));
-      setTicker('');
-    } catch (error) {
-      setTicker('');
-      console.error(error);
     }
   };
 
@@ -63,30 +46,7 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        {userTransactions && (
-          <div className='flex'>
-            <form onSubmit={searchStock}>
-              <input
-                className='search_box_input'
-                type='search'
-                required
-                maxLength={5}
-                value={ticker}
-                onChange={(e) => setTicker(e.target.value)}
-                placeholder={
-                  isError ? 'Error, try again later' : 'Quote a stock'
-                }
-              />
-              <button
-                className='search_box_btn'
-                type='submit'
-                disabled={isLoading}
-              >
-                Search
-              </button>
-            </form>
-          </div>
-        )}
+        {userTransactions && <SearchBox />}
         <div className='flex'>
           <p>{userInfo && userInfo.name}</p>
           <a className='btn-outline' onClick={logoutHandler}>
