@@ -1,6 +1,6 @@
 import './styles.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
 import { logout } from '../../slices/auth/authSlice';
 import SearchBox from '../searchBox/SearchBox';
@@ -9,9 +9,19 @@ const Navbar = ({ load }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const { userTransactions } = useSelector((state) => state.transactionData);
 
+  const { pathname } = useLocation();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
+
+  const menuStyle = (path) => {
+    if (pathname === path) {
+      return { fontWeight: 'bold' };
+    } else {
+      return { fontWeight: 'normal' };
+    }
+  };
 
   const logoutHandler = async () => {
     try {
@@ -39,10 +49,22 @@ const Navbar = ({ load }) => {
           </svg>
           <ul className='flex'>
             <li>
-              <a href='index.html'>Dashboard</a>
+              <a
+                style={menuStyle('/')}
+                className='btn-outline'
+                onClick={() => navigate('/')}
+              >
+                Dashboard
+              </a>
             </li>
             <li>
-              <a href='transactions.html'>Transactions</a>
+              <a
+                style={menuStyle('transactions')}
+                onClick={() => navigate('transactions')}
+                className='btn-outline'
+              >
+                Transactions
+              </a>
             </li>
           </ul>
         </div>
