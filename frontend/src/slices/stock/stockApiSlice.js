@@ -10,10 +10,9 @@ export const stockDataSlice = stockApiSlice.injectEndpoints({
         url: `${BASE_URL}${symbol}`,
         method: 'GET',
         params: {
-          apikey: 'i5fhTi4Ybn4kkkskdHNQ5JQbb5fXy6iC',
+          apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
       }),
-      keepUnusedDataFor: 5, // Set keepUnusedDataFor option for the endpoint
     }),
   }),
 });

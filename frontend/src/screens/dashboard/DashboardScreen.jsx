@@ -18,6 +18,7 @@ const DashboardScreen = () => {
 
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
+  const { userTransactions } = useSelector((state) => state.transactionData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
   // Gets the API methods

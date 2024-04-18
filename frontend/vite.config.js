@@ -11,8 +11,8 @@ export default defineConfig({
         target: 'http://localhost:4000/',
         changeOrigin: true,
       },
-      '/other-api': {
-        target: 'https://5faa93b0b5c645001602ac7d.mockapi.io/',
+      '/financialmodelingprep/api': {
+        target: 'https://financialmodelingprep.com/',
         changeOrigin: true,
       },
     },

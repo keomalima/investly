@@ -8,6 +8,7 @@ import { setStock } from '../../slices/stock/stockSlice';
 import { useState } from 'react';
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const { userTransactions } = useSelector((state) => state.transactionData);
   const [ticker, setTicker] = useState('');
 
   const navigate = useNavigate();
@@ -60,26 +61,30 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <div className='flex'>
-          <form onSubmit={searchStock}>
-            <input
-              className='search_box_input'
-              type='search'
-              required
-              maxLength={5}
-              value={ticker}
-              onChange={(e) => setTicker(e.target.value)}
-              placeholder={isError ? 'Error, try again later' : 'Quote a stock'}
-            />
-            <button
-              className='search_box_btn'
-              type='submit'
-              disabled={isLoading}
-            >
-              Search
-            </button>
-          </form>
-        </div>
+        {userTransactions && (
+          <div className='flex'>
+            <form onSubmit={searchStock}>
+              <input
+                className='search_box_input'
+                type='search'
+                required
+                maxLength={5}
+                value={ticker}
+                onChange={(e) => setTicker(e.target.value)}
+                placeholder={
+                  isError ? 'Error, try again later' : 'Quote a stock'
+                }
+              />
+              <button
+                className='search_box_btn'
+                type='submit'
+                disabled={isLoading}
+              >
+                Search
+              </button>
+            </form>
+          </div>
+        )}
         <div className='flex'>
           <p>{userInfo && userInfo.name}</p>
           <a className='btn-outline' onClick={logoutHandler}>

@@ -12,7 +12,7 @@ export async function getStockData(stocks) {
       `https://financialmodelingprep.com/api/v3/profile/${stocks}`,
       {
         params: {
-          apikey: process.env.FINANCIAL_API_KEY,
+          apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
       }
     );
