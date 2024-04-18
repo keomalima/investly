@@ -6,6 +6,7 @@ import { useGetStockDataMutation } from '../../slices/stock/stockApiSlice';
 import { logout } from '../../slices/auth/authSlice';
 import { setStock } from '../../slices/stock/stockSlice';
 import { useState } from 'react';
+import { getStockDataAPI } from '../../utils/apiCall';
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { userTransactions } = useSelector((state) => state.transactionData);
@@ -29,7 +30,8 @@ const Navbar = () => {
   const searchStock = async (e) => {
     e.preventDefault();
     try {
-      const res = await getStockData(ticker).unwrap();
+      const res = await getStockDataAPI(ticker);
+      //const res = await getStockData(ticker).unwrap();
       dispatch(setStock(res));
       setTicker('');
     } catch (error) {

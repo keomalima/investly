@@ -22,7 +22,7 @@ const DashboardScreen = () => {
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
   // Gets the API methods
-  const [getTransactions] = useGetTransactionsMutation();
+  const [getTransactions, { isSuccess, error }] = useGetTransactionsMutation();
   const [getPortolioMetrics, { isLoading }] = useGetPortfolioMetricsMutation();
 
   // fetches the transactions and portfolio data

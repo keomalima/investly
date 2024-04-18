@@ -10,10 +10,12 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:4000/',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/backend-api/, ''),
       },
-      '/financialmodelingprep/api': {
-        target: 'https://financialmodelingprep.com/',
+      '/fmp-api': {
+        target: 'https://financialmodelingprep.com/api',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/fmp-api/, ''),
       },
     },
   },
