@@ -5,7 +5,7 @@ import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
 import { logout } from '../../slices/auth/authSlice';
 import SearchBox from '../searchBox/SearchBox';
 
-const Navbar = () => {
+const Navbar = ({ load }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const { userTransactions } = useSelector((state) => state.transactionData);
 
@@ -46,7 +46,11 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        {userTransactions && <SearchBox />}
+        {load ? (
+          <></>
+        ) : (
+          userTransactions.transactions.count > 0 && <SearchBox />
+        )}
         <div className='flex'>
           <p>{userInfo && userInfo.name}</p>
           <a className='btn-outline' onClick={logoutHandler}>

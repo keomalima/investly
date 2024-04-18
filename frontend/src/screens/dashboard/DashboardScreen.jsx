@@ -10,16 +10,19 @@ import { useGetPortfolioMetricsMutation } from '../../slices/portfolio/portfolio
 import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
 import { calculatePortfolioMetrics } from '../../utils/metricsCalculations';
 import SearchBox from '../../components/searchBox/SearchBox';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
 
   // Sets the state for the metrics dashboard
   const [metrics, setMetrics] = useState('');
+  const [initialLoad, setInitialLoad] = useState(true);
 
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
+  const { userTransactions } = useSelector((state) => state.transactionData);
 
   // Gets the API methods
   const [getTransactions, { isSuccess, error }] = useGetTransactionsMutation();
@@ -33,7 +36,9 @@ const DashboardScreen = () => {
         const portfolio = await getPortolioMetrics().unwrap();
         dispatch(setPortfolioMetrics({ ...portfolio }));
         dispatch(setTransactions({ ...res }));
+        setInitialLoad(false);
       } catch (error) {
+        setInitialLoad(false);
         console.log(error);
       }
     };
@@ -50,14 +55,18 @@ const DashboardScreen = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar load={initialLoad} />
       <div className='metrics-container container'>
         {openCard && (
           <div className='flex-center'>
             <StockCard />
           </div>
         )}
-        {!getTransactions ? (
+        {initialLoad ? (
+          <div className='search-box-dashboard'>
+            <PropagateLoader color='#000000' size={10} />
+          </div>
+        ) : userTransactions.transactions.count > 0 ? (
           <div className='grid-4'>
             <MetricCard
               title={'Total Profit'}
