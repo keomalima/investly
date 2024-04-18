@@ -17,6 +17,7 @@ import ErrorPage from './screens/error-page.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    // Creates the routh tree and route protection
     <Route path='/' element={<App />} errorElement={<ErrorPage />}>
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />

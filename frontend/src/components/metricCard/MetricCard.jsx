@@ -5,16 +5,12 @@ import { AiOutlineStock } from 'react-icons/ai';
 import { AiOutlinePercentage } from 'react-icons/ai';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 
-const MetricCard = ({ title, value, isLoading }) => {
+const MetricCard = ({ title, value }) => {
   // Format the price above to USD using the locale, style, and currency.
   let formatNumber = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
-
-  const override = {
-    margin: '40px',
-  };
 
   // Dinamically choses the icon for each card
   const icon = () => {
@@ -52,7 +48,11 @@ const MetricCard = ({ title, value, isLoading }) => {
         </div>
       ) : (
         <div className='flex-center'>
-          <PropagateLoader color='#000000' cssOverride={override} size={10} />
+          <PropagateLoader
+            color='#000000'
+            cssOverride={{ margin: '40px' }}
+            size={10}
+          />
         </div>
       )}
     </div>

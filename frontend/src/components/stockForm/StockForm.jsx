@@ -6,26 +6,9 @@ import { useAddTransactionMutation } from '../../slices/transaction/transactionA
 import { resetStock } from '../../slices/stock/stockSlice';
 
 const StockForm = () => {
-  const currentDate = new Date().toISOString().substring(0, 10);
-
-  const stockDat = [
-    {
-      symbol: 'AAPL',
-      price: 172.69,
-      companyName: 'Apple Inc.',
-      currency: 'USD',
-      sector: 'Technology',
-      image: 'https://financialmodelingprep.com/image-stock/AAPL.png',
-    },
-  ];
-
-  const { stockData } = useSelector((state) => state.stockData);
-  const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [addTransaction, { isLoading, isSuccess, error }] =
-    useAddTransactionMutation();
-
+  //Handles the form data
   const [shares, setShares] = useState('');
   const [type, setType] = useState('buy');
   const [date, setDate] = useState(currentDate);
@@ -34,6 +17,16 @@ const StockForm = () => {
   );
   const [errorMessage, setErrorMessage] = useState('');
   const [formVisible, setFormVisible] = useState(false);
+
+  //Sets the current data
+  const currentDate = new Date().toISOString().substring(0, 10);
+
+  //Retrieves the user and stock info from redux store
+  const { stockData } = useSelector((state) => state.stockData);
+  const { userInfo } = useSelector((state) => state.auth);
+
+  // Instantiates the add transation API method
+  const [addTransaction, { isSuccess }] = useAddTransactionMutation();
 
   // Submits the transaction
   const submitHandler = async (e) => {

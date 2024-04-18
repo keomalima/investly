@@ -15,7 +15,7 @@ import PropagateLoader from 'react-spinners/PropagateLoader';
 const DashboardScreen = () => {
   const dispatch = useDispatch();
 
-  // Sets the state for the metrics dashboard
+  // Sets the state for the metrics dashboard and initial load
   const [metrics, setMetrics] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -24,7 +24,7 @@ const DashboardScreen = () => {
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
   const { userTransactions } = useSelector((state) => state.transactionData);
 
-  // Gets the API methods
+  // Gets the get transactions and portofolio API methods
   const [getTransactions] = useGetTransactionsMutation();
   const [getPortolioMetrics, { isLoading }] = useGetPortfolioMetricsMutation();
 

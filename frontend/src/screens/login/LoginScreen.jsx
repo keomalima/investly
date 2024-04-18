@@ -12,8 +12,10 @@ const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Instantiate the login API method
   const [login, { isLoading }] = useLoginMutation();
 
+  // Selects the user info from the redux store
   const { userInfo } = useSelector((state) => state.auth);
 
   //If the user token is still validy, it goes to the home page
@@ -23,6 +25,7 @@ const LoginScreen = () => {
     }
   }, [navigate, userInfo]);
 
+  // Handles the login form
   const submitHandler = async (e) => {
     e.preventDefault();
     try {

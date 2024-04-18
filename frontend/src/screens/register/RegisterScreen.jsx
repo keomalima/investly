@@ -15,8 +15,10 @@ const RegisterScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Instantiate the register API method
   const [register, { isLoading }] = useRegisterMutation();
 
+  // Selects the user info from the redux store
   const { userInfo } = useSelector((state) => state.auth);
 
   //If the user token is still validy, it goes to the home page
@@ -26,6 +28,7 @@ const RegisterScreen = () => {
     }
   }, [navigate, userInfo]);
 
+  // Handles the register form
   const submitHandler = async (e) => {
     e.preventDefault();
     try {

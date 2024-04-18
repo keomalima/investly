@@ -11,6 +11,7 @@ const SearchBox = () => {
 
   const dispatch = useDispatch();
 
+  // Deals with the search box form
   const searchStock = async (e) => {
     setIsLoading(true);
     e.preventDefault();

@@ -5,20 +5,12 @@ import StockForm from '../stockForm/StockForm';
 import { resetStock } from '../../slices/stock/stockSlice';
 
 const StockCard = () => {
-  const { stockData } = useSelector((state) => state.stockData);
   const dispatch = useDispatch();
 
-  const stockDat = [
-    {
-      symbol: 'AAPL',
-      price: 172.69,
-      companyName: 'Apple Inc.',
-      currency: 'USD',
-      sector: 'Technology',
-      image: 'https://financialmodelingprep.com/image-stock/AAPL.png',
-    },
-  ];
+  //Retrieves the stock data from redux store
+  const { stockData } = useSelector((state) => state.stockData);
 
+  // Resets the original state of the card
   const closeCard = () => {
     dispatch(resetStock());
   };

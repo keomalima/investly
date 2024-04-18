@@ -6,15 +6,20 @@ import { logout } from '../../slices/auth/authSlice';
 import SearchBox from '../searchBox/SearchBox';
 
 const Navbar = ({ load }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Gets user and transaction data from redux store
   const { userInfo } = useSelector((state) => state.auth);
   const { userTransactions } = useSelector((state) => state.transactionData);
 
+  // Gets the URL's path name
   const { pathname } = useLocation();
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // Instantiates the logout API method
   const [logoutApiCall] = useLogoutMutation();
 
+  // Dinamically changes the font weight of selected menu option
   const menuStyle = (path) => {
     if (pathname === path) {
       return { fontWeight: 'bold' };
@@ -23,6 +28,7 @@ const Navbar = ({ load }) => {
     }
   };
 
+  // Handles the logout form
   const logoutHandler = async () => {
     try {
       await logoutApiCall().unwrap();

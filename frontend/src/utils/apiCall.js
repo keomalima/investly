@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
+//Makes the call for the external api and caches the response
 const instance = Axios.create();
 const axios = setupCache(instance);
 
