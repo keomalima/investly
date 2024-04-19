@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 :root {
-  --primary-color: #6B7280;
-  --secondary-color: #595F6C;
-  --dark-color: #002240;
-  --light-color: #f4f4f4;
-  --success-color: #A3B18A;
-  --error-color: #C8443C;
+  --primary-color: rgba(107, 114, 128, 1);
+  --secondary-color: rgba(89, 95, 108, 1);
+  --dark-color: rgba(0, 34, 64, 1);
+  --light-color: rgba(244, 244, 244, 1);
+  --success-color: rgba(163, 177, 138, 1);
+  --error-color: rgba(200, 68, 60, 1);
 }
 
 * {
@@ -221,7 +221,6 @@ p {
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  
 }
 
 .grid-5 {

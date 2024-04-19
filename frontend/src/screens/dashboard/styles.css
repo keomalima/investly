@@ -11,6 +11,10 @@
     height: 70vh;
 }
 
+.metric-table-container{
+    border: 2px black solid;
+}
+
 @media screen and (max-width: 960px) {
     .metrics-container .grid-4{
         display: grid;

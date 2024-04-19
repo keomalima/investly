@@ -91,7 +91,7 @@ const DashboardScreen = () => {
                 value={metrics.portfolioReturn}
               />
             </div>
-            <div>
+            <div className='flex-center'>
               <MetricTable />
             </div>
           </div>

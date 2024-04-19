@@ -52,15 +52,15 @@ const MetricTable = ({ isLoading }) => {
             <td data-cell='#'>{index + 1}</td>
             <td data-cell='symbol'>{metric.ticker}</td>
             <td>
-              <img src={metric.logo_url} width={20} />
+              <img src={metric.logo_url} className='image-logo flex' />
             </td>
             <td data-cell='company'>{metric.company}</td>
             <td data-cell='price'>
               {formatNumber.format(metric.current_price)}
-              <span className='light xs'> ({metric.current_change})</span>
+              <span className='light xss'> ({metric.current_change})</span>
             </td>
             <td data-cell='shares'>{metric.current_shares}</td>
-            <td data-cell='value'>
+            <td data-cell='value' className='semi-bold'>
               {formatNumber.format(
                 metric.current_price * metric.current_shares
               )}
@@ -78,7 +78,7 @@ const MetricTable = ({ isLoading }) => {
                 metric.total_invested
               ).toFixed(2)}
               %
-              <span className='light xs'>
+              <span className='light xss'>
                 {' '}
                 (
                 {formatNumber.format(
