@@ -20,11 +20,12 @@ const DashboardScreen = () => {
   // Sets the state for the metrics dashboard and initial load
   const [metrics, setMetrics] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [metricsPerPage] = useState(5);
 
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
-  const { userTransactions } = useSelector((state) => state.transactionData);
 
   // Gets the get transactions and portofolio API methods
   const [getTransactions] = useGetTransactionsMutation();
@@ -47,6 +48,13 @@ const DashboardScreen = () => {
 
     fetchTransactions();
   }, []);
+
+  // Get current metrics for pagination
+  const indexOfLastMetric = currentPage * metricsPerPage;
+  const indexOfFirstMetric = indexOfLastMetric - metricsPerPage;
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   //Calls the methods to calculates the metrics for the main dashboard
   useEffect(() => {
@@ -93,8 +101,16 @@ const DashboardScreen = () => {
               />
             </div>
             <div className='table-pagination-container'>
-              <MetricTable />
-              <Pagination />
+              <MetricTable
+                isLoading={isLoading}
+                indexOfFirstMetric={indexOfFirstMetric}
+                indexOfLastMetric={indexOfLastMetric}
+              />
+              <Pagination
+                currentPage={currentPage}
+                metricsPerPage={metricsPerPage}
+                paginate={paginate}
+              />
             </div>
           </div>
         ) : (

@@ -63,6 +63,7 @@ const StockForm = () => {
       // Set a timeout for the successfully added animation
       setTimeout(() => {
         dispatch(resetStock());
+        setPrice('');
       }, 1000);
     } catch (err) {
       if (err.data.error.type) {
