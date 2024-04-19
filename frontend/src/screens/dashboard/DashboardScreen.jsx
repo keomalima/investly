@@ -11,6 +11,7 @@ import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
 import { calculatePortfolioMetrics } from '../../utils/metricsCalculations';
 import SearchBox from '../../components/searchBox/SearchBox';
 import PropagateLoader from 'react-spinners/PropagateLoader';
+import MetricTable from '../../components/metricTable/MetricTable';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
@@ -67,33 +68,38 @@ const DashboardScreen = () => {
             <PropagateLoader color='#000000' size={10} />
           </div>
         ) : portfolioMetrics.getPortfolioMetrics.length > 0 ? (
-          <div className='grid-4'>
-            <MetricCard
-              title={'Total Profit'}
-              value={metrics.profit}
-              isLoading={isLoading}
-            />
-            <MetricCard
-              title={'Portfolio Value'}
-              value={metrics.totalPortfolio}
-              isLoading={isLoading}
-            />
-            <MetricCard
-              title={'Total Invested'}
-              isLoading={isLoading}
-              value={metrics.totalInvested}
-            />
-            <MetricCard
-              title={'Return'}
-              isLoading={isLoading}
-              value={metrics.portfolioReturn}
-            />
+          <div>
+            <div className='grid-4'>
+              <MetricCard
+                title={'Total Profit'}
+                value={metrics.profit}
+                isLoading={isLoading}
+              />
+              <MetricCard
+                title={'Portfolio Value'}
+                value={metrics.totalPortfolio}
+                isLoading={isLoading}
+              />
+              <MetricCard
+                title={'Total Invested'}
+                isLoading={isLoading}
+                value={metrics.totalInvested}
+              />
+              <MetricCard
+                title={'Return'}
+                isLoading={isLoading}
+                value={metrics.portfolioReturn}
+              />
+            </div>
+            <div>
+              <MetricTable />
+            </div>
           </div>
         ) : (
           !openCard && (
             <div className='search-box-dashboard'>
               <p>Nothing here. Quote a stock to start!</p>
-              <SearchBox />
+              <SearchBox isLoading={isLoading} />
             </div>
           )
         )}

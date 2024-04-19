@@ -1,7 +1,7 @@
 //Calculates the metrics of the main dashboard
 export function calculatePortfolioMetrics(portfolioMetrics) {
   const totalInvested = portfolioMetrics.getPortfolioMetrics.reduce(
-    (acc, metric) => acc + parseFloat(metric.total_cost),
+    (acc, metric) => acc + parseFloat(metric.total_invested),
     0
   );
   const totalPortfolio = portfolioMetrics.getPortfolioMetrics.reduce(

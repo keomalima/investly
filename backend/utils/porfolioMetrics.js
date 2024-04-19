@@ -30,7 +30,7 @@ export async function getMetrics(userId, page, size) {
           `CASE WHEN SUM(CASE WHEN type = 'buy' THEN shares END) > 0 THEN SUM(CASE WHEN type = 'buy' THEN shares * stock_price END) / SUM(CASE WHEN type = 'buy' THEN shares END) ELSE NULL END,
 	SUM(CASE WHEN type = 'buy' THEN shares ELSE -1 * shares END) * SUM(CASE WHEN type = 'buy' THEN shares * stock_price END) / SUM (CASE WHEN type = 'buy' THEN shares END)`
         ),
-        'total_cost',
+        'total_invested',
       ],
     ],
     include: {

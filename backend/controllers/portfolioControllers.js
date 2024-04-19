@@ -27,12 +27,23 @@ const getPortfolio = async (req, res) => {
 
     // Create a dictionary to store stock current prices
     const pricesByTicker = {};
-    stockData.forEach((stock) => (pricesByTicker[stock.symbol] = stock.price));
+    stockData.forEach(
+      (stock) =>
+        (pricesByTicker[stock.symbol] = {
+          price: stock.price,
+          change: stock.changes,
+        })
+    );
 
     //Merges the data from the database and API call data
     getPortfolioMetrics.forEach((metric) => {
       metric.dataValues.current_price = pricesByTicker[metric.dataValues.ticker]
-        ? pricesByTicker[metric.dataValues.ticker]
+        ? pricesByTicker[metric.dataValues.ticker].price // Accessing price property
+        : 0;
+      metric.dataValues.current_change = pricesByTicker[
+        metric.dataValues.ticker
+      ]
+        ? pricesByTicker[metric.dataValues.ticker].change // Accessing change property
         : 0;
     });
 
