@@ -1,4 +1,7 @@
 import { useSelector } from 'react-redux';
+import { IoIosArrowForward } from 'react-icons/io';
+import { IoIosArrowBack } from 'react-icons/io';
+
 import './styles.css';
 
 const Pagination = ({ metricsPerPage, paginate, currentPage }) => {
@@ -19,19 +22,32 @@ const Pagination = ({ metricsPerPage, paginate, currentPage }) => {
   return (
     <nav>
       <ul className='pagination-button'>
+        <a onClick={() => paginate(currentPage - 1)}>
+          <IoIosArrowBack />
+        </a>
         {pageNumbers.map((number) => (
-          <li key={number} className='page-item'>
+          <li
+            key={number}
+            onClick={() => paginate(number)}
+            style={{
+              backgroundColor: number == currentPage ? 'black' : 'white',
+              borderRadius: '5px',
+              color: number == currentPage ? 'white' : 'black',
+            }}
+          >
             <a
-              onClick={() => paginate(number)}
               style={{
-                fontWeight: number == currentPage ? '600' : '400',
+                fontWeight: number == currentPage ? '700' : '500',
               }}
-              className='btn-outline xss'
+              className='xss'
             >
               {number}
             </a>
           </li>
         ))}
+        <a onClick={() => paginate(currentPage + 1)}>
+          <IoIosArrowForward />
+        </a>
       </ul>
     </nav>
   );

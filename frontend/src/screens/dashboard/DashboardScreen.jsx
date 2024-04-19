@@ -21,7 +21,7 @@ const DashboardScreen = () => {
   const [metrics, setMetrics] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [metricsPerPage] = useState(5);
+  const [metricsPerPage] = useState(10);
 
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
