@@ -66,7 +66,7 @@ const DashboardScreen = () => {
           <div className='search-box-dashboard'>
             <PropagateLoader color='#000000' size={10} />
           </div>
-        ) : userTransactions.transactions.count > 0 ? (
+        ) : portfolioMetrics.getPortfolioMetrics.length > 0 ? (
           <div className='grid-4'>
             <MetricCard
               title={'Total Profit'}

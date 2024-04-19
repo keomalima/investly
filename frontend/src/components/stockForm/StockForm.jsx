@@ -4,9 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaCheckCircle } from 'react-icons/fa';
 import { useAddTransactionMutation } from '../../slices/transaction/transactionApiSlice';
 import { resetStock } from '../../slices/stock/stockSlice';
+import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
+import { useGetPortfolioMetricsMutation } from '../../slices/portfolio/portfolioApiSlice';
 
 const StockForm = () => {
   const dispatch = useDispatch();
+
+  //Sets the current data
+  const currentDate = new Date().toISOString().substring(0, 10);
+
+  //Retrieves the user and stock info from redux store
+  const { stockData } = useSelector((state) => state.stockData);
+  const { userInfo } = useSelector((state) => state.auth);
 
   //Handles the form data
   const [shares, setShares] = useState('');
@@ -18,15 +27,9 @@ const StockForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [formVisible, setFormVisible] = useState(false);
 
-  //Sets the current data
-  const currentDate = new Date().toISOString().substring(0, 10);
-
-  //Retrieves the user and stock info from redux store
-  const { stockData } = useSelector((state) => state.stockData);
-  const { userInfo } = useSelector((state) => state.auth);
-
   // Instantiates the add transation API method
   const [addTransaction, { isSuccess }] = useAddTransactionMutation();
+  const [getPortolioMetrics] = useGetPortfolioMetricsMutation();
 
   // Submits the transaction
   const submitHandler = async (e) => {
@@ -54,9 +57,13 @@ const StockForm = () => {
         user_id: userInfo.id,
       }).unwrap();
       setErrorMessage('');
+      // Requests new data from API
+      const portfolio = await getPortolioMetrics().unwrap();
+      dispatch(setPortfolioMetrics({ ...portfolio }));
+      // Set a timeout for the successfully added animation
       setTimeout(() => {
         dispatch(resetStock());
-      }, 1300);
+      }, 1000);
     } catch (err) {
       if (err.data.error.type) {
         setErrorMessage(err?.data?.error.type);

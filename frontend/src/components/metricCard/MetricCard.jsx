@@ -5,7 +5,7 @@ import { AiOutlineStock } from 'react-icons/ai';
 import { AiOutlinePercentage } from 'react-icons/ai';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 
-const MetricCard = ({ title, value }) => {
+const MetricCard = ({ title, value, isLoading }) => {
   // Format the price above to USD using the locale, style, and currency.
   let formatNumber = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -30,17 +30,17 @@ const MetricCard = ({ title, value }) => {
 
   return (
     <div className='card metric-container'>
-      {value ? (
+      {!isLoading ? (
         <div className='grid'>
           <div>
             <p className='sm medium'>{title}</p>
             {title == 'Return' ? (
               <h1 className='md semi-bold digit-animation'>
-                {value && value.toFixed(2)}%
+                {value.toFixed(2)}%
               </h1>
             ) : (
               <h1 className='md semi-bold digit-animation'>
-                {value && formatNumber.format(value)}
+                {formatNumber.format(value)}
               </h1>
             )}
           </div>
