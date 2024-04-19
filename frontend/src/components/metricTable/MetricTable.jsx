@@ -15,9 +15,22 @@ const MetricTable = ({ isLoading }) => {
   // Calculates the return of investement
   const totalReturn = (current_price, shares, total_invested) => {
     const current_value = current_price * shares;
-    return ((current_value - total_invested) / total_invested) * 100;
+    const result = ((current_value - total_invested) / total_invested) * 100;
+    return Math.abs(result) < 1e-10 ? 0 : result.toFixed(2);
   };
 
+  const styleCheck = (current_price, shares, total_invested) => {
+    if (
+      Math.abs(current_price * shares - total_invested) < 1e-10 ||
+      current_price * shares - total_invested >= 0
+    ) {
+      return { color: 'rgba(163, 177, 138, 1)' }; // Return green color if profit
+    } else {
+      return { color: 'rgba(200, 68, 60, 1)' }; // Return red color if loss
+    }
+  };
+
+  // Returns a loader if data is not ready
   if (isLoading) {
     return (
       <div className='flex-center'>
@@ -57,7 +70,18 @@ const MetricTable = ({ isLoading }) => {
             <td data-cell='company'>{metric.company}</td>
             <td data-cell='price'>
               {formatNumber.format(metric.current_price)}
-              <span className='light xss'> ({metric.current_change})</span>
+              <span
+                className='xss'
+                style={{
+                  color:
+                    metric.current_change >= 0
+                      ? 'rgba(163, 177, 138, 1)'
+                      : 'rgba(200, 68, 60, 1)',
+                }}
+              >
+                {' '}
+                ({metric.current_change})
+              </span>
             </td>
             <td data-cell='shares'>{metric.current_shares}</td>
             <td data-cell='value' className='semi-bold'>
@@ -76,15 +100,27 @@ const MetricTable = ({ isLoading }) => {
                 metric.current_price,
                 metric.current_shares,
                 metric.total_invested
-              ).toFixed(2)}
+              )}
               %
-              <span className='light xss'>
+              <span
+                className='xss'
+                style={styleCheck(
+                  metric.current_price,
+                  metric.current_shares,
+                  metric.total_invested
+                )}
+              >
                 {' '}
                 (
-                {formatNumber.format(
+                {Math.abs(
                   metric.current_price * metric.current_shares -
                     metric.total_invested
-                )}
+                ) < 1e-10
+                  ? formatNumber.format(0)
+                  : formatNumber.format(
+                      metric.current_shares * metric.current_price -
+                        metric.total_invested
+                    )}
                 )
               </span>
             </td>

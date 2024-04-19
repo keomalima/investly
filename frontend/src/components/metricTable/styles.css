@@ -39,13 +39,8 @@
     color: white;
 }
 
-.content-metrics-table th:hover,
-.content-metrics-table td:hover {
-    font-size: 1.3rem;
-}
-
 .content-metrics-table tbody tr:hover img {
     width: 18px;
-    filter: drop-shadow(0px 1000px 0 white);
-    transform: translateY(-1000px);
+    filter: none;
+    transform: none;
 }
