@@ -6,17 +6,10 @@ import { getMetrics } from '../utils/porfolioMetrics.js';
 // @route GET /api/portfolio
 // @access Private
 const getPortfolio = async (req, res) => {
-  // Retrieves the page and size from the params of the request
-  const pageAsNumber = Number.parseInt(req.query.page);
-  const sizeAsNumber = Number.parseInt(req.query.size);
-
-  // Validates the pagination params
-  const { page, size } = paginationValidation(pageAsNumber, sizeAsNumber);
-
   // This method is being cached every 5 minutes to reduce database queries and external API calls
   try {
-    // Get some metrics from the database
-    const getPortfolioMetrics = await getMetrics(req.user.id, page, size);
+    // Get the metrics and stock unique count from the database
+    const { getPortfolioMetrics, countStocks } = await getMetrics(req.user.id);
 
     //Obtains the all the users tickers
     const stock_tickers = getPortfolioMetrics.map(
@@ -49,7 +42,7 @@ const getPortfolio = async (req, res) => {
 
     res.status(200).json({
       getPortfolioMetrics,
-      page,
+      count: countStocks[0].dataValues.unique_stock_count,
     });
   } catch (error) {
     res.status(500).json({

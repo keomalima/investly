@@ -12,6 +12,7 @@ import { calculatePortfolioMetrics } from '../../utils/metricsCalculations';
 import SearchBox from '../../components/searchBox/SearchBox';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import MetricTable from '../../components/metricTable/MetricTable';
+import Pagination from '../../components/pagination/Pagination';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
@@ -91,8 +92,9 @@ const DashboardScreen = () => {
                 value={metrics.portfolioReturn}
               />
             </div>
-            <div className='flex-center'>
+            <div className='table-pagination-container'>
               <MetricTable />
+              <Pagination />
             </div>
           </div>
         ) : (

@@ -10,6 +10,15 @@ const StockCard = () => {
   //Retrieves the stock data from redux store
   const { stockData } = useSelector((state) => state.stockData);
 
+  //Limit company name size
+  const limitSringSize = (str) => {
+    if (str.length > 25) {
+      return str.slice(0, 25 - 3) + '...';
+    } else {
+      return str;
+    }
+  };
+
   // Resets the original state of the card
   const closeCard = () => {
     dispatch(resetStock());
@@ -35,7 +44,9 @@ const StockCard = () => {
               <p className='light xs'>Current Price</p>
             </div>
             <div className='flex-column-form'>
-              <p className='semi-bold'>{stockData[0].companyName}</p>
+              <p className='semi-bold'>
+                {limitSringSize(stockData[0].companyName)}
+              </p>
               <p className='xs light mb'>{stockData[0].sector}</p>
               <p className='semi-bold'>${stockData[0].changes}</p>
               <p className='xs light'>Today</p>

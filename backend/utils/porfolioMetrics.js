@@ -2,11 +2,19 @@ import { Sequelize } from 'sequelize';
 import Transaction from '../models/transactionModel.js';
 import Stock from '../models/stockModel.js';
 
-export async function getMetrics(userId, page, size) {
+export async function getMetrics(userId) {
+  // Counts the total number of unique stocks for pagination
+  const countStocks = await Transaction.findAll({
+    where: { user_id: userId },
+    attributes: [
+      'user_id', // Group by user_id
+      [Sequelize.literal('COUNT(DISTINCT stock_id)'), 'unique_stock_count'],
+    ],
+    group: ['user_id'],
+  });
+
   // Search and calculates user metrics for the portolio dashboard
-  const getMetrics = await Transaction.findAll({
-    limit: size,
-    offset: page * size,
+  const getPortfolioMetrics = await Transaction.findAll({
     attributes: [
       'user_id',
       'stock_id',
@@ -42,5 +50,5 @@ export async function getMetrics(userId, page, size) {
     group: ['user_id', 'stock_id', 'ticker', 'company', 'logo_url'],
   });
 
-  return getMetrics;
+  return { getPortfolioMetrics, countStocks };
 }
