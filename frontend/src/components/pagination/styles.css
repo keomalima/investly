@@ -5,21 +5,37 @@
     gap:10px;
 }
 
-
 .pagination-button a{
     display: flex;
     justify-content: center;
     align-items: center;
     border: 0.01px solid rgba(0, 0, 0, 0.4);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
-.pagination-button li:hover, a:hover{
+.pagination-button li:hover, .pagination-button a:hover{
     background-color: black;
     border-radius: 5px;
     color: white
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-grid{
+    gap:50px
+}
+
+
+.pageper-container{
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }

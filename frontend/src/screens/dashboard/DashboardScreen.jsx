@@ -21,7 +21,7 @@ const DashboardScreen = () => {
   const [metrics, setMetrics] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [metricsPerPage] = useState(10);
+  const [metricsPerPage, setMetricsPerPage] = useState(10);
 
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
@@ -110,6 +110,8 @@ const DashboardScreen = () => {
                 currentPage={currentPage}
                 metricsPerPage={metricsPerPage}
                 paginate={paginate}
+                setMetricsPerPage={setMetricsPerPage}
+                setCurrentPage={setCurrentPage}
               />
             </div>
           </div>
