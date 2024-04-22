@@ -11,7 +11,6 @@ const Navbar = ({ load }) => {
 
   // Gets user and transaction data from redux store
   const { userInfo } = useSelector((state) => state.auth);
-  const { userTransactions } = useSelector((state) => state.transactionData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
   // Gets the URL's path name

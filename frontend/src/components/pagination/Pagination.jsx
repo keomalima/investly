@@ -45,14 +45,15 @@ const Pagination = ({
     setCurrentPage(1);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Smooth scrolling animation
+      behavior: 'smooth',
     });
   };
 
+  // Scrolls the view to the top when the user changes the table page
   const changePage = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Smooth scrolling animation
+      behavior: 'smooth',
     });
   };
 

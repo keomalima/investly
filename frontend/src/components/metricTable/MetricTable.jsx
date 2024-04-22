@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import './styles.css';
+import { sortTable } from '../../utils/sortableTable';
 
 const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
   // Selects the portfolio metrics from redux state
