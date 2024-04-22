@@ -105,6 +105,7 @@ const DashboardScreen = () => {
                 isLoading={isLoading}
                 indexOfFirstMetric={indexOfFirstMetric}
                 indexOfLastMetric={indexOfLastMetric}
+                portfolioMetrics={portfolioMetrics}
               />
               <Pagination
                 currentPage={currentPage}

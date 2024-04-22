@@ -1,5 +1,4 @@
 import { getStockData } from '../utils/apiCall.js';
-import { paginationValidation } from '../utils/paginationValidation.js';
 import { getMetrics } from '../utils/porfolioMetrics.js';
 
 // @desc Obtains portfolio metrics
@@ -11,10 +10,11 @@ const getPortfolio = async (req, res) => {
     // Get the metrics and stock unique count from the database
     const { getPortfolioMetrics, countStocks } = await getMetrics(req.user.id);
 
-    //Obtains the all the users tickers
+    //Obtains all the users tickers
     const stock_tickers = getPortfolioMetrics.map(
       (ticker) => ticker.dataValues.ticker
     );
+
     // Calls an external api to get data from the companies
     const stockData = await getStockData(stock_tickers);
 

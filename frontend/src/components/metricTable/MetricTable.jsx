@@ -1,11 +1,47 @@
 import { useSelector } from 'react-redux';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import './styles.css';
-import { sortTable } from '../../utils/sortableTable';
+import { useState } from 'react';
+import { metricsList } from '../../utils/metricsList';
+import { useSortableTable } from '../../utils/useSortableTable';
+import { FaSort } from 'react-icons/fa';
 
 const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
   // Selects the portfolio metrics from redux state
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
+
+  // Custom hook for table ordering
+  const [tableData, handleSorting] = useSortableTable([
+    ...portfolioMetrics.getPortfolioMetrics,
+  ]);
+
+  // States to control the order and field to sort
+  const [sortField, setSortField] = useState('');
+  const [order, setOrder] = useState('asc');
+
+  // Defines the table columns
+  const tableColumns = [
+    { label: '#', accessor: '#', sortable: false },
+    { label: 'Symbol', accessor: 'ticker', sortable: true },
+    { label: '', accessor: '', sortable: false },
+    { label: 'Company', accessor: 'company', sortable: true },
+    { label: 'Current Price', accessor: 'current_price', sortable: true },
+    { label: 'Shares', accessor: 'current_shares', sortable: true },
+    { label: 'Port. Value', accessor: 'current_value', sortable: true },
+    { label: 'Tot. Invested', accessor: 'total_invested', sortable: true },
+    { label: 'Avg. Price', accessor: 'average_price', sortable: true },
+    { label: 'Return', accessor: 'return_percentage', sortable: true },
+  ];
+
+  // Handles the sort changes
+  const handleSortingChange = (accessor) => {
+    console.log(accessor);
+    const sortOrder =
+      accessor === sortField && order === 'asc' ? 'desc' : 'asc';
+    setSortField(accessor);
+    setOrder(sortOrder);
+    handleSorting(accessor, sortOrder);
+  };
 
   // Format the price above to USD using the locale, style, and currency.
   let formatNumber = new Intl.NumberFormat('en-US', {
@@ -13,13 +49,7 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
     currency: 'USD',
   });
 
-  // Calculates the return of investement
-  const totalReturn = (current_price, shares, total_invested) => {
-    const current_value = current_price * shares;
-    const result = ((current_value - total_invested) / total_invested) * 100;
-    return Math.abs(result) < 1e-10 ? 0 : result.toFixed(2);
-  };
-
+  // Limits the string size of the strings
   const limitSringSize = (str) => {
     if (str.length > 25) {
       return str.slice(0, 25 - 3) + '...';
@@ -28,11 +58,9 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
     }
   };
 
-  const styleCheck = (current_price, shares, total_invested) => {
-    if (
-      Math.abs(current_price * shares - total_invested) < 1e-10 ||
-      current_price * shares - total_invested >= 0
-    ) {
+  // Styles the results depending if they are positive or negative
+  const styleCheck = (value) => {
+    if (Math.abs(value) < 1e-10 || value >= 0) {
       return { color: 'rgba(163, 177, 138, 1)' }; // Return green color if profit
     } else {
       return { color: 'rgba(200, 68, 60, 1)' }; // Return red color if loss
@@ -56,20 +84,28 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
     <table className='content-metrics-table'>
       <thead>
         <tr>
-          <th>#</th>
-          <th>Symbol</th>
-          <th></th>
-          <th>Company</th>
-          <th>Current Price</th>
-          <th>Shares</th>
-          <th>Port. Value</th>
-          <th>Tot. Invested</th>
-          <th>Avg. Price</th>
-          <th>Inv. Return</th>
+          {tableColumns.map(({ label, accessor, sortable }) => {
+            const cl = sortable
+              ? sortField === accessor && order === 'asc'
+                ? 'up'
+                : sortField === accessor && order === 'desc'
+                ? 'down'
+                : 'default'
+              : '';
+            return (
+              <th
+                onClick={sortable ? () => handleSortingChange(accessor) : null}
+                key={accessor}
+                className={cl}
+              >
+                {label}
+              </th>
+            );
+          })}
         </tr>
       </thead>
       <tbody>
-        {portfolioMetrics.getPortfolioMetrics
+        {metricsList(tableData)
           .slice(indexOfFirstMetric, indexOfLastMetric)
           .map((metric, index) => (
             <tr key={metric.stock_id}>
@@ -99,7 +135,7 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
                 >
                   {' '}
                   (
-                  {metric.current_change
+                  {metric.current_change !== null
                     ? metric.current_change.toFixed(2)
                     : '-'}
                   )
@@ -107,53 +143,35 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
               </td>
               <td data-cell='shares'>{metric.current_shares}</td>
               <td data-cell='value' className='semi-bold'>
-                {formatNumber.format(
-                  metric.current_price * metric.current_shares
-                )}
+                {metric.current_value !== null
+                  ? formatNumber.format(metric.current_value)
+                  : '-'}
               </td>
               <td data-cell='cost'>
-                {metric.total_invested
+                {metric.total_invested !== null
                   ? formatNumber.format(metric.total_invested)
                   : '-'}
               </td>
               <td data-cell='avg price'>
-                {metric.average_price
+                {metric.average_price !== null
                   ? formatNumber.format(metric.average_price)
                   : '-'}
               </td>
               <td data-cell='return'>
-                {metric.current_price &&
-                metric.current_shares &&
-                metric.total_invested
-                  ? totalReturn(
-                      metric.current_price,
-                      metric.current_shares,
-                      metric.total_invested
-                    )
-                  : '-'}
+                {metric.return_percentage !== null
+                  ? metric.return_percentage
+                  : '0'}
                 %
                 <span
                   className='xss'
-                  style={styleCheck(
-                    metric.current_price,
-                    metric.current_shares,
-                    metric.total_invested
-                  )}
+                  style={styleCheck(metric.return_percentage)}
                 >
                   {' '}
                   (
-                  {metric.current_price &&
-                  metric.current_shares &&
-                  metric.total_invested
-                    ? Math.abs(
-                        metric.current_price * metric.current_shares -
-                          metric.total_invested
-                      ) < 1e-10
+                  {metric.return_value !== null
+                    ? Math.abs(metric.return_value) < 1e-10
                       ? formatNumber.format(0)
-                      : formatNumber.format(
-                          metric.current_shares * metric.current_price -
-                            metric.total_invested
-                        )
+                      : formatNumber.format(metric.return_value)
                     : '-'}
                   )
                 </span>

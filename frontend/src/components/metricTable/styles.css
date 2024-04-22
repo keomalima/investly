@@ -24,6 +24,7 @@
 .content-metrics-table td{
     padding: 18px 15px;
     font-size: 1rem;
+ 
 }
 
 .content-metrics-table tbody tr {
@@ -44,3 +45,24 @@
     filter: none;
     transform: none;
 }
+
+th.up {
+    background-image: url("../../../public/sort-up.png");
+}
+
+th.down {
+    background-image: url("../../../public/caret-down.png") 2;
+} 
+
+th.default {
+    background-image: url("../../../public/sort.png");
+}
+
+th.up,
+th.default,
+th.down {
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
