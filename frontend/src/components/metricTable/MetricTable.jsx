@@ -12,7 +12,7 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
 
   // Custom hook for table ordering
   const [tableData, handleSorting] = useSortableTable([
-    ...portfolioMetrics.getPortfolioMetrics,
+    ...metricsList(portfolioMetrics.getPortfolioMetrics),
   ]);
 
   // States to control the order and field to sort
@@ -35,7 +35,6 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
 
   // Handles the sort changes
   const handleSortingChange = (accessor) => {
-    console.log(accessor);
     const sortOrder =
       accessor === sortField && order === 'asc' ? 'desc' : 'asc';
     setSortField(accessor);
@@ -105,7 +104,7 @@ const MetricTable = ({ isLoading, indexOfFirstMetric, indexOfLastMetric }) => {
         </tr>
       </thead>
       <tbody>
-        {metricsList(tableData)
+        {tableData
           .slice(indexOfFirstMetric, indexOfLastMetric)
           .map((metric, index) => (
             <tr key={metric.stock_id}>

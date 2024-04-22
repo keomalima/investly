@@ -14,7 +14,6 @@
     text-align: left;
 }
 
-.content-metrics-table th,
 .content-metrics-table th {
    font-weight: 600;
 }
@@ -47,15 +46,15 @@
 }
 
 th.up {
-    background-image: url("../../../public/sort-up.png");
+    background-image: url("../../../public/up-arrow.png");
 }
 
 th.down {
-    background-image: url("../../../public/caret-down.png") 2;
+    background-image: url("../../../public/down-arrow.png");
 } 
 
 th.default {
-    background-image: url("../../../public/sort.png");
+    background-image: url("../../../public/sorting.png");
 }
 
 th.up,
