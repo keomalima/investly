@@ -93,8 +93,8 @@ const MetricTable = ({
         </div>
         <input
           type='text'
-          maxLength={5}
-          placeholder='Search stock symbol'
+          maxLength={20}
+          placeholder="Search stock symbols separeted by ','"
           value={searchQuery}
           onChange={(e) => {
             const value = e.target.value;
@@ -144,7 +144,7 @@ const MetricTable = ({
             .slice(indexOfFirstMetric, indexOfLastMetric)
             .map((metric, index) => (
               <tr key={metric.stock_id}>
-                <td data-cell='#' className='metric-table-responsive'>
+                <td data-cell='#' className='metric-table-responsive xs'>
                   {index + 1}
                 </td>
                 <td data-cell='symbol'>
@@ -167,9 +167,8 @@ const MetricTable = ({
                   {metric.current_price
                     ? formatNumber.format(metric.current_price)
                     : '-'}
-                  <br />
                   <span
-                    className='xss'
+                    className='xs'
                     style={{
                       color:
                         metric.current_change >= 0
@@ -206,9 +205,8 @@ const MetricTable = ({
                     ? metric.return_percentage
                     : '0'}
                   %
-                  <br />
                   <span
-                    className='xss'
+                    className='xs'
                     style={{
                       color:
                         Math.abs(metric.current_change) < 1e-10 ||

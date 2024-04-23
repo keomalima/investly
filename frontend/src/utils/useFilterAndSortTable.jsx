@@ -12,9 +12,15 @@ export const useFilterAndSortableTable = (data) => {
 
     // If there's a search query, it will filter the list
     if (searchQuery) {
-      filteredData = filteredData.filter((item) =>
-        item.ticker.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const words = searchQuery
+        .toLowerCase()
+        .split(',')
+        .map((word) => word.trim());
+      filteredData = filteredData.filter((item) => {
+        return words.some((word) => {
+          return item.ticker.toLowerCase().includes(word);
+        });
+      });
     }
 
     if (sortField) {

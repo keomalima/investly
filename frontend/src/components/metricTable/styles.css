@@ -36,7 +36,8 @@
 }
 
 .container-metrics-table input {
-    width: 150px;
+    width: 260px;
+    
 }
 
 .container-metrics-table input:hover, .container-metrics-table input:focus, .container-metrics-table select:hover{
@@ -68,6 +69,14 @@
 .container-metrics-table th{
     padding: 10px 15px;
     max-width: 100px;
+}
+
+#company, #return_percentage, #current_price, #total_invested{
+    min-width: 130px;
+}
+
+#ticker{
+    max-width: 80px;
 }
 
 
