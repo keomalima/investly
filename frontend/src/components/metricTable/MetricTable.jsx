@@ -92,6 +92,8 @@ const MetricTable = ({
           <p className='xss'>entries</p>
         </div>
         <input
+          type='text'
+          maxLength={5}
           placeholder='Search stock symbol'
           value={searchQuery}
           onChange={(e) => {

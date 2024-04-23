@@ -28,9 +28,7 @@ const DashboardScreen = () => {
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
   // Sets the total metrics to be used in the pagination component
-  const [totalMetrics, setTotalMetrics] = useState(
-    portfolioMetrics.getPortfolioMetrics.length
-  );
+  const [totalMetrics, setTotalMetrics] = useState('');
 
   // Gets the get transactions and portofolio API methods
   const [getTransactions] = useGetTransactionsMutation();
@@ -44,6 +42,7 @@ const DashboardScreen = () => {
         const portfolio = await getPortolioMetrics().unwrap();
         dispatch(setPortfolioMetrics({ ...portfolio }));
         dispatch(setTransactions({ ...res }));
+        setTotalMetrics(portfolio.getPortfolioMetrics.length);
         setInitialLoad(false);
       } catch (error) {
         setInitialLoad(false);
