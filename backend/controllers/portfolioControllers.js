@@ -28,6 +28,13 @@ const getPortfolio = async (req, res) => {
         })
     );
 
+    // Calculates the return of investement
+    const totalReturn = (current_price, shares, total_invested) => {
+      const current_value = current_price * shares;
+      const result = ((current_value - total_invested) / total_invested) * 100;
+      return Math.abs(result) < 1e-10 ? 0 : result.toFixed(2);
+    };
+
     //Merges the data from the database and API call data
     getPortfolioMetrics.forEach((metric) => {
       metric.dataValues.current_price = pricesByTicker[metric.dataValues.ticker]
@@ -37,6 +44,24 @@ const getPortfolio = async (req, res) => {
         metric.dataValues.ticker
       ]
         ? pricesByTicker[metric.dataValues.ticker].change // Accessing change property
+        : 0;
+      metric.dataValues.current_value = pricesByTicker[metric.dataValues.ticker]
+        ? pricesByTicker[metric.dataValues.ticker].price *
+          metric.dataValues.current_shares
+        : 0;
+      metric.dataValues.return_percentage = pricesByTicker[
+        metric.dataValues.ticker
+      ]
+        ? totalReturn(
+            pricesByTicker[metric.dataValues.ticker].price,
+            metric.dataValues.current_shares,
+            metric.dataValues.total_invested
+          )
+        : 0;
+      metric.dataValues.return_value = pricesByTicker[metric.dataValues.ticker]
+        ? pricesByTicker[metric.dataValues.ticker].price *
+            metric.dataValues.current_shares -
+          metric.dataValues.total_invested
         : 0;
     });
 

@@ -1,0 +1,12 @@
+[
+  { "label": "#", "accessor": "index", "sortable": false },
+  { "label": "Symbol", "accessor": "ticker", "sortable": true },
+  { "label": "", "accessor": "logo", "sortable": false },
+  { "label": "Company", "accessor": "company", "sortable": true},
+  { "label": "Cur. Price", "accessor": "current_price", "sortable": true },
+  { "label": "Shares", "accessor": "current_shares", "sortable": true},
+  { "label": "Port. Value", "accessor": "current_value", "sortable": true },
+  { "label": "Tot. Invested", "accessor": "total_invested", "sortable": true },
+  { "label": "Avg. Price", "accessor": "average_price", "sortable": true },
+  { "label": "Return", "accessor": "return_percentage", "sortable": true }
+]

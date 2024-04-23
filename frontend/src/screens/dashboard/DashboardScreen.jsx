@@ -27,6 +27,11 @@ const DashboardScreen = () => {
   const { openCard } = useSelector((state) => state.stockData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
+  // Sets the total metrics to be used in the pagination component
+  const [totalMetrics, setTotalMetrics] = useState(
+    portfolioMetrics.getPortfolioMetrics.length
+  );
+
   // Gets the get transactions and portofolio API methods
   const [getTransactions] = useGetTransactionsMutation();
   const [getPortolioMetrics, { isLoading }] = useGetPortfolioMetricsMutation();
@@ -106,13 +111,17 @@ const DashboardScreen = () => {
                 indexOfFirstMetric={indexOfFirstMetric}
                 indexOfLastMetric={indexOfLastMetric}
                 portfolioMetrics={portfolioMetrics}
+                setCurrentPage={setCurrentPage}
+                setMetricsPerPage={setMetricsPerPage}
+                metricsPerPage={metricsPerPage}
+                setTotalMetrics={setTotalMetrics}
               />
               <Pagination
                 currentPage={currentPage}
                 metricsPerPage={metricsPerPage}
                 paginate={paginate}
-                setMetricsPerPage={setMetricsPerPage}
-                setCurrentPage={setCurrentPage}
+                portfolioMetrics={portfolioMetrics}
+                totalMetrics={totalMetrics}
               />
             </div>
           </div>
