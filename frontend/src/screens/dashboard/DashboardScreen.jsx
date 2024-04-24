@@ -2,8 +2,6 @@ import MetricCard from '../../components/metricCard/MetricCard';
 import Navbar from '../../components/navbar/Navbar';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetTransactionsMutation } from '../../slices/transaction/transactionApiSlice';
-import { setTransactions } from '../../slices/transaction/transactionSlice';
 import './styles.css';
 import StockCard from '../../components/stockCard/StockCard';
 import { useGetPortfolioMetricsMutation } from '../../slices/portfolio/portfolioApiSlice';
@@ -31,17 +29,14 @@ const DashboardScreen = () => {
   const [totalMetrics, setTotalMetrics] = useState('');
 
   // Gets the get transactions and portofolio API methods
-  const [getTransactions] = useGetTransactionsMutation();
   const [getPortolioMetrics, { isLoading }] = useGetPortfolioMetricsMutation();
 
   // fetches the transactions and portfolio data
   useEffect(() => {
-    const fetchTransactions = async () => {
+    const fetchMetrics = async () => {
       try {
-        const res = await getTransactions().unwrap();
         const portfolio = await getPortolioMetrics().unwrap();
         dispatch(setPortfolioMetrics({ ...portfolio }));
-        dispatch(setTransactions({ ...res }));
         setTotalMetrics(portfolio.getPortfolioMetrics.length);
         setInitialLoad(false);
       } catch (error) {
@@ -50,7 +45,7 @@ const DashboardScreen = () => {
       }
     };
 
-    fetchTransactions();
+    fetchMetrics();
   }, []);
 
   // Get current metrics for pagination
@@ -58,7 +53,7 @@ const DashboardScreen = () => {
   const indexOfFirstMetric = indexOfLastMetric - metricsPerPage;
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = ({ pageNumber }) => setCurrentPage(pageNumber);
 
   //Calls the methods to calculates the metrics for the main dashboard
   useEffect(() => {
@@ -69,7 +64,10 @@ const DashboardScreen = () => {
 
   return (
     <div>
-      <Navbar load={initialLoad} />
+      <Navbar
+        load={initialLoad}
+        showSearchBox={portfolioMetrics?.getPortfolioMetrics ? true : false}
+      />
       <div className='metrics-container container'>
         {openCard && (
           <div className='flex-center'>
@@ -80,7 +78,7 @@ const DashboardScreen = () => {
           <div className='search-box-dashboard'>
             <PropagateLoader color='#000000' size={10} />
           </div>
-        ) : portfolioMetrics.getPortfolioMetrics.length > 0 ? (
+        ) : portfolioMetrics?.getPortfolioMetrics?.length > 0 ? (
           <div>
             <div className='grid-4'>
               <MetricCard
@@ -119,7 +117,6 @@ const DashboardScreen = () => {
                 currentPage={currentPage}
                 metricsPerPage={metricsPerPage}
                 paginate={paginate}
-                portfolioMetrics={portfolioMetrics}
                 totalMetrics={totalMetrics}
               />
             </div>

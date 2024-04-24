@@ -32,6 +32,10 @@ const Transaction = sequelize.define('transaction', {
       key: 'id',
     },
   },
+  transaction_cost: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
   stock_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

@@ -15,6 +15,10 @@
   margin: 0;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   color: #333;

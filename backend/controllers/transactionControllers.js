@@ -12,6 +12,16 @@ const getAllTransactions = async (req, res) => {
   // Retrieves the page and size from the params of the request
   const pageAsNumber = Number.parseInt(req.query.page);
   const sizeAsNumber = Number.parseInt(req.query.size);
+  const sortBy = req.query.sortBy || 'date';
+  const sortOrder = req.query.sortOrder || 'DESC';
+
+  const order = () => {
+    if (sortBy.toLowerCase() == 'company' || sortBy.toLowerCase() == 'ticker') {
+      return [Stock, sortBy, sortOrder];
+    } else {
+      return [sortBy, sortOrder];
+    }
+  };
 
   // Validates the pagination params
   const { page, size } = paginationValidation(pageAsNumber, sizeAsNumber);
@@ -22,7 +32,7 @@ const getAllTransactions = async (req, res) => {
       offset: page * size,
       where: { user_id: req.user.id },
       include: Stock,
-      order: [['date', 'DESC']],
+      order: [order()],
     });
 
     res.status(201).json({
@@ -91,6 +101,9 @@ const addNewTransaction = async (req, res) => {
       type: transactionData.type,
       shares: transactionData.shares,
       stock_price: transactionData.stock_price,
+      transaction_cost:
+        parseFloat(transactionData.stock_price) *
+        parseFloat(transactionData.shares),
     });
 
     // Cleans the cache when a transaction is added
@@ -106,6 +119,7 @@ const addNewTransaction = async (req, res) => {
       logo_url: stock.logo_url,
       shares: transaction.shares,
       stock_price: transaction.stock_price,
+      transaction_cost: transaction.transaction_cost,
       currency: stock.currency,
     });
   } catch (error) {

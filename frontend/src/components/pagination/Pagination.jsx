@@ -36,11 +36,12 @@ const Pagination = ({
   );
 
   // Scrolls the view to the top when the user changes the table page
-  const changePage = () => {
+  const changePage = (number) => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
+    paginate({ pageNumber: number });
   };
 
   return (
@@ -51,8 +52,7 @@ const Pagination = ({
             currentPage === 1 || pageNumbers.length == 0 ? 'disabled' : ''
           }
           onClick={() => {
-            paginate(currentPage - 1);
-            changePage();
+            changePage(currentPage - 1);
           }}
         >
           <IoIosArrowBack />
@@ -61,8 +61,7 @@ const Pagination = ({
           <li
             key={number}
             onClick={() => {
-              paginate(number);
-              changePage();
+              changePage(number);
             }}
             style={{
               backgroundColor: number == currentPage ? 'black' : 'white',
@@ -88,8 +87,7 @@ const Pagination = ({
               : ''
           }
           onClick={() => {
-            paginate(currentPage + 1);
-            changePage();
+            changePage(currentPage + 1);
           }}
         >
           <IoIosArrowForward />

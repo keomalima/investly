@@ -5,11 +5,13 @@ const USERS_URL = '/api/transactions';
 export const transactionsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTransactions: builder.mutation({
-      query: () => ({
+      query: (params) => ({
         url: `${USERS_URL}`,
         method: 'GET',
+        params,
       }),
     }),
+
     addTransaction: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}`,

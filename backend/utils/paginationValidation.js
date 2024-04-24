@@ -6,7 +6,7 @@ export function paginationValidation(pageAsNumber, sizeAsNumber) {
   }
 
   let size = 10;
-  if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+  if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0) {
     size = sizeAsNumber;
   }
 

@@ -5,13 +5,12 @@ import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
 import { logout } from '../../slices/auth/authSlice';
 import SearchBox from '../searchBox/SearchBox';
 
-const Navbar = ({ load }) => {
+const Navbar = ({ load, showSearchBox }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Gets user and transaction data from redux store
   const { userInfo } = useSelector((state) => state.auth);
-  const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
 
   // Gets the URL's path name
   const { pathname } = useLocation();
@@ -65,8 +64,8 @@ const Navbar = ({ load }) => {
             </li>
             <li>
               <a
-                style={menuStyle('transactions')}
-                onClick={() => navigate('transactions')}
+                style={menuStyle('/transactions')}
+                onClick={() => navigate('/transactions')}
                 className='btn-outline'
               >
                 Transactions
@@ -74,11 +73,7 @@ const Navbar = ({ load }) => {
             </li>
           </ul>
         </div>
-        {load ? (
-          <></>
-        ) : (
-          portfolioMetrics.getPortfolioMetrics.length > 0 && <SearchBox />
-        )}
+        {load ? <></> : showSearchBox && <SearchBox />}
         <div className='flex'>
           <p>{userInfo && userInfo.name}</p>
           <a className='btn-outline' onClick={logoutHandler}>

@@ -14,6 +14,7 @@ import RegisterScreen from './screens/register/RegisterScreen.jsx';
 import DashboardScreen from './screens/dashboard/DashboardScreen.jsx';
 import PrivateRoute from './components/privateRoute.jsx';
 import ErrorPage from './screens/error-page.jsx';
+import Transactions from './screens/transactions/Transactions.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='' element={<PrivateRoute />}>
         <Route path='/' element={<DashboardScreen />} />
+        <Route path='/transactions' element={<Transactions />} />
       </Route>
     </Route>
   )
