@@ -12,7 +12,7 @@ const getAllTransactions = async (req, res) => {
   // Retrieves the page and size from the params of the request
   const pageAsNumber = Number.parseInt(req.query.page);
   const sizeAsNumber = Number.parseInt(req.query.size);
-  const sortBy = req.query.sortBy || 'date';
+  const sortBy = req.query.sortBy || 'createdAt';
   const sortOrder = req.query.sortOrder || 'DESC';
 
   const order = () => {

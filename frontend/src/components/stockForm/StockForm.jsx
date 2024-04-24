@@ -2,10 +2,14 @@ import { useState } from 'react';
 import './styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCheckCircle } from 'react-icons/fa';
-import { useAddTransactionMutation } from '../../slices/transaction/transactionApiSlice';
+import {
+  useAddTransactionMutation,
+  useGetTransactionsMutation,
+} from '../../slices/transaction/transactionApiSlice';
 import { resetStock } from '../../slices/stock/stockSlice';
 import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
 import { useGetPortfolioMetricsMutation } from '../../slices/portfolio/portfolioApiSlice';
+import { setTransactions } from '../../slices/transaction/transactionSlice';
 
 const StockForm = () => {
   const dispatch = useDispatch();
@@ -30,6 +34,9 @@ const StockForm = () => {
   // Instantiates the add transation API method
   const [addTransaction, { isSuccess }] = useAddTransactionMutation();
   const [getPortolioMetrics] = useGetPortfolioMetricsMutation();
+
+  // Gets the get transactions and portofolio API methods
+  const [getTransactions] = useGetTransactionsMutation();
 
   // Submits the transaction
   const submitHandler = async (e) => {
@@ -60,6 +67,8 @@ const StockForm = () => {
       // Requests new data from API
       const portfolio = await getPortolioMetrics().unwrap();
       dispatch(setPortfolioMetrics({ ...portfolio }));
+      const transactions = await getTransactions().unwrap();
+      dispatch(setTransactions({ ...transactions }));
       // Set a timeout for the successfully added animation
       setTimeout(() => {
         dispatch(resetStock());

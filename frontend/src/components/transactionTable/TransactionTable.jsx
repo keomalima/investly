@@ -112,7 +112,7 @@ const TransactionTable = ({
         <tbody>
           {userTransactions?.transactions?.rows.map((transaction, index) => (
             <tr key={transaction.id}>
-              <td data-cell='#' className='metric-table-responsive xs'>
+              <td data-cell='index' className='metric-table-responsive xs'>
                 {index + 1}
               </td>
               <td data-cell='symbol'>

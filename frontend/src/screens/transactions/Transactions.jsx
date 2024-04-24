@@ -9,7 +9,6 @@ import { useGetTransactionsMutation } from '../../slices/transaction/transaction
 import { setTransactions } from '../../slices/transaction/transactionSlice';
 import TransactionTable from '../../components/transactionTable/TransactionTable';
 import Pagination from '../../components/pagination/Pagination';
-import { current } from '@reduxjs/toolkit';
 
 const Transactions = () => {
   const dispatch = useDispatch();
@@ -51,14 +50,17 @@ const Transactions = () => {
       const transactions = await getTransactions({
         size: size,
         page: pageNumber - 1,
-        sortBy: 'ticker',
-        sortOrder: 'asc',
+        sortBy: 'createdAt',
+        sortOrder: 'desc',
       }).unwrap();
       dispatch(setTransactions({ ...transactions }));
-      setInitialLoad(false);
     } catch (error) {
       setInitialLoad(false);
       console.log(error);
+    } finally {
+      setTimeout(() => {
+        setInitialLoad(false); // Set loading state to false after a short delay
+      }, 120);
     }
   };
 
