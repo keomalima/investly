@@ -103,7 +103,7 @@ const MetricTable = ({
           }}
         />
       </div>
-
+      {tableData.length == 0 && <p className='no-result xss'>No results!</p>}
       <table>
         <thead>
           <tr>

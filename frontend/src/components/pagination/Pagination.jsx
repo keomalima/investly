@@ -47,7 +47,9 @@ const Pagination = ({
     <nav>
       <ul className='pagination-button'>
         <a
-          className={currentPage === 1 ? 'disabled' : ''}
+          className={
+            currentPage === 1 || pageNumbers.length == 0 ? 'disabled' : ''
+          }
           onClick={() => {
             paginate(currentPage - 1);
             changePage();
@@ -80,7 +82,8 @@ const Pagination = ({
         ))}
         <a
           className={
-            currentPage === pageNumbers[pageNumbers.length - 1]
+            currentPage === pageNumbers[pageNumbers.length - 1] ||
+            pageNumbers.length == 0
               ? 'disabled'
               : ''
           }
