@@ -21,13 +21,14 @@
     padding: 15px 18px 15px 18px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
+
 .select-container-table {
     display: flex;
     align-items: center;
     gap: 8px
 }
 
-.container-metrics-table select, .container-metrics-table input {
+.container-metrics-table select {
     border-radius: 5px;
     width: 60px;
     padding:5px 8px ;
@@ -36,7 +37,7 @@
 }
 
 .container-metrics-table input {
-    width: 260px;
+    width: 180px;
     
 }
 
@@ -74,6 +75,7 @@
 #company, #return_percentage, #current_price, #total_invested{
     min-width: 130px;
 }
+
 
 #ticker{
     max-width: 80px;

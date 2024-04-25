@@ -14,11 +14,13 @@ const TransactionTable = ({
   isLoading,
   paginate,
 }) => {
-  // Sets the state for the search query
-  const [searchQuery, setSearchQuery] = useState('');
-
   // Gets the data from redux store
   const { userTransactions } = useSelector((state) => state.transactionData);
+
+  // Sets the state for the search query
+  const [searchQuery, setSearchQuery] = useState(
+    userTransactions?.searchQuery || ''
+  );
 
   // States to control the order and field to sort
   const [sortField] = useState(userTransactions?.sortBy);
@@ -44,6 +46,15 @@ const TransactionTable = ({
     style: 'currency',
     currency: 'USD',
   });
+
+  const searchStock = async (e) => {
+    e.preventDefault();
+    try {
+      paginate({ searchQuery: searchQuery.toUpperCase() });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Returns a loader if data is not ready
   if (isLoading) {
@@ -77,17 +88,28 @@ const TransactionTable = ({
           </select>
           <p className='xss'>entries</p>
         </div>
-        <input
-          type='text'
-          maxLength={20}
-          placeholder="Search stock symbols separeted by ','"
-          value={searchQuery}
-          onChange={(e) => {
-            const value = e.target.value;
-            setSearchQuery(value);
-          }}
-        />
+        <form onSubmit={searchStock} className='form-search'>
+          <input
+            className='search_box_input'
+            type='search'
+            maxLength={20}
+            placeholder='Search stock symbols'
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              if (e.target.value === '') {
+                paginate({ searchQuery: e.target.value });
+              }
+            }}
+          />
+          <button className='search_box_btn' type='submit' disabled={isLoading}>
+            Search
+          </button>
+        </form>
       </div>
+      {userTransactions?.transactions?.rows?.length == 0 && (
+        <p className='no-result xss'>No results!</p>
+      )}
       <table>
         <thead>
           <tr>

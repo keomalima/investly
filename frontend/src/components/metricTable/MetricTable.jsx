@@ -59,6 +59,12 @@ const MetricTable = ({
   // Displays the items per page numbers
   const itemsPerPage = [{ item: 5 }, { item: 10 }, { item: 15 }];
 
+  // Filters the metrics table
+  const searchStock = async (e) => {
+    e.preventDefault(e);
+    handleFilteringAndSorting(false, false, searchQuery, setTotalMetrics);
+  };
+
   // Returns a loader if data is not ready
   if (isLoading) {
     return (
@@ -91,18 +97,32 @@ const MetricTable = ({
           </select>
           <p className='xss'>entries</p>
         </div>
-        <input
-          type='text'
-          maxLength={20}
-          placeholder="Search stock symbols separeted by ','"
-          value={searchQuery}
-          onChange={(e) => {
-            const value = e.target.value;
-            setSearchQuery(value);
-            handleFilteringAndSorting(false, false, value, setTotalMetrics);
-          }}
-        />
+        <form onSubmit={searchStock} className='form-search'>
+          <input
+            type='search'
+            className='search_box_input'
+            maxLength={20}
+            placeholder='Search stock symbols'
+            value={searchQuery}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchQuery(value);
+              if (e.target.value === '') {
+                handleFilteringAndSorting(
+                  false,
+                  false,
+                  e.target.value,
+                  setTotalMetrics
+                );
+              }
+            }}
+          />
+          <button className='search_box_btn' type='submit' disabled={isLoading}>
+            Search
+          </button>
+        </form>
       </div>
+
       {tableData.length == 0 && <p className='no-result xss'>No results!</p>}
       <table>
         <thead>

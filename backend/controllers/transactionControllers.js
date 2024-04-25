@@ -1,6 +1,7 @@
 import Transaction from '../models/transactionModel.js';
 import Stock from '../models/stockModel.js';
 import apicache from 'apicache';
+import { Op } from 'sequelize';
 import { validateTransactions } from '../utils/trasanctionValidation.js';
 import { hasSufficientFunds } from '../utils/hasSufficientFunds.js';
 import { paginationValidation } from '../utils/paginationValidation.js';
@@ -14,6 +15,9 @@ const getAllTransactions = async (req, res) => {
   const sizeAsNumber = Number.parseInt(req.query.size);
   const sortBy = req.query.sortBy || 'createdAt';
   const sortOrder = req.query.sortOrder || 'DESC';
+  const searchQuery = req.query.searchQuery
+    ?.split(',')
+    .map((symbol) => symbol.trim());
 
   const order = () => {
     if (sortBy.toLowerCase() == 'company' || sortBy.toLowerCase() == 'ticker') {
@@ -23,6 +27,21 @@ const getAllTransactions = async (req, res) => {
     }
   };
 
+  // Sets the WHERE query param
+  const whereClause = () => {
+    const clause = {
+      user_id: req.user.id,
+    };
+
+    if (searchQuery) {
+      // If search query is provided, filter by stock ticker
+      clause[Op.or] = searchQuery.map((symbol) => ({
+        '$stock.ticker$': { [Op.like]: '%' + symbol.toUpperCase() + '%' },
+      }));
+    }
+    return clause;
+  };
+
   // Validates the pagination params
   const { page, size } = paginationValidation(pageAsNumber, sizeAsNumber);
 
@@ -30,19 +49,21 @@ const getAllTransactions = async (req, res) => {
     const transactions = await Transaction.findAndCountAll({
       limit: size,
       offset: page * size,
-      where: { user_id: req.user.id },
       include: Stock,
+      where: whereClause(),
       order: [order()],
     });
-
+    console.log(transactions);
     res.status(201).json({
       transactions,
       totalPages: Math.ceil(transactions.count / size),
       page,
       sortBy,
       sortOrder,
+      searchQuery: req.query.searchQuery,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error:
         'An unexpected error occurred while retrieving transactions. Please try again later.',

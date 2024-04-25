@@ -48,6 +48,7 @@ const Transactions = () => {
     size = metricsPerPage,
     sortBy = userTransactions?.sortBy,
     sortOrder = userTransactions?.sortOrder,
+    searchQuery = userTransactions?.searchQuery,
   }) => {
     setInitialLoad(true);
     try {
@@ -57,6 +58,7 @@ const Transactions = () => {
         page: pageNumber - 1,
         sortBy,
         sortOrder,
+        searchQuery,
       }).unwrap();
       dispatch(setTransactions({ ...transactions }));
     } catch (error) {
@@ -73,7 +75,11 @@ const Transactions = () => {
     <div>
       <Navbar
         load={initialLoad}
-        showSearchBox={userTransactions?.transactions?.rows ? true : false}
+        showSearchBox={
+          userTransactions?.transactions?.rows || userTransactions?.searchQuery
+            ? true
+            : false
+        }
       />
       <div className='metrics-container container'>
         {openCard && (
@@ -85,7 +91,8 @@ const Transactions = () => {
           <div className='search-box-dashboard'>
             <PropagateLoader color='#000000' size={10} />
           </div>
-        ) : userTransactions?.transactions?.rows.length > 0 ? (
+        ) : userTransactions?.transactions?.rows?.length > 0 ||
+          userTransactions?.searchQuery ? (
           <div>
             <div className='table-pagination-container'>
               <TransactionTable
