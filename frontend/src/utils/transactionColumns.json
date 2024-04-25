@@ -1,12 +1,12 @@
 [
   { "label": "#", "accessor": "transaction_index", "sortable": false },
-  { "label": "Symbol", "accessor": "transaction_ticker", "sortable": true },
+  { "label": "Symbol", "accessor": "ticker", "sortable": true },
   { "label": "", "accessor": "transaction_company_logo", "sortable": false },
-  { "label": "Company", "accessor": "transaction_company", "sortable": true},
-  { "label": "Price", "accessor": "transaction_stock_price", "sortable": true },
-  { "label": "Type", "accessor": "transaction_type", "sortable": true },
-  { "label": "Shares", "accessor": "transaction_shares", "sortable": true},
-  { "label": "Total Cost", "accessor": "transaction_total_cost", "sortable": true },
-  { "label": "Date", "accessor": "transaction_date", "sortable": true },
+  { "label": "Company", "accessor": "company", "sortable": true},
+  { "label": "Price", "accessor": "stock_price", "sortable": true },
+  { "label": "Type", "accessor": "type", "sortable": true },
+  { "label": "Shares", "accessor": "shares", "sortable": true},
+  { "label": "Total Cost", "accessor": "transaction_cost", "sortable": true },
+  { "label": "Date", "accessor": "date", "sortable": true },
   { "label": "Options", "accessor": "transaction_options", "sortable": false }
 ]

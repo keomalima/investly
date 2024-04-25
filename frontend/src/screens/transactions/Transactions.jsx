@@ -43,15 +43,20 @@ const Transactions = () => {
   }, []);
 
   // Change page
-  const paginate = async ({ pageNumber = 1, size = metricsPerPage }) => {
+  const paginate = async ({
+    pageNumber = 1,
+    size = metricsPerPage,
+    sortBy = userTransactions?.sortBy,
+    sortOrder = userTransactions?.sortOrder,
+  }) => {
     setInitialLoad(true);
     try {
       setCurrentPage(pageNumber || 1);
       const transactions = await getTransactions({
         size: size,
         page: pageNumber - 1,
-        sortBy: 'createdAt',
-        sortOrder: 'desc',
+        sortBy,
+        sortOrder,
       }).unwrap();
       dispatch(setTransactions({ ...transactions }));
     } catch (error) {

@@ -39,6 +39,8 @@ const getAllTransactions = async (req, res) => {
       transactions,
       totalPages: Math.ceil(transactions.count / size),
       page,
+      sortBy,
+      sortOrder,
     });
   } catch (error) {
     res.status(500).json({

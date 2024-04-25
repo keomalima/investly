@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 const TransactionTable = ({
   setMetricsPerPage,
   metricsPerPage,
-  setCurrentPage,
   isLoading,
   paginate,
 }) => {
@@ -21,10 +20,20 @@ const TransactionTable = ({
   // Gets the data from redux store
   const { userTransactions } = useSelector((state) => state.transactionData);
 
+  // States to control the order and field to sort
+  const [sortField] = useState(userTransactions?.sortBy);
+  const [order] = useState(userTransactions?.sortOrder);
+
   // Scrolls the view to the top when the user changes the table page
   const changePage = (number) => {
     setMetricsPerPage(number);
     paginate({ size: number });
+  };
+
+  const handleSortingChange = (accessor) => {
+    const sortOrder =
+      accessor === sortField && order === 'asc' ? 'desc' : 'asc';
+    paginate({ sortBy: accessor, sortOrder });
   };
 
   // Displays the items per page numbers
@@ -35,10 +44,6 @@ const TransactionTable = ({
     style: 'currency',
     currency: 'USD',
   });
-
-  // States to control the order and field to sort
-  const [sortField, setSortField] = useState('');
-  const [order, setOrder] = useState('asc');
 
   // Returns a loader if data is not ready
   if (isLoading) {
@@ -89,7 +94,14 @@ const TransactionTable = ({
             {transactionColumns.map(({ label, accessor, sortable }) => {
               const cl = sortable ? 'default' : '';
               return (
-                <th key={accessor} id={accessor} className={cl}>
+                <th
+                  onClick={
+                    sortable ? () => handleSortingChange(accessor) : null
+                  }
+                  key={accessor}
+                  id={accessor}
+                  className={cl}
+                >
                   <div>
                     {label}
                     {sortable ? (
