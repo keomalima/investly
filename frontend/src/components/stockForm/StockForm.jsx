@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCheckCircle } from 'react-icons/fa';
 import {
   useAddTransactionMutation,
   useGetTransactionsMutation,
+  useUpdateTransactionMutation,
 } from '../../slices/transaction/transactionApiSlice';
 import { resetStock } from '../../slices/stock/stockSlice';
 import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
@@ -18,21 +19,34 @@ const StockForm = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
 
   //Retrieves the user and stock info from redux store
-  const { stockData } = useSelector((state) => state.stockData);
+  const { stockData, editStock } = useSelector((state) => state.stockData);
   const { userInfo } = useSelector((state) => state.auth);
 
   //Handles the form data
   const [shares, setShares] = useState('');
   const [type, setType] = useState('buy');
-  const [date, setDate] = useState(currentDate);
+  const [date, setDate] = useState(currentDate || '');
   const [price, setPrice] = useState(
     stockData.length > 0 ? stockData[0].price : ''
   );
+  // Updates the state of the form when editing
+  useEffect(() => {
+    if (editStock) {
+      setPrice(parseFloat(stockData[0]?.stock_price).toFixed(2));
+      setDate(stockData[0].date);
+      setShares(stockData[0].shares);
+      setType(stockData[0]?.type);
+    }
+  }, [editStock, stockData]);
+
   const [errorMessage, setErrorMessage] = useState('');
-  const [formVisible, setFormVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(editStock || false);
 
   // Instantiates the add transation API method
   const [addTransaction, { isSuccess }] = useAddTransactionMutation();
+  const [updateTransaction, { isSuccess: isSuccessAdded }] =
+    useUpdateTransactionMutation();
+
   const [getPortolioMetrics] = useGetPortfolioMetricsMutation();
 
   // Gets the get transactions and portofolio API methods
@@ -61,6 +75,7 @@ const StockForm = () => {
         shares,
         stock_price: price,
         currency: stockData[0].currency,
+        sector: stockData[0].sector,
         user_id: userInfo.id,
       }).unwrap();
       setErrorMessage('');
@@ -85,8 +100,50 @@ const StockForm = () => {
     }
   };
 
+  const editTransaction = async (e) => {
+    e.preventDefault();
+    try {
+      if (!shares || !type || !date || !price) {
+        setErrorMessage('All fields must be completed');
+        return;
+      }
+
+      await updateTransaction({
+        id: stockData[0].id,
+        data: {
+          date,
+          type,
+          shares,
+          stock_price: price,
+          ticker: stockData[0].stock.ticker,
+        },
+      }).unwrap();
+
+      setErrorMessage('');
+      // Requests new data from API
+      const portfolio = await getPortolioMetrics().unwrap();
+      dispatch(setPortfolioMetrics({ ...portfolio }));
+      const transactions = await getTransactions().unwrap();
+      dispatch(setTransactions({ ...transactions }));
+      // Set a timeout for the successfully added animation
+      setTimeout(() => {
+        dispatch(resetStock());
+        setPrice('');
+      }, 1000);
+    } catch (err) {
+      console.log(err);
+      if (err?.data?.error?.type) {
+        setErrorMessage(err?.data?.error.type);
+      } else if (err?.data?.error) {
+        setErrorMessage(err?.data?.error);
+      } else {
+        setErrorMessage('An error has occured, please try again later');
+      }
+    }
+  };
+
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={editStock ? editTransaction : submitHandler}>
       {formVisible && (
         <div className='container-form-body'>
           <div className='flex'>
@@ -104,6 +161,7 @@ const StockForm = () => {
             <div>
               <p className='xss'>Type</p>
               <select
+                disabled={editStock}
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 className='search-box-form'
@@ -141,14 +199,18 @@ const StockForm = () => {
       )}
       <div className='container-form-footer'>
         {errorMessage && <p className='error-message xs'>*{errorMessage}</p>}
-        {isSuccess ? (
+        {isSuccess || isSuccessAdded ? (
           <div className='container-form-footer'>
             <FaCheckCircle size={45} color='#A3B18A' />
-            <p className='alert-success light'>Transaction added!</p>
+            <p className='alert-success light'>
+              {!editStock ? 'Transaction added!' : 'Transaction Edited!'}!
+            </p>
           </div>
         ) : (
           <button className='btn' type='submit'>
-            {!formVisible
+            {editStock
+              ? 'Edit'
+              : !formVisible
               ? 'Buy / Sell'
               : type.charAt(0).toUpperCase() + type.slice(1)}
           </button>

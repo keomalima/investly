@@ -53,7 +53,7 @@ const getAllTransactions = async (req, res) => {
       where: whereClause(),
       order: [order()],
     });
-    console.log(transactions);
+
     res.status(201).json({
       transactions,
       totalPages: Math.ceil(transactions.count / size),
@@ -114,6 +114,7 @@ const addNewTransaction = async (req, res) => {
         company: transactionData.company,
         currency: transactionData.currency,
         logo_url: transactionData.logo_url,
+        sector: transactionData.sector,
       },
     });
 
@@ -231,6 +232,9 @@ const updateTransactionById = async (req, res) => {
       shares: transactionData.shares,
       date: transactionData.date,
       stock_price: transactionData.stock_price,
+      transaction_cost:
+        parseFloat(transactionData.stock_price) *
+        parseFloat(transactionData.shares),
     });
 
     const updatedTransaction = await getTransaction.save();

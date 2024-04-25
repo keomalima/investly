@@ -3,3 +3,21 @@
     gap: 15px
 }
 
+.transaction-type {
+    color: white;
+    width: fit-content;
+    padding: 1px 6px;
+    border-radius: 5px;
+}
+
+.transaction-type-buy {
+    background-color: var(--success-color);
+}
+
+.transaction-type-sell {
+    background-color: var(--error-color);
+}
+
+.edit-icons {
+    cursor:pointer
+}

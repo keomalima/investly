@@ -8,7 +8,7 @@ const StockCard = () => {
   const dispatch = useDispatch();
 
   //Retrieves the stock data from redux store
-  const { stockData } = useSelector((state) => state.stockData);
+  const { stockData, editStock } = useSelector((state) => state.stockData);
 
   //Limit company name size
   const limitSringSize = (str) => {
@@ -30,26 +30,53 @@ const StockCard = () => {
         <div>
           <div className='container-form-header'>
             <div className='logo-flex'>
-              <p className='sm strong'>Stock Quote</p>
+              {!editStock ? (
+                <p className='sm strong'>Stock Quote</p>
+              ) : (
+                <p className='sm strong'>Edit Transaction</p>
+              )}
               {stockData.length > 0 && (
-                <img src={stockData[0].image} className='image-logo' />
+                <img
+                  src={
+                    !editStock
+                      ? stockData[0]?.image
+                      : stockData[0]?.stock.logo_url
+                  }
+                  className='image-logo'
+                />
               )}
             </div>
             <IoIosClose className='btn-outline' onClick={closeCard} size={25} />
           </div>
           <div className='container-form-subheader'>
             <div>
-              <p className='strong md mb'>{stockData[0].symbol}</p>
-              <p className='semi-bold'>${stockData[0].price}</p>
-              <p className='light xs'>Current Price</p>
+              <p className='strong md mb'>
+                {!editStock ? stockData[0]?.symbol : stockData[0]?.stock.ticker}
+              </p>
+              {!editStock && (
+                <>
+                  <p className='semi-bold'>${stockData[0]?.price}</p>
+                  <p className='light xs'>Current Price</p>
+                </>
+              )}
             </div>
             <div className='flex-column-form'>
               <p className='semi-bold'>
-                {limitSringSize(stockData[0].companyName)}
+                {!editStock
+                  ? limitSringSize(stockData[0]?.companyName)
+                  : limitSringSize(stockData[0].stock?.company)}
               </p>
-              <p className='xs light mb'>{stockData[0].sector}</p>
-              <p className='semi-bold'>${stockData[0].changes}</p>
-              <p className='xs light'>Today</p>
+              <p className='xs light mb'>
+                {!editStock ? stockData[0]?.sector : stockData[0]?.stock.sector}
+              </p>
+              {!editStock && (
+                <>
+                  <p className='semi-bold'>
+                    ${!editStock ? stockData[0]?.changes : '-'}
+                  </p>
+                  <p className='xs light'>Today</p>
+                </>
+              )}
             </div>
           </div>
           <StockForm />

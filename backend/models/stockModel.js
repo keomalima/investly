@@ -15,6 +15,9 @@ const Stock = sequelize.define('stock', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  sector: {
+    type: DataTypes.STRING,
+  },
   currency: {
     type: DataTypes.STRING(3),
     allowNull: false,

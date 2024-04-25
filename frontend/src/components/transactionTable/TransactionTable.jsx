@@ -6,7 +6,8 @@ import { FaPen } from 'react-icons/fa';
 
 import './styles.css';
 import PropagateLoader from 'react-spinners/PropagateLoader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { editStock } from '../../slices/stock/stockSlice';
 
 const TransactionTable = ({
   setMetricsPerPage,
@@ -16,6 +17,8 @@ const TransactionTable = ({
 }) => {
   // Gets the data from redux store
   const { userTransactions } = useSelector((state) => state.transactionData);
+
+  const dispatch = useDispatch();
 
   // Sets the state for the search query
   const [searchQuery, setSearchQuery] = useState(
@@ -178,7 +181,15 @@ const TransactionTable = ({
                   : '-'}
               </td>
               <td data-cell='transaction_type'>
-                {transaction.type ? transaction.type : '-'}
+                <p
+                  className={
+                    transaction.type === 'buy'
+                      ? 'transaction-type transaction-type-buy'
+                      : 'transaction-type transaction-type-sell'
+                  }
+                >
+                  {transaction.type ? transaction.type : '-'}
+                </p>
               </td>
               <td data-cell='transaction_shares'>{transaction.shares}</td>
               <td data-cell='transaction_total_cost'>
@@ -192,7 +203,16 @@ const TransactionTable = ({
               <td data-cell='transaction_options' className='table-column'>
                 <div className='icons-column'>
                   <TiDeleteOutline />
-                  <FaPen />
+                  <FaPen
+                    className={'edit-icons'}
+                    onClick={() => {
+                      window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                      });
+                      dispatch(editStock([transaction]));
+                    }}
+                  />
                 </div>
               </td>
             </tr>
