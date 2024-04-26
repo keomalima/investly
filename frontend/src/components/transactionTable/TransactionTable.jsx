@@ -3,11 +3,14 @@ import transactionColumns from '../../utils/transactionColumns.json';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { FaPen } from 'react-icons/fa';
-
 import './styles.css';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { editStock } from '../../slices/stock/stockSlice';
+import { deleteTransaction } from '../../slices/transaction/transactionSlice';
+import { useDeleteTransactionMutation } from '../../slices/transaction/transactionApiSlice';
+import { FaCheckCircle } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 
 const TransactionTable = ({
   setMetricsPerPage,
@@ -28,6 +31,14 @@ const TransactionTable = ({
   // States to control the order and field to sort
   const [sortField] = useState(userTransactions?.sortBy);
   const [order] = useState(userTransactions?.sortOrder);
+  const [isError, setIsError] = useState(false);
+
+  // Controls delete state
+  const [isDelete, setIsDelete] = useState({ id: null, state: false });
+
+  // Delete method
+  const [deleteTransactionAPI, { isSuccess, error }] =
+    useDeleteTransactionMutation();
 
   // Scrolls the view to the top when the user changes the table page
   const changePage = (number) => {
@@ -59,6 +70,32 @@ const TransactionTable = ({
     }
   };
 
+  const confirmDelete = (id) => {
+    setIsDelete({ id, state: true });
+    setTimeout(() => {
+      setIsDelete({ id: null, state: false });
+    }, 3000);
+  };
+
+  // Handles the delete transaction method
+  const handleDelete = async (id) => {
+    try {
+      await deleteTransactionAPI({
+        id,
+      }).unwrap();
+      setIsDelete({ id, state: false });
+      setTimeout(() => {
+        dispatch(deleteTransaction(id));
+      }, 1000);
+    } catch (error) {
+      setIsError(true);
+      setIsDelete({ id, state: false });
+      setTimeout(() => {
+        setIsError(false);
+      }, 4000);
+    }
+  };
+
   // Returns a loader if data is not ready
   if (isLoading) {
     return (
@@ -81,7 +118,7 @@ const TransactionTable = ({
             value={metricsPerPage}
             onChange={(e) => changePage(e.target.value)}
           >
-            {itemsPerPage.map(({ item }) => {
+            {itemsPerPage?.map(({ item }) => {
               return (
                 <option key={item} value={item}>
                   {item}
@@ -116,7 +153,7 @@ const TransactionTable = ({
       <table>
         <thead>
           <tr>
-            {transactionColumns.map(({ label, accessor, sortable }) => {
+            {transactionColumns?.map(({ label, accessor, sortable }) => {
               const cl = sortable ? 'default' : '';
               return (
                 <th
@@ -153,7 +190,7 @@ const TransactionTable = ({
                 {index + 1}
               </td>
               <td data-cell='symbol'>
-                {transaction.stock.ticker ? transaction.stock.ticker : '-'}
+                {transaction?.stock.ticker ? transaction.stock.ticker : '-'}
               </td>
               <td
                 data-cell='company_logo'
@@ -161,7 +198,7 @@ const TransactionTable = ({
               >
                 <img
                   src={
-                    transaction.stock.logo_url
+                    transaction?.stock.logo_url
                       ? transaction.stock.logo_url
                       : '-'
                   }
@@ -169,21 +206,16 @@ const TransactionTable = ({
                 />
               </td>
               <td data-cell='company' className='metric-table-responsive'>
-                {!transaction.stock.company
+                {!transaction?.stock.company
                   ? '-'
                   : transaction.stock.company.length > 20
                   ? transaction.stock.company.slice(0, 18 - 3) + '...'
                   : transaction.stock.company}
               </td>
-              <td data-cell='transaction_price' className='table-column'>
-                {transaction.stock_price
-                  ? formatNumber.format(transaction.stock_price)
-                  : '-'}
-              </td>
               <td data-cell='transaction_type'>
                 <p
                   className={
-                    transaction.type === 'buy'
+                    transaction?.type === 'buy'
                       ? 'transaction-type transaction-type-buy'
                       : 'transaction-type transaction-type-sell'
                   }
@@ -191,33 +223,112 @@ const TransactionTable = ({
                   {transaction.type ? transaction.type : '-'}
                 </p>
               </td>
+              <td data-cell='transaction_price' className='table-column'>
+                {transaction?.stock_price
+                  ? formatNumber.format(transaction.stock_price)
+                  : '-'}
+              </td>
+
               <td data-cell='transaction_shares'>{transaction.shares}</td>
-              <td data-cell='transaction_total_cost'>
-                {transaction.stock_price !== null || transaction.shares !== null
+              <td data-cell='transaction_cost'>
+                {transaction?.transaction_cost
                   ? formatNumber.format(transaction.transaction_cost)
                   : '-'}
               </td>
               <td data-cell='transaction_date' className='table-column'>
-                {transaction.date ? transaction.date : '-'}
+                {transaction?.date ? transaction.date : '-'}
               </td>
               <td data-cell='transaction_options' className='table-column'>
-                <div className='icons-column'>
-                  <TiDeleteOutline />
-                  <FaPen
-                    className={'edit-icons'}
-                    onClick={() => {
-                      window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth',
-                      });
-                      dispatch(editStock([transaction]));
-                    }}
-                  />
-                </div>
+                {isDelete.state && transaction.id === isDelete.id ? (
+                  <div className='delete-item-container'>
+                    <p className='light xs semi-bold'>Are you sure?</p>
+                    <div className='delete-items'>
+                      <a
+                        className='xs  edit-icons edit-icon'
+                        onClick={() => setIsDelete({ id: null, state: false })}
+                      >
+                        Cancel
+                      </a>
+                      <a
+                        className='xs  semi-bold edit-icons error-message delete-icon'
+                        onClick={() => handleDelete(transaction.id)}
+                      >
+                        Delete
+                      </a>
+                    </div>
+                  </div>
+                ) : transaction.id === isDelete.id && isSuccess ? (
+                  <div className='flex'>
+                    <FaCheckCircle size={25} color='#A3B18A' />
+                  </div>
+                ) : transaction.id === isDelete.id && isError ? (
+                  <div className='flex-column'>
+                    <TiDelete
+                      size={25}
+                      color='rgba(200, 68, 60, 1)'
+                      onClick={() => setIsError(false)}
+                      className='edit-icons delete-icon'
+                    />
+                    <p className=' light xs error-message'>
+                      {error?.data?.error
+                        ? "You don't have enough shares to delete this transaction."
+                        : 'An error has occured'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className='icons-column'>
+                    <TiDeleteOutline
+                      size={18}
+                      className={'edit-icons delete-icon'}
+                      onClick={() => confirmDelete(transaction.id)}
+                    />
+                    <FaPen
+                      className={'edit-icons edit-icon'}
+                      onClick={() => {
+                        window.scrollTo({
+                          top: 0,
+                          behavior: 'smooth',
+                        });
+                        dispatch(editStock([transaction]));
+                      }}
+                    />
+                  </div>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td className='metric-table-responsive'></td>
+            <td className='metric-table-responsive'></td>
+            <td className='metric-table-responsive'></td>
+            <td></td>
+            <th scope='row'>Totals:</th>
+            <td className='semi-bold'>
+              {formatNumber?.format(
+                userTransactions?.transactions?.rows.reduce(
+                  (acc, total) => acc + parseFloat(total.stock_price),
+                  0
+                )
+              )}
+            </td>
+            <td className='semi-bold'>
+              {userTransactions?.transactions?.rows.reduce(
+                (acc, total) => acc + parseFloat(total.shares),
+                0
+              )}
+            </td>
+            <td className='semi-bold'>
+              {formatNumber.format(
+                userTransactions?.transactions?.rows.reduce(
+                  (acc, total) => acc + parseFloat(total.transaction_cost),
+                  0
+                )
+              )}
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

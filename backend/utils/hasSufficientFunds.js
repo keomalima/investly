@@ -39,6 +39,8 @@ export async function hasSufficientFunds(transaction, id, type, shares) {
     const actual_shares =
       parseFloat(available_shares) + parseFloat(shares) - transaction.shares;
     return actual_shares >= 0;
+  } else if (type === 'delete') {
+    return parseFloat(available_shares) - shares >= 0;
   } else {
     return parseFloat(available_shares) - transaction.shares >= 0;
   }

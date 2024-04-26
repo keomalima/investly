@@ -21,3 +21,24 @@
 .edit-icons {
     cursor:pointer
 }
+
+.delete-icon:hover{
+    color: var(--error-color);
+    font-weight: 800;
+}
+
+.edit-icon:hover{
+    color: var(--primary-color)
+}
+
+.delete-item-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap:5px
+}
+
+.delete-items {
+    display:flex;
+    gap:10px
+}

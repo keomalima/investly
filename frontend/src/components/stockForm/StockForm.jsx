@@ -15,26 +15,22 @@ import { setTransactions } from '../../slices/transaction/transactionSlice';
 const StockForm = () => {
   const dispatch = useDispatch();
 
-  //Sets the current data
-  const currentDate = new Date().toISOString().substring(0, 10);
-
   //Retrieves the user and stock info from redux store
   const { stockData, editStock } = useSelector((state) => state.stockData);
   const { userInfo } = useSelector((state) => state.auth);
+  const { userTransactions } = useSelector((state) => state.transactionData);
 
   //Handles the form data
   const [shares, setShares] = useState('');
-  const [type, setType] = useState('buy');
-  const [date, setDate] = useState(currentDate || '');
-  const [price, setPrice] = useState(
-    stockData.length > 0 ? stockData[0].price : ''
-  );
+  const [type, setType] = useState('buy' || '');
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10) || '');
+  const [price, setPrice] = useState(stockData[0].price || '');
   // Updates the state of the form when editing
   useEffect(() => {
     if (editStock) {
       setPrice(parseFloat(stockData[0]?.stock_price).toFixed(2));
-      setDate(stockData[0].date);
-      setShares(stockData[0].shares);
+      setDate(stockData[0]?.date);
+      setShares(stockData[0]?.shares);
       setType(stockData[0]?.type);
     }
   }, [editStock, stockData]);
@@ -82,7 +78,12 @@ const StockForm = () => {
       // Requests new data from API
       const portfolio = await getPortolioMetrics().unwrap();
       dispatch(setPortfolioMetrics({ ...portfolio }));
-      const transactions = await getTransactions().unwrap();
+      const transactions = await getTransactions({
+        pageNumber: 1,
+        sortBy: userTransactions?.sortBy,
+        sortOrder: userTransactions?.sortOrder,
+        searchQuery: userTransactions?.searchQuery,
+      }).unwrap();
       dispatch(setTransactions({ ...transactions }));
       // Set a timeout for the successfully added animation
       setTimeout(() => {
@@ -123,7 +124,12 @@ const StockForm = () => {
       // Requests new data from API
       const portfolio = await getPortolioMetrics().unwrap();
       dispatch(setPortfolioMetrics({ ...portfolio }));
-      const transactions = await getTransactions().unwrap();
+      const transactions = await getTransactions({
+        pageNumber: 1,
+        sortBy: userTransactions?.sortBy,
+        sortOrder: userTransactions?.sortOrder,
+        searchQuery: userTransactions?.searchQuery,
+      }).unwrap();
       dispatch(setTransactions({ ...transactions }));
       // Set a timeout for the successfully added animation
       setTimeout(() => {

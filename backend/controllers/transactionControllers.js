@@ -263,7 +263,9 @@ const deleteTransactionById = async (req, res) => {
   const transaction_id = req.params.id;
 
   try {
-    const getTransaction = await Transaction.findByPk(transaction_id);
+    const getTransaction = await Transaction.findByPk(transaction_id, {
+      include: Stock,
+    });
 
     // Check if the transaction belongs to the user
     if (getTransaction.get('user_id') !== req.user.id) {
@@ -271,6 +273,23 @@ const deleteTransactionById = async (req, res) => {
         error:
           'You are not authorized to perform this action. Please ensure you have the necessary permissions.',
       });
+    }
+
+    //checks if theres suficient funds in case of a sell transaction
+    if (getTransaction.type === 'buy') {
+      if (
+        !(await hasSufficientFunds(
+          getTransaction.stock,
+          req.user.id,
+          'delete',
+          getTransaction.shares
+        ))
+      ) {
+        return res.status(409).json({
+          error:
+            'You do not have enough shares to complete the sell transaction. Please review your available shares and try again.',
+        });
+      }
     }
 
     // Deletes the transaction from the database
