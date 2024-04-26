@@ -36,8 +36,10 @@ const DashboardScreen = () => {
     const fetchMetrics = async () => {
       try {
         const portfolio = await getPortolioMetrics().unwrap();
-        dispatch(setPortfolioMetrics({ ...portfolio }));
-        setTotalMetrics(portfolio.getPortfolioMetrics.length);
+        if (portfolio) {
+          dispatch(setPortfolioMetrics({ ...portfolio }));
+          setTotalMetrics(portfolio.getPortfolioMetrics.length);
+        }
         setInitialLoad(false);
       } catch (error) {
         setInitialLoad(false);

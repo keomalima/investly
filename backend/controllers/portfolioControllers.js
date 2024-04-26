@@ -10,6 +10,10 @@ const getPortfolio = async (req, res) => {
     // Get the metrics and stock unique count from the database
     const { getPortfolioMetrics, countStocks } = await getMetrics(req.user.id);
 
+    if (getPortfolioMetrics.length <= 0) {
+      return res.status(204).json([]);
+    }
+
     //Obtains all the users tickers
     const stock_tickers = getPortfolioMetrics.map(
       (ticker) => ticker.dataValues.ticker

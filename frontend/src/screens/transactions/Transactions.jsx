@@ -76,7 +76,8 @@ const Transactions = () => {
       <Navbar
         load={initialLoad}
         showSearchBox={
-          userTransactions?.transactions?.rows || userTransactions?.searchQuery
+          userTransactions?.transactions?.rows.length > 0 ||
+          userTransactions?.searchQuery
             ? true
             : false
         }

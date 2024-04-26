@@ -36,7 +36,7 @@ const MetricCard = ({ title, value, isLoading }) => {
             <p className='sm medium'>{title}</p>
             {title == 'Return' ? (
               <h1 className='md semi-bold digit-animation'>
-                {value.toFixed(2)}%
+                {value?.toFixed(2)}%
               </h1>
             ) : (
               <h1 className='md semi-bold digit-animation'>
