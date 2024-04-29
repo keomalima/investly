@@ -12,9 +12,15 @@ const portfolioSlice = createSlice({
     setPortfolioMetrics: (state, action) => {
       state.portfolioMetrics = action.payload;
     },
+    resetPortfolio: (state) => {
+      return {
+        ...state,
+        portfolioMetrics: null,
+      };
+    },
   },
 });
 
-export const { setPortfolioMetrics } = portfolioSlice.actions;
+export const { setPortfolioMetrics, resetPortfolio } = portfolioSlice.actions;
 
 export default portfolioSlice.reducer;

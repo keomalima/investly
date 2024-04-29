@@ -9,6 +9,12 @@ const transactionSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
+    resetTransactios: (state) => {
+      return {
+        ...state,
+        userTransactions: null,
+      };
+    },
     setTransactions: (state, action) => {
       return {
         ...state,
@@ -32,6 +38,7 @@ const transactionSlice = createSlice({
   },
 });
 
-export const { setTransactions, deleteTransaction } = transactionSlice.actions;
+export const { setTransactions, deleteTransaction, resetTransactios } =
+  transactionSlice.actions;
 
 export default transactionSlice.reducer;

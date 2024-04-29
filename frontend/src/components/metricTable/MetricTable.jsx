@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import './styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import tableMetricsColumns from '../../utils/tableMetricColumns.json';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { useFilterAndSortableTable } from '../../utils/useFilterAndSortTable';
@@ -229,8 +229,8 @@ const MetricTable = ({
                     className='xs'
                     style={{
                       color:
-                        Math.abs(metric.current_change) < 1e-10 ||
-                        metric.current_change >= 0
+                        Math.abs(metric.return_value) < 1e-10 ||
+                        metric.return_value >= 0
                           ? 'rgba(163, 177, 138, 1)'
                           : 'rgba(200, 68, 60, 1)',
                     }}

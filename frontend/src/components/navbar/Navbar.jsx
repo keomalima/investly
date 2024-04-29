@@ -5,6 +5,8 @@ import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
 import { logout } from '../../slices/auth/authSlice';
 import SearchBox from '../searchBox/SearchBox';
 import { resetStock } from '../../slices/stock/stockSlice';
+import { resetPortfolio } from '../../slices/portfolio/portfolioSlice';
+import { resetTransactios } from '../../slices/transaction/transactionSlice';
 
 const Navbar = ({ load, showSearchBox }) => {
   const navigate = useNavigate();
@@ -38,6 +40,8 @@ const Navbar = ({ load, showSearchBox }) => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
+      dispatch(resetPortfolio());
+      dispatch(resetTransactios());
       navigate('/login');
     } catch (err) {
       console.error(err);
