@@ -18,8 +18,6 @@ const getPortfolio = async (req, res) => {
       return filter.dataValues.current_shares !== '0';
     });
 
-    console.log(filteredMetrics);
-
     //Obtains all the users tickers
     const stock_tickers = filteredMetrics.map(
       (ticker) => ticker.dataValues.ticker

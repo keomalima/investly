@@ -15,6 +15,7 @@ import DashboardScreen from './screens/dashboard/DashboardScreen.jsx';
 import PrivateRoute from './components/privateRoute.jsx';
 import ErrorPage from './screens/error-page.jsx';
 import Transactions from './screens/transactions/Transactions.jsx';
+import StockScreen from './screens/stock/StockScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute />}>
         <Route path='/' element={<DashboardScreen />} />
         <Route path='/transactions' element={<Transactions />} />
+        <Route path='/stock/:stockTicker' element={<StockScreen />} />
       </Route>
     </Route>
   )
