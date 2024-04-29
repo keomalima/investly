@@ -68,7 +68,9 @@ const DashboardScreen = () => {
     <div>
       <Navbar
         load={initialLoad}
-        showSearchBox={portfolioMetrics?.getPortfolioMetrics ? true : false}
+        showSearchBox={
+          portfolioMetrics?.getPortfolioMetrics.length > 0 ? true : false
+        }
       />
       <div className='metrics-container container'>
         {openCard && (

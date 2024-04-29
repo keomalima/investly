@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../slices/auth/usersApiSlice';
 import { logout } from '../../slices/auth/authSlice';
 import SearchBox from '../searchBox/SearchBox';
+import { resetStock } from '../../slices/stock/stockSlice';
 
 const Navbar = ({ load, showSearchBox }) => {
   const navigate = useNavigate();
@@ -17,6 +18,11 @@ const Navbar = ({ load, showSearchBox }) => {
 
   // Instantiates the logout API method
   const [logoutApiCall] = useLogoutMutation();
+
+  // Resets the original state of the card
+  const closeCard = () => {
+    dispatch(resetStock());
+  };
 
   // Dinamically changes the font weight of selected menu option
   const menuStyle = (path) => {
@@ -57,7 +63,10 @@ const Navbar = ({ load, showSearchBox }) => {
               <a
                 style={menuStyle('/')}
                 className='btn-outline'
-                onClick={() => navigate('/')}
+                onClick={() => {
+                  navigate('/');
+                  closeCard();
+                }}
               >
                 Dashboard
               </a>
@@ -65,7 +74,10 @@ const Navbar = ({ load, showSearchBox }) => {
             <li>
               <a
                 style={menuStyle('/transactions')}
-                onClick={() => navigate('/transactions')}
+                onClick={() => {
+                  navigate('/transactions');
+                  closeCard();
+                }}
                 className='btn-outline'
               >
                 Transactions
@@ -75,7 +87,7 @@ const Navbar = ({ load, showSearchBox }) => {
         </div>
         {load ? <></> : showSearchBox && <SearchBox />}
         <div className='flex'>
-          <p>{userInfo && userInfo.name}</p>
+          <p>{userInfo?.username || userInfo?.name}</p>
           <a className='btn-outline' onClick={logoutHandler}>
             Logout
           </a>

@@ -96,6 +96,17 @@ const TransactionTable = ({
     }
   };
 
+  // Converts the date
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    // Get year, month (0-indexed), and day components
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add leading zero if needed
+    const day = String(date.getDate()).padStart(2, '0'); // Add leading zero if needed
+    // Format the date in dd-mm-yy
+    return `${day}-${month}-${year.toString().slice(-2)}`;
+  };
+
   // Returns a loader if data is not ready
   if (isLoading) {
     return (
@@ -236,7 +247,7 @@ const TransactionTable = ({
                   : '-'}
               </td>
               <td data-cell='transaction_date' className='table-column'>
-                {transaction?.date ? transaction.date : '-'}
+                {transaction?.date ? convertDate(transaction.date) : '-'}
               </td>
               <td data-cell='transaction_options' className='table-column'>
                 {isDelete.state && transaction.id === isDelete.id ? (

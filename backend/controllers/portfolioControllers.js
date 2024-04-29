@@ -14,8 +14,14 @@ const getPortfolio = async (req, res) => {
       return res.status(204).json([]);
     }
 
+    const filteredMetrics = getPortfolioMetrics.filter((filter) => {
+      return filter.dataValues.current_shares !== '0';
+    });
+
+    console.log(filteredMetrics);
+
     //Obtains all the users tickers
-    const stock_tickers = getPortfolioMetrics.map(
+    const stock_tickers = filteredMetrics.map(
       (ticker) => ticker.dataValues.ticker
     );
 
@@ -40,7 +46,7 @@ const getPortfolio = async (req, res) => {
     };
 
     //Merges the data from the database and API call data
-    getPortfolioMetrics.forEach((metric) => {
+    filteredMetrics.forEach((metric) => {
       metric.dataValues.current_price = pricesByTicker[metric.dataValues.ticker]
         ? pricesByTicker[metric.dataValues.ticker].price // Accessing price property
         : 0;
@@ -70,7 +76,7 @@ const getPortfolio = async (req, res) => {
     });
 
     res.status(200).json({
-      getPortfolioMetrics,
+      getPortfolioMetrics: filteredMetrics,
       count: countStocks[0].dataValues.unique_stock_count,
     });
   } catch (error) {
