@@ -28,6 +28,6 @@
     color: var(--primary-color)
 }
 
-.stock-chart-container ul:last-child {
+.stock-chart-container a:last-child {
     border-right: none
 }

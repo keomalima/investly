@@ -5,10 +5,7 @@ import './styles.css';
 import StockChart from '../../components/stockChart/StockChart';
 import { getStockDataChartAPI } from '../../utils/apiCall';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setStockChartData,
-  setStockDateFilter,
-} from '../../slices/stock/stockSlice';
+import { setStockChartData } from '../../slices/stock/stockSlice';
 import { useLocation } from 'react-router-dom';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 
@@ -32,18 +29,13 @@ const StockScreen = () => {
   const { stockChartData: data } = useSelector((state) => state.stockData);
 
   useEffect(() => {
-    fetchHistoricalData();
+    fetchHistoricalData(ticker[ticker.length - 1], dateFrom, dateTo, timeFrame);
   }, []);
 
-  const fetchHistoricalData = async () => {
+  const fetchHistoricalData = async (symbol, from, to, interval) => {
     try {
-      console.log(dateFrom, dateTo);
-      const res = await getStockDataChartAPI(
-        ticker[ticker.length - 1],
-        dateFrom,
-        dateTo,
-        timeFrame
-      );
+      setInitialLoad(true);
+      const res = await getStockDataChartAPI(symbol, from, to, interval);
       if (res) {
         dispatch(setStockChartData(res));
       }
@@ -54,32 +46,50 @@ const StockScreen = () => {
     }
   };
 
-  const selectedFilter = (filter) => {
-    if (dateFilter === filter) {
-      return { fontWeight: 'bold', borderBottom: '0.5px' };
-    } else {
-      return { fontWeight: 'normal' };
-    }
-  };
-
   const changeFilter = (range) => {
     if (range === '5d') {
       setDateFrom(moment().subtract(5, 'days').format('YYYY-MM-DD'));
       setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
       setTimeFrame('30min');
       setDateFilter('5d');
+      fetchHistoricalData(
+        ticker[ticker.length - 1],
+        moment().subtract(5, 'days').format('YYYY-MM-DD'),
+        moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        '30min'
+      );
     } else if (range === '1m') {
       setDateFrom(moment().subtract(30, 'days').format('YYYY-MM-DD'));
       setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
       setTimeFrame('4hour');
       setDateFilter('1m');
+      fetchHistoricalData(
+        ticker[ticker.length - 1],
+        moment().subtract(30, 'days').format('YYYY-MM-DD'),
+        moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        '4hour'
+      );
     } else {
       setDateFrom(moment().subtract(180, 'days').format('YYYY-MM-DD'));
       setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
       setTimeFrame('4hour');
       setDateFilter('6m');
+      fetchHistoricalData(
+        ticker[ticker.length - 1],
+        moment().subtract(180, 'days').format('YYYY-MM-DD'),
+        moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        '4hour'
+      );
     }
     fetchHistoricalData();
+  };
+
+  const selectedFilter = (filter) => {
+    if (dateFilter === filter) {
+      return { fontWeight: 'bold', borderBottom: '0.5px' };
+    } else {
+      return { fontWeight: 'normal' };
+    }
   };
 
   return (

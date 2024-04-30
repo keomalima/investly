@@ -74,7 +74,7 @@ const StockChart = ({ dateFilter }) => {
     uniqueObjects.forEach((obj) => {
       if (dateFilter === '5d') {
         dates.push(obj.date);
-      } else if (dateFilter === '1m' && moment(obj.date).date() % 7 === 0) {
+      } else if (dateFilter === '1m' && moment(obj.date).date() % 8 === 0) {
         dates.push(obj.date);
       } else {
         const yearMonth = obj.date.substr(0, 7);
@@ -150,7 +150,7 @@ const StockChart = ({ dateFilter }) => {
       <Area
         type='linear'
         dataKey='open'
-        stroke={'#A3B18A'}
+        stroke={chartColor()}
         fillOpacity={1}
         fill='url(#stockPrice)'
         strokeWidth={2}
