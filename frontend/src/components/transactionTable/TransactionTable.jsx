@@ -11,6 +11,7 @@ import { deleteTransaction } from '../../slices/transaction/transactionSlice';
 import { useDeleteTransactionMutation } from '../../slices/transaction/transactionApiSlice';
 import { FaCheckCircle } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
+import { Link } from 'react-router-dom';
 
 const TransactionTable = ({
   setMetricsPerPage,
@@ -200,9 +201,11 @@ const TransactionTable = ({
               <td data-cell='index' className='metric-table-responsive xs'>
                 {index + 1}
               </td>
-              <td data-cell='symbol'>
-                {transaction?.stock.ticker ? transaction.stock.ticker : '-'}
-              </td>
+              <Link to={`/stock/${transaction.stock.ticker}`}>
+                <td data-cell='symbol'>
+                  {transaction?.stock.ticker ? transaction.stock.ticker : '-'}
+                </td>
+              </Link>
               <td
                 data-cell='company_logo'
                 className='image-filter metric-table-responsive'

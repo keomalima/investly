@@ -4,6 +4,8 @@ const initialState = {
   stockData: null,
   openCard: false,
   editStock: false,
+  stockChartData: null,
+  stockChartDateFilter: '5d',
 };
 
 // Creates slices and actions for the user API methods
@@ -12,22 +14,45 @@ const stockSlice = createSlice({
   initialState,
   reducers: {
     setStock: (state, action) => {
-      state.stockData = action.payload;
-      state.openCard = true;
-      state.editStock = false;
+      return {
+        ...state,
+        stockData: action.payload,
+        openCard: true,
+        editStock: false,
+      };
     },
     editStock: (state, action) => {
-      state.stockData = action.payload;
-      state.openCard = true;
-      state.editStock = true;
+      return {
+        stockData: action.payload,
+        openCard: true,
+        editStock: true,
+      };
     },
     resetStock: (state) => {
       state.openCard = false;
       state.editStock = false;
     },
+    setStockChartData: (state, action) => {
+      return {
+        ...state,
+        stockChartData: action.payload,
+      };
+    },
+    setStockDateFilter: (state, action) => {
+      return {
+        ...state,
+        stockChartDateFilter: action.payload,
+      };
+    },
   },
 });
 
-export const { setStock, resetStock, editStock } = stockSlice.actions;
+export const {
+  setStock,
+  resetStock,
+  editStock,
+  setStockChartData,
+  setStockDateFilter,
+} = stockSlice.actions;
 
 export default stockSlice.reducer;

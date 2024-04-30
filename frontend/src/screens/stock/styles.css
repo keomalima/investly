@@ -1,11 +1,33 @@
-.tooltip-container{
-    background-color: black;
-    border-radius: 5px;
-    color: white;
-    border: 1px solid black;
-    padding: 5px;
-    display: flex;
+.stock-screen-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 5px;
     justify-content: center;
-    align-content: center;
-    gap: 5px
+    align-items: center;
+    height: 100%;
+}
+
+.stock-chart-container {
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stock-chart-container li{
+    display: flex;
+    margin-left: 15px;
+}
+
+.stock-chart-container a {
+    border-right: 0.5px solid;
+    margin-right: 20px;
+    font-size: 0.9rem;
+    padding-right: 20px;
+    border-radius: 1px;
+    font-weight: 500;
+    color: var(--primary-color)
+}
+
+.stock-chart-container ul:last-child {
+    border-right: none
 }

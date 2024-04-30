@@ -1,166 +1,127 @@
-import { useState } from 'react';
 import Navbar from '../../components/navbar/Navbar';
-import {
-  XAxis,
-  YAxis,
-  Tooltip,
-  AreaChart,
-  Area,
-  CartesianGrid,
-} from 'recharts';
-import './styles.css';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
-import data from './data.json';
+import './styles.css';
+import StockChart from '../../components/stockChart/StockChart';
+import { getStockDataChartAPI } from '../../utils/apiCall';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setStockChartData,
+  setStockDateFilter,
+} from '../../slices/stock/stockSlice';
+import { useLocation } from 'react-router-dom';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const StockScreen = () => {
-  const [initialLoad, setInitialLoad] = useState(false);
-  const [dateFilter, setDateFilter] = useState('1m');
+  const dispatch = useDispatch();
 
-  const low = data.reduce((lowest, item) => {
-    return lowest.open < (item.open || 0) ? lowest : item;
-  }, {});
+  //Get the ticker from the URL
+  const { pathname } = useLocation();
+  const ticker = pathname.split('/');
 
-  const high = data.reduce((highest, item) => {
-    return (highest.open || 0) > item.open ? highest : item;
-  }, {});
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [dateFilter, setDateFilter] = useState('5d');
+  const [timeFrame, setTimeFrame] = useState('30min');
+  const [dateFrom, setDateFrom] = useState(
+    moment().subtract(5, 'days').format('YYYY-MM-DD')
+  );
+  const [dateTo, setDateTo] = useState(
+    moment().subtract(1, 'days').format('YYYY-MM-DD')
+  );
 
-  const chartColor = () => {
-    if (data[0].open > data[data.length - 1].open) {
-      return '#A3B18A';
-    } else {
-      return '#C84444';
-    }
-  };
+  const { stockChartData: data } = useSelector((state) => state.stockData);
 
-  // Calculates the range between each tick in the chatrt
-  const calculateTicks = () => {
-    let interval = 5;
-    if (Math.abs(high.open - low.open) >= 50) {
-      interval = 50;
-    } else if (Math.abs(high.open - low.open) >= 20) {
-      interval = 10;
-    } else if (Math.abs(high.open - low.open) >= 10) {
-      interval = 5;
-    } else {
-      interval = 3;
-    }
-    const ticks = [];
-    for (
-      let tick = Math.floor(low.open);
-      tick <= Math.ceil(high.open);
-      tick += interval
-    ) {
-      ticks.push(tick);
-    }
-    if (ticks[ticks.length - 1] < high.open) {
-      ticks.push(ticks[ticks.length - 1] + interval);
-    }
+  useEffect(() => {
+    fetchHistoricalData();
+  }, []);
 
-    return ticks;
-  };
-
-  // Sets the date in the right format for each time-frame
-  const setDates = () => {
-    const dates = [];
-    const uniqueObjects = data.reduce((acc, curr) => {
-      const existingObject = acc.find(
-        (obj) => obj.date.split(' ')[0] === curr.date.split(' ')[0]
+  const fetchHistoricalData = async () => {
+    try {
+      console.log(dateFrom, dateTo);
+      const res = await getStockDataChartAPI(
+        ticker[ticker.length - 1],
+        dateFrom,
+        dateTo,
+        timeFrame
       );
-      if (!existingObject) {
-        acc.push(curr);
+      if (res) {
+        dispatch(setStockChartData(res));
       }
-      return acc;
-    }, []);
-
-    uniqueObjects.forEach((obj) => {
-      if (dateFilter === '5d') {
-        dates.push(obj.date);
-      } else if (dateFilter === '1m' && moment(obj.date).date() % 7 === 0) {
-        dates.push(obj.date);
-      } else {
-        const yearMonth = obj.date.substr(0, 7);
-        if (!dates.some((date) => date.startsWith(yearMonth))) {
-          dates.push(obj.date);
-        }
-      }
-    });
-
-    return dates;
+      setInitialLoad(false);
+    } catch (error) {
+      setInitialLoad(false);
+      console.log(error);
+    }
   };
 
-  // Format the date format for each time frame
-  const formatDateForUI = (dateString) => {
-    if (dateFilter === '6m') {
-      return moment(dateString).format('MMM YY');
+  const selectedFilter = (filter) => {
+    if (dateFilter === filter) {
+      return { fontWeight: 'bold', borderBottom: '0.5px' };
     } else {
-      return moment(dateString).format('Do MMM');
+      return { fontWeight: 'normal' };
     }
   };
 
-  // Formats the tooltip
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className='tooltip-container'>
-          <p className='semi-bold xs'>{`${payload[0].value.toFixed(2)} USD`}</p>
-          {dateFilter === '5d' ? (
-            <p className='light xs'>{moment(label).format('Do MMM HH:mm')}</p>
-          ) : (
-            <p className='light xs'>{moment(label).format('Do MMM')}</p>
-          )}
-        </div>
-      );
+  const changeFilter = (range) => {
+    if (range === '5d') {
+      setDateFrom(moment().subtract(5, 'days').format('YYYY-MM-DD'));
+      setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
+      setTimeFrame('30min');
+      setDateFilter('5d');
+    } else if (range === '1m') {
+      setDateFrom(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+      setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
+      setTimeFrame('4hour');
+      setDateFilter('1m');
+    } else {
+      setDateFrom(moment().subtract(180, 'days').format('YYYY-MM-DD'));
+      setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
+      setTimeFrame('4hour');
+      setDateFilter('6m');
     }
-
-    return null;
+    fetchHistoricalData();
   };
 
   return (
-    <AreaChart
-      width={700}
-      height={300}
-      data={data}
-      margin={{
-        top: 15,
-        right: 25,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <defs>
-        <linearGradient id='stockPrice' x1='0' y1='0' x2='0' y2='1'>
-          <stop offset='1%' stopColor={chartColor()} stopOpacity={0.5} />
-          <stop offset='95%' stopColor={chartColor()} stopOpacity={0} />
-        </linearGradient>
-      </defs>
-      <XAxis
-        dataKey='date'
-        tickLine={false}
-        tickMargin={10}
-        reversed={true}
-        style={{ fontSize: '11px' }}
-        ticks={setDates()}
-        tickFormatter={formatDateForUI}
-      />
-      <YAxis
-        tickLine={false}
-        style={{ fontSize: '11px' }}
-        axisLine={{ strokeWidth: '0' }}
-        ticks={calculateTicks()}
-        domain={[Math.floor(low.open), Math.ceil(high.open)]}
-        fill='url(#stockPrice)'
-      />
-      <Tooltip content={<CustomTooltip />} />
-      <CartesianGrid vertical={false} />
-      <Area
-        type='linear'
-        dataKey='open'
-        stroke={'#A3B18A'}
-        fillOpacity={1}
-        fill='url(#stockPrice)'
-        strokeWidth={2}
-      />
-    </AreaChart>
+    <div>
+      <Navbar initialLoad={initialLoad} showSearchBox={true} />
+      {initialLoad ? (
+        <div className='search-box-dashboard'>
+          <PropagateLoader color='#000000' size={10} />
+        </div>
+      ) : (
+        <div className='stock-screen-grid container metrics-container'>
+          <div className='box card'>Stock</div>
+          <div className='box card stock-chart-container'>
+            <div>
+              <li className='btn-outline'>
+                <a
+                  onClick={() => changeFilter('5d')}
+                  style={selectedFilter('5d')}
+                >
+                  5 D
+                </a>
+                <a
+                  onClick={() => changeFilter('1m')}
+                  style={selectedFilter('1m')}
+                >
+                  1 M
+                </a>
+                <a
+                  onClick={() => changeFilter('6m')}
+                  style={selectedFilter('6m')}
+                >
+                  6 M
+                </a>
+              </li>
+            </div>
+            {data?.length > 0 && <StockChart dateFilter={dateFilter} />}
+          </div>
+          <div className='box card'>Stock Info</div>
+          <div className='box card'>Stock transactions</div>
+        </div>
+      )}
+    </div>
   );
 };
 
