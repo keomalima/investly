@@ -1,439 +1,20 @@
 import { useState } from 'react';
 import Navbar from '../../components/navbar/Navbar';
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   AreaChart,
   Area,
-  ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
 import './styles.css';
+import moment from 'moment';
+import data from './data.json';
 
 const StockScreen = () => {
   const [initialLoad, setInitialLoad] = useState(false);
-  const data = [
-    {
-      date: '2024-04-26 15:30:00',
-      open: 169.98,
-      low: 169.18,
-      high: 170.09,
-      close: 169.29,
-      volume: 5867496,
-    },
-    {
-      date: '2024-04-26 15:00:00',
-      open: 170.01,
-      low: 169.8601,
-      high: 170.11,
-      close: 169.99,
-      volume: 1888029,
-    },
-    {
-      date: '2024-04-26 14:30:00',
-      open: 169.7,
-      low: 169.52,
-      high: 170.02,
-      close: 170.015,
-      volume: 2218063,
-    },
-    {
-      date: '2024-04-26 14:00:00',
-      open: 169.48,
-      low: 169.37,
-      high: 169.7,
-      close: 169.7,
-      volume: 2009734,
-    },
-    {
-      date: '2024-04-26 13:30:00',
-      open: 169.88,
-      low: 169.37,
-      high: 169.89,
-      close: 169.475,
-      volume: 2408401,
-    },
-    {
-      date: '2024-04-26 13:00:00',
-      open: 170.0162,
-      low: 169.7601,
-      high: 170.1684,
-      close: 169.875,
-      volume: 1823818,
-    },
-    {
-      date: '2024-04-26 12:30:00',
-      open: 170.25,
-      low: 169.93,
-      high: 170.26,
-      close: 170.0173,
-      volume: 2328349,
-    },
-    {
-      date: '2024-04-26 12:00:00',
-      open: 170.52,
-      low: 170.21,
-      high: 170.53,
-      close: 170.245,
-      volume: 2001689,
-    },
-    {
-      date: '2024-04-26 11:30:00',
-      open: 170.685,
-      low: 170.3832,
-      high: 170.92,
-      close: 170.52,
-      volume: 1909128,
-    },
-    {
-      date: '2024-04-26 11:00:00',
-      open: 171.09,
-      low: 170.41,
-      high: 171.34,
-      close: 170.69,
-      volume: 2641921,
-    },
-    {
-      date: '2024-04-26 10:30:00',
-      open: 170.66,
-      low: 170.66,
-      high: 171.18,
-      close: 171.09,
-      volume: 2768676,
-    },
-    {
-      date: '2024-04-26 10:00:00',
-      open: 170.11,
-      low: 170.03,
-      high: 171.06,
-      close: 170.66,
-      volume: 3396224,
-    },
-    {
-      date: '2024-04-26 09:30:00',
-      open: 169.88,
-      low: 169.54,
-      high: 170.71,
-      close: 170.1,
-      volume: 5328407,
-    },
-    {
-      date: '2024-04-25 15:30:00',
-      open: 169.93,
-      low: 169.41,
-      high: 170.04,
-      close: 169.9,
-      volume: 6220909,
-    },
-    {
-      date: '2024-04-25 15:00:00',
-      open: 169.56,
-      low: 169.5,
-      high: 170.035,
-      close: 169.935,
-      volume: 3466401,
-    },
-    {
-      date: '2024-04-25 14:30:00',
-      open: 169.11,
-      low: 168.9601,
-      high: 169.57,
-      close: 169.565,
-      volume: 2039370,
-    },
-    {
-      date: '2024-04-25 14:00:00',
-      open: 169.56,
-      low: 169.12,
-      high: 169.7499,
-      close: 169.13,
-      volume: 2052177,
-    },
-    {
-      date: '2024-04-25 13:30:00',
-      open: 169.055,
-      low: 168.86,
-      high: 169.61,
-      close: 169.5501,
-      volume: 1994795,
-    },
-    {
-      date: '2024-04-25 13:00:00',
-      open: 169.36,
-      low: 168.9275,
-      high: 169.45,
-      close: 169.06,
-      volume: 1664974,
-    },
-    {
-      date: '2024-04-25 12:30:00',
-      open: 169.1876,
-      low: 168.92,
-      high: 169.5383,
-      close: 169.3599,
-      volume: 1932937,
-    },
-    {
-      date: '2024-04-25 12:00:00',
-      open: 168.54,
-      low: 168.5,
-      high: 169.2,
-      close: 169.19,
-      volume: 2067480,
-    },
-    {
-      date: '2024-04-25 11:30:00',
-      open: 168.565,
-      low: 168.1511,
-      high: 168.58,
-      close: 168.55,
-      volume: 2179216,
-    },
-    {
-      date: '2024-04-25 11:00:00',
-      open: 168.57,
-      low: 168.45,
-      high: 168.87,
-      close: 168.5678,
-      volume: 2353428,
-    },
-    {
-      date: '2024-04-25 10:30:00',
-      open: 168.91,
-      low: 168.52,
-      high: 169.0856,
-      close: 168.575,
-      volume: 2601238,
-    },
-    {
-      date: '2024-04-25 10:00:00',
-      open: 169.02,
-      low: 168.47,
-      high: 169.49,
-      close: 168.9175,
-      volume: 4087157,
-    },
-    {
-      date: '2024-04-25 09:30:00',
-      open: 169.525,
-      low: 168.925,
-      high: 170.61,
-      close: 169.01,
-      volume: 8393174,
-    },
-    {
-      date: '2024-04-24 15:30:00',
-      open: 169.0541,
-      low: 168.62,
-      high: 169.3,
-      close: 168.95,
-      volume: 5580485,
-    },
-    {
-      date: '2024-04-24 15:00:00',
-      open: 168.45,
-      low: 168.3413,
-      high: 169.09,
-      close: 169.055,
-      volume: 2103194,
-    },
-    {
-      date: '2024-04-24 14:30:00',
-      open: 168.75,
-      low: 168.28,
-      high: 168.755,
-      close: 168.45,
-      volume: 1692851,
-    },
-    {
-      date: '2024-04-24 14:00:00',
-      open: 169.105,
-      low: 168.6901,
-      high: 169.12,
-      close: 168.75,
-      volume: 1802533,
-    },
-    {
-      date: '2024-04-24 13:30:00',
-      open: 168.47,
-      low: 168.46,
-      high: 169.29,
-      close: 169.1085,
-      volume: 2089522,
-    },
-    {
-      date: '2024-04-24 13:00:00',
-      open: 168.3599,
-      low: 168.25,
-      high: 168.64,
-      close: 168.4617,
-      volume: 1358707,
-    },
-    {
-      date: '2024-04-24 12:30:00',
-      open: 168.725,
-      low: 168.11,
-      high: 168.85,
-      close: 168.355,
-      volume: 2401606,
-    },
-    {
-      date: '2024-04-24 12:00:00',
-      open: 168.5903,
-      low: 168.25,
-      high: 169.28,
-      close: 168.725,
-      volume: 3339715,
-    },
-    {
-      date: '2024-04-24 11:30:00',
-      open: 167.925,
-      low: 167.91,
-      high: 168.73,
-      close: 168.59,
-      volume: 3248689,
-    },
-    {
-      date: '2024-04-24 11:00:00',
-      open: 167.72,
-      low: 167.715,
-      high: 168.19,
-      close: 167.92,
-      volume: 2526677,
-    },
-    {
-      date: '2024-04-24 10:30:00',
-      open: 167.995,
-      low: 167.52,
-      high: 168.28,
-      close: 167.73,
-      volume: 2686724,
-    },
-    {
-      date: '2024-04-24 10:00:00',
-      open: 167.54,
-      low: 167.519,
-      high: 168.3,
-      close: 167.995,
-      volume: 3542779,
-    },
-    {
-      date: '2024-04-24 09:30:00',
-      open: 166.54,
-      low: 166.21,
-      high: 167.93,
-      close: 167.53,
-      volume: 5829662,
-    },
-    {
-      date: '2024-04-23 15:30:00',
-      open: 166.84,
-      low: 166.755,
-      high: 167.05,
-      close: 166.91,
-      volume: 5718769,
-    },
-    {
-      date: '2024-04-23 15:00:00',
-      open: 166.78,
-      low: 166.5,
-      high: 166.8699,
-      close: 166.84,
-      volume: 2011867,
-    },
-    {
-      date: '2024-04-23 14:30:00',
-      open: 166.84,
-      low: 166.66,
-      high: 166.8668,
-      close: 166.78,
-      volume: 1646883,
-    },
-    {
-      date: '2024-04-23 14:00:00',
-      open: 166.76,
-      low: 166.67,
-      high: 166.86,
-      close: 166.84,
-      volume: 1408245,
-    },
-    {
-      date: '2024-04-23 13:30:00',
-      open: 166.395,
-      low: 166.325,
-      high: 166.77,
-      close: 166.75,
-      volume: 1441282,
-    },
-    {
-      date: '2024-04-23 13:00:00',
-      open: 166.4599,
-      low: 166.17,
-      high: 166.63,
-      close: 166.392,
-      volume: 1874189,
-    },
-    {
-      date: '2024-04-23 12:30:00',
-      open: 166.27,
-      low: 166.22,
-      high: 166.64,
-      close: 166.453,
-      volume: 2194454,
-    },
-    {
-      date: '2024-04-23 12:00:00',
-      open: 166.36,
-      low: 166.0574,
-      high: 166.39,
-      close: 166.27,
-      volume: 1833476,
-    },
-    {
-      date: '2024-04-23 11:30:00',
-      open: 166.62,
-      low: 166.245,
-      high: 166.7,
-      close: 166.359,
-      volume: 1993066,
-    },
-    {
-      date: '2024-04-23 11:00:00',
-      open: 166.55,
-      low: 166.36,
-      high: 166.98,
-      close: 166.625,
-      volume: 3168379,
-    },
-    {
-      date: '2024-04-23 10:30:00',
-      open: 165.82,
-      low: 165.82,
-      high: 166.63,
-      close: 166.54,
-      volume: 2950840,
-    },
-    {
-      date: '2024-04-23 10:00:00',
-      open: 166.12,
-      low: 165.62,
-      high: 166.71,
-      close: 165.82,
-      volume: 4802178,
-    },
-    {
-      date: '2024-04-23 09:30:00',
-      open: 165.35,
-      low: 164.92,
-      high: 166.58,
-      close: 166.16,
-      volume: 5548762,
-    },
-  ];
+  const [dateFilter, setDateFilter] = useState('1m');
 
   const low = data.reduce((lowest, item) => {
     return lowest.open < (item.open || 0) ? lowest : item;
@@ -451,12 +32,15 @@ const StockScreen = () => {
     }
   };
 
+  // Calculates the range between each tick in the chatrt
   const calculateTicks = () => {
     let interval = 5;
     if (Math.abs(high.open - low.open) >= 50) {
       interval = 50;
-    } else if (Math.abs(high.open - low.open) >= 10) {
+    } else if (Math.abs(high.open - low.open) >= 20) {
       interval = 10;
+    } else if (Math.abs(high.open - low.open) >= 10) {
+      interval = 5;
     } else {
       interval = 3;
     }
@@ -468,7 +52,67 @@ const StockScreen = () => {
     ) {
       ticks.push(tick);
     }
+    if (ticks[ticks.length - 1] < high.open) {
+      ticks.push(ticks[ticks.length - 1] + interval);
+    }
+
     return ticks;
+  };
+
+  // Sets the date in the right format for each time-frame
+  const setDates = () => {
+    const dates = [];
+    const uniqueObjects = data.reduce((acc, curr) => {
+      const existingObject = acc.find(
+        (obj) => obj.date.split(' ')[0] === curr.date.split(' ')[0]
+      );
+      if (!existingObject) {
+        acc.push(curr);
+      }
+      return acc;
+    }, []);
+
+    uniqueObjects.forEach((obj) => {
+      if (dateFilter === '5d') {
+        dates.push(obj.date);
+      } else if (dateFilter === '1m' && moment(obj.date).date() % 7 === 0) {
+        dates.push(obj.date);
+      } else {
+        const yearMonth = obj.date.substr(0, 7);
+        if (!dates.some((date) => date.startsWith(yearMonth))) {
+          dates.push(obj.date);
+        }
+      }
+    });
+
+    return dates;
+  };
+
+  // Format the date format for each time frame
+  const formatDateForUI = (dateString) => {
+    if (dateFilter === '6m') {
+      return moment(dateString).format('MMM YY');
+    } else {
+      return moment(dateString).format('Do MMM');
+    }
+  };
+
+  // Formats the tooltip
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className='tooltip-container'>
+          <p className='semi-bold xs'>{`${payload[0].value.toFixed(2)} USD`}</p>
+          {dateFilter === '5d' ? (
+            <p className='light xs'>{moment(label).format('Do MMM HH:mm')}</p>
+          ) : (
+            <p className='light xs'>{moment(label).format('Do MMM')}</p>
+          )}
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -494,7 +138,9 @@ const StockScreen = () => {
         tickLine={false}
         tickMargin={10}
         reversed={true}
-        style={{ fontSize: '10px' }}
+        style={{ fontSize: '11px' }}
+        ticks={setDates()}
+        tickFormatter={formatDateForUI}
       />
       <YAxis
         tickLine={false}
@@ -504,10 +150,10 @@ const StockScreen = () => {
         domain={[Math.floor(low.open), Math.ceil(high.open)]}
         fill='url(#stockPrice)'
       />
-      <Tooltip />
+      <Tooltip content={<CustomTooltip />} />
       <CartesianGrid vertical={false} />
       <Area
-        type='monotone'
+        type='linear'
         dataKey='open'
         stroke={'#A3B18A'}
         fillOpacity={1}
