@@ -201,11 +201,13 @@ const TransactionTable = ({
               <td data-cell='index' className='metric-table-responsive xs'>
                 {index + 1}
               </td>
-              <Link to={`/stock/${transaction.stock.ticker}`}>
-                <td data-cell='symbol'>
+
+              <td data-cell='symbol'>
+                <Link to={`/stock/${transaction.stock.ticker}`}>
+                  {' '}
                   {transaction?.stock.ticker ? transaction.stock.ticker : '-'}
-                </td>
-              </Link>
+                </Link>
+              </td>
               <td
                 data-cell='company_logo'
                 className='image-filter metric-table-responsive'

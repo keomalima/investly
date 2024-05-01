@@ -241,6 +241,11 @@ p {
   margin: 1rem 0;
 }
 
+/* Margin */
+.mx-1 {
+  margin: 0 0.5rem;
+}
+
 .my-2 {
   margin: 1.5rem 0;
 }

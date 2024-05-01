@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setStockChartData } from '../../slices/stock/stockSlice';
 import { useLocation } from 'react-router-dom';
 import PropagateLoader from 'react-spinners/PropagateLoader';
+import SyncLoader from 'react-spinners/SyncLoader';
+import { FaLongArrowAltUp } from 'react-icons/fa';
 
 const StockScreen = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,7 @@ const StockScreen = () => {
   const ticker = pathname.split('/');
 
   const [initialLoad, setInitialLoad] = useState(true);
+  const [fetchLoad, setFetchLoad] = useState(true);
   const [dateFilter, setDateFilter] = useState('5d');
   const [timeFrame, setTimeFrame] = useState('30min');
   const [dateFrom, setDateFrom] = useState(
@@ -34,19 +37,20 @@ const StockScreen = () => {
 
   const fetchHistoricalData = async (symbol, from, to, interval) => {
     try {
-      setInitialLoad(true);
       const res = await getStockDataChartAPI(symbol, from, to, interval);
       if (res) {
         dispatch(setStockChartData(res));
       }
-      setInitialLoad(false);
     } catch (error) {
-      setInitialLoad(false);
       console.log(error);
+    } finally {
+      setInitialLoad(false);
+      setFetchLoad(false);
     }
   };
 
   const changeFilter = (range) => {
+    setFetchLoad(true);
     if (range === '5d') {
       setDateFrom(moment().subtract(5, 'days').format('YYYY-MM-DD'));
       setDateTo(moment().subtract(1, 'days').format('YYYY-MM-DD'));
@@ -81,14 +85,39 @@ const StockScreen = () => {
         '4hour'
       );
     }
-    fetchHistoricalData();
   };
 
   const selectedFilter = (filter) => {
     if (dateFilter === filter) {
-      return { fontWeight: 'bold', borderBottom: '0.5px' };
+      return {
+        fontWeight: 'bold',
+        borderBottom: '2px solid',
+        textShadow: '0 0 1px rgba(0, 0, 0, 0.5)',
+      };
     } else {
       return { fontWeight: 'normal' };
+    }
+  };
+
+  const historicalPerformance = () => {
+    if (data.length > 0) {
+      const returnValue = data[0].open - data[data.length - 1].open;
+      if (returnValue < 0) {
+        return (
+          <div>
+            <p className='error-message xss mx-1'>{returnValue.toFixed(2)}</p>
+            <p className='error-message xss'>({returnValue.toFixed(2)}%)</p>
+            <FaLongArrowAltUp className='' />
+          </div>
+        );
+      } else {
+        <div>
+          <p className='error-message'>{returnValue.toFixed(2)}</p>
+        </div>;
+      }
+      return <p>returnValue</p>;
+    } else {
+      return '-';
     }
   };
 
@@ -101,13 +130,13 @@ const StockScreen = () => {
         </div>
       ) : (
         <div className='stock-screen-grid container metrics-container'>
-          <div className='box card'>Stock</div>
-          <div className='box card stock-chart-container'>
+          <div className='card'>Stock</div>
+          <div className='card stock-chart-container'>
             <div>
               <li className='btn-outline'>
                 <a
-                  onClick={() => changeFilter('5d')}
                   style={selectedFilter('5d')}
+                  onClick={() => changeFilter('5d')}
                 >
                   5 D
                 </a>
@@ -123,9 +152,15 @@ const StockScreen = () => {
                 >
                   6 M
                 </a>
+                {fetchLoad && <SyncLoader color='#000000' size={3} />}
               </li>
+              {historicalPerformance()}
             </div>
-            {data?.length > 0 && <StockChart dateFilter={dateFilter} />}
+            {data?.length > 0 ? (
+              <StockChart dateFilter={dateFilter} />
+            ) : (
+              <p>Couldn't fetch the data</p>
+            )}
           </div>
           <div className='box card'>Stock Info</div>
           <div className='box card'>Stock transactions</div>

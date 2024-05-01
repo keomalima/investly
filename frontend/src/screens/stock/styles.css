@@ -16,18 +16,42 @@
 .stock-chart-container li{
     display: flex;
     margin-left: 15px;
+    align-items: center;
+}
+
+.stock-chart-container div:first-of-type{
+    display: flex;
+    align-items: center;
 }
 
 .stock-chart-container a {
-    border-right: 0.5px solid;
+    position: relative;
+    display: inline-block;
     margin-right: 20px;
     font-size: 0.9rem;
-    padding-right: 20px;
-    border-radius: 1px;
+    padding: 0 10px;
     font-weight: 500;
-    color: var(--primary-color)
+    color: var(--primary-color);
+    text-decoration: none;
+
+        /* Remove default underline */
 }
 
-.stock-chart-container a:last-child {
+.stock-chart-container a:last-of-type {
     border-right: none
+}
+
+.stock-chart-container a:not(:last-of-type):after {
+    content: '|';
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    color: gray;
+    font-weight: normal;
+}
+
+.stock-chart-container a.selected {
+    border-bottom: 2px solid blue;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import tableMetricsColumns from '../../utils/tableMetricColumns.json';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { useFilterAndSortableTable } from '../../utils/useFilterAndSortTable';
+import { Link } from 'react-router-dom';
 
 const MetricTable = ({
   isLoading,
@@ -168,7 +169,9 @@ const MetricTable = ({
                   {index + 1}
                 </td>
                 <td data-cell='symbol'>
-                  {metric.ticker ? metric.ticker : '-'}
+                  <Link to={`/stock/${metric.ticker}`}>
+                    {metric.ticker ? metric.ticker : '-'}
+                  </Link>
                 </td>
                 <td className='image-filter metric-table-responsive'>
                   <img
