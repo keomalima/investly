@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import SyncLoader from 'react-spinners/SyncLoader';
 import { FaLongArrowAltUp } from 'react-icons/fa';
+import { FaLongArrowAltDown } from 'react-icons/fa';
 
 const StockScreen = () => {
   const dispatch = useDispatch();
@@ -102,20 +103,31 @@ const StockScreen = () => {
   const historicalPerformance = () => {
     if (data.length > 0) {
       const returnValue = data[0].open - data[data.length - 1].open;
-      if (returnValue < 0) {
+      const returnPercentage =
+        ((data[0].open - data[data.length - 1].open) /
+          data[data.length - 1].open) *
+        100;
+      if (returnValue > 0) {
         return (
-          <div>
-            <p className='error-message xss mx-1'>{returnValue.toFixed(2)}</p>
-            <p className='error-message xss'>({returnValue.toFixed(2)}%)</p>
-            <FaLongArrowAltUp className='' />
+          <div style={{ gap: '3px' }}>
+            <p className='error-message xss'>-{returnValue.toFixed(2)}</p>
+            <p className='error-message xss'>
+              ({returnPercentage.toFixed(2)}%)
+            </p>
+            <FaLongArrowAltDown color='rgba(200, 68, 60, 1)' />
           </div>
         );
       } else {
-        <div>
-          <p className='error-message'>{returnValue.toFixed(2)}</p>
-        </div>;
+        return (
+          <div style={{ gap: '3px' }}>
+            <p className='positive-return'>+{returnValue.toFixed(2)}</p>
+            <p className='positive-return xss'>
+              ({returnPercentage.toFixed(2)}%)
+            </p>
+            <FaLongArrowAltUp color='rgba(163, 177, 138, 1)' />
+          </div>
+        );
       }
-      return <p>returnValue</p>;
     } else {
       return '-';
     }
