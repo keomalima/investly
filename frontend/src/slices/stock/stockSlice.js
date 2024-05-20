@@ -21,6 +21,13 @@ const stockSlice = createSlice({
         editStock: false,
       };
     },
+    openStockForm: (state) => {
+      return {
+        ...state,
+        openCard: true,
+        editStock: false,
+      };
+    },
     setStockInfo: (state, action) => {
       return {
         ...state,
@@ -63,6 +70,7 @@ export const {
   setStockChartData,
   setStockDateFilter,
   setStockInfo,
+  openStockForm,
 } = stockSlice.actions;
 
 export default stockSlice.reducer;

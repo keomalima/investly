@@ -298,7 +298,7 @@ const StockScreen = () => {
                 </div>
               </div>
             </div>
-            <div className='box card'>Stock Info</div>
+            <div className='card'>Stock Info</div>
             <div className=''>
               <div className='table-pagination-container'>
                 <TransactionTable
