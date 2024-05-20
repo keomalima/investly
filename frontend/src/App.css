@@ -236,6 +236,11 @@ p {
 }
 
 /* Margin */
+
+.my-1-xs {
+  margin: .3rem 0;
+}
+
 .my-1 {
   margin: 1rem 0;
 }

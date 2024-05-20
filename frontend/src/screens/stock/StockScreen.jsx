@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import './styles.css';
 import StockChart from '../../components/stockChart/StockChart';
-import { getStockDataChartAPI } from '../../utils/apiCall';
+import { getStockDataAPI, getStockDataChartAPI } from '../../utils/apiCall';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStockChartData } from '../../slices/stock/stockSlice';
+import { setStockChartData, setStockInfo } from '../../slices/stock/stockSlice';
 import { useLocation } from 'react-router-dom';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import SyncLoader from 'react-spinners/SyncLoader';
@@ -16,6 +16,7 @@ import TransactionTable from '../../components/transactionTable/TransactionTable
 import Pagination from '../../components/pagination/Pagination';
 import { useGetTransactionsMutation } from '../../slices/transaction/transactionApiSlice';
 import { setTransactions } from '../../slices/transaction/transactionSlice';
+import StockPrice from '../../components/stockPrice/StockPrice';
 
 const StockScreen = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,17 @@ const StockScreen = () => {
   useEffect(() => {
     fetchHistoricalData(ticker[ticker.length - 1], dateFrom, dateTo, timeFrame);
     fetchTransactions();
+    fetchStockData();
   }, []);
+
+  const fetchStockData = async () => {
+    try {
+      const res = await getStockDataAPI(ticker[2]);
+      dispatch(setStockInfo(res));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchTransactions = async () => {
     try {
@@ -211,7 +222,9 @@ const StockScreen = () => {
             </div>
           )}
           <div className='stock-screen-grid container metrics-container'>
-            <div className='card'>Stock</div>
+            <div className='card'>
+              <StockPrice />
+            </div>
             <div className='card stock-chart-outter-container'>
               <div className='stock-chart-container'>
                 <div>
@@ -286,7 +299,7 @@ const StockScreen = () => {
               </div>
             </div>
             <div className='box card'>Stock Info</div>
-            <div>
+            <div className=''>
               <div className='table-pagination-container'>
                 <TransactionTable
                   userTransactions={userTransactions}

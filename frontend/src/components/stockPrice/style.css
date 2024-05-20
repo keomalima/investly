@@ -1,0 +1,23 @@
+.stock-price-container{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.stock-price-container-column{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.stock-price-inner-container{
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.stock-price-btn-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px
+}
