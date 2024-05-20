@@ -107,10 +107,10 @@ const StockScreen = () => {
         ((data[0].open - data[data.length - 1].open) /
           data[data.length - 1].open) *
         100;
-      if (returnValue > 0) {
+      if (returnValue < 0) {
         return (
           <div style={{ gap: '3px' }}>
-            <p className='error-message xss'>-{returnValue.toFixed(2)}</p>
+            <p className='error-message xss'>{returnValue.toFixed(2)}</p>
             <p className='error-message xss'>
               ({returnPercentage.toFixed(2)}%)
             </p>
@@ -143,36 +143,76 @@ const StockScreen = () => {
       ) : (
         <div className='stock-screen-grid container metrics-container'>
           <div className='card'>Stock</div>
-          <div className='card stock-chart-container'>
-            <div>
-              <li className='btn-outline'>
-                <a
-                  style={selectedFilter('5d')}
-                  onClick={() => changeFilter('5d')}
-                >
-                  5 D
-                </a>
-                <a
-                  onClick={() => changeFilter('1m')}
-                  style={selectedFilter('1m')}
-                >
-                  1 M
-                </a>
-                <a
-                  onClick={() => changeFilter('6m')}
-                  style={selectedFilter('6m')}
-                >
-                  6 M
-                </a>
-                {fetchLoad && <SyncLoader color='#000000' size={3} />}
-              </li>
-              {historicalPerformance()}
+          <div className='card stock-chart-outter-container'>
+            <div className='stock-chart-container'>
+              <div>
+                <li className='btn-outline'>
+                  <a
+                    style={selectedFilter('5d')}
+                    onClick={() => changeFilter('5d')}
+                  >
+                    5 D
+                  </a>
+                  <a
+                    onClick={() => changeFilter('1m')}
+                    style={selectedFilter('1m')}
+                  >
+                    1 M
+                  </a>
+                  <a
+                    onClick={() => changeFilter('6m')}
+                    style={selectedFilter('6m')}
+                  >
+                    6 M
+                  </a>
+                  {fetchLoad && <SyncLoader color='#000000' size={3} />}
+                </li>
+                {historicalPerformance()}
+              </div>
+              {data?.length > 0 ? (
+                <StockChart dateFilter={dateFilter} />
+              ) : (
+                <p>Couldn&apos;t fetch the data</p>
+              )}
             </div>
-            {data?.length > 0 ? (
-              <StockChart dateFilter={dateFilter} />
-            ) : (
-              <p>Couldn't fetch the data</p>
-            )}
+            <div className='chart-info-flex'>
+              <div className=''>
+                <p className='xss'>Open</p>
+                {data ? (
+                  <p className='semi-bold xss'>{data[data.length - 1].open}</p>
+                ) : (
+                  <p>-</p>
+                )}
+              </div>
+              <div>
+                <p className='xss'>High</p>
+                {data ? (
+                  <p className='semi-bold xss'>
+                    {Math.max(...data.map((item) => item.high))}
+                  </p>
+                ) : (
+                  <p>-</p>
+                )}
+              </div>
+              <div>
+                <p className='xss'>Low</p>
+                {data ? (
+                  <p className='semi-bold xss'>
+                    {Math.min(...data.map((item) => item.high))}
+                  </p>
+                ) : (
+                  <p>-</p>
+                )}
+              </div>
+              <div>
+                <p className='xss'>Close</p>
+                {data ? (
+                  <p className='semi-bold xss'>{data[0].close}</p>
+                ) : (
+                  <p>-</p>
+                )}
+              </div>
+            </div>
           </div>
           <div className='box card'>Stock Info</div>
           <div className='box card'>Stock transactions</div>
