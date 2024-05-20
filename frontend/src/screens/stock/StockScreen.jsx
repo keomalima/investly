@@ -11,6 +11,11 @@ import PropagateLoader from 'react-spinners/PropagateLoader';
 import SyncLoader from 'react-spinners/SyncLoader';
 import { FaLongArrowAltUp } from 'react-icons/fa';
 import { FaLongArrowAltDown } from 'react-icons/fa';
+import StockCard from '../../components/stockCard/StockCard';
+import TransactionTable from '../../components/transactionTable/TransactionTable';
+import Pagination from '../../components/pagination/Pagination';
+import { useGetTransactionsMutation } from '../../slices/transaction/transactionApiSlice';
+import { setTransactions } from '../../slices/transaction/transactionSlice';
 
 const StockScreen = () => {
   const dispatch = useDispatch();
@@ -19,6 +24,9 @@ const StockScreen = () => {
   const { pathname } = useLocation();
   const ticker = pathname.split('/');
 
+  // Set current page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [metricsPerPage, setMetricsPerPage] = useState(5);
   const [initialLoad, setInitialLoad] = useState(true);
   const [fetchLoad, setFetchLoad] = useState(true);
   const [dateFilter, setDateFilter] = useState('5d');
@@ -30,11 +38,57 @@ const StockScreen = () => {
     moment().subtract(1, 'days').format('YYYY-MM-DD')
   );
 
+  const [getTransactions, { isLoading }] = useGetTransactionsMutation();
+
+  const { openCard } = useSelector((state) => state.stockData);
+  const { userTransactions } = useSelector((state) => state.transactionData);
   const { stockChartData: data } = useSelector((state) => state.stockData);
 
   useEffect(() => {
     fetchHistoricalData(ticker[ticker.length - 1], dateFrom, dateTo, timeFrame);
+    fetchTransactions();
   }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const transactions = await getTransactions({
+        size: 5,
+        searchQuery: ticker[2],
+      }).unwrap();
+      dispatch(setTransactions({ ...transactions }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Change page
+  const paginate = async ({
+    pageNumber = 1,
+    size = metricsPerPage,
+    sortBy = userTransactions?.sortBy,
+    sortOrder = userTransactions?.sortOrder,
+    searchQuery = userTransactions?.searchQuery,
+  }) => {
+    setInitialLoad(true);
+    try {
+      setCurrentPage(pageNumber || 1);
+      const transactions = await getTransactions({
+        size: size,
+        page: pageNumber - 1,
+        sortBy,
+        sortOrder,
+        searchQuery,
+      }).unwrap();
+      dispatch(setTransactions({ ...transactions }));
+    } catch (error) {
+      setInitialLoad(false);
+      console.log(error);
+    } finally {
+      setTimeout(() => {
+        setInitialLoad(false); // Set loading state to false after a short delay
+      }, 120);
+    }
+  };
 
   const fetchHistoricalData = async (symbol, from, to, interval) => {
     try {
@@ -100,8 +154,17 @@ const StockScreen = () => {
     }
   };
 
+  const searchStock = async (e) => {
+    e.preventDefault();
+    try {
+      paginate({ searchQuery: searchQuery.toUpperCase() });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const historicalPerformance = () => {
-    if (data.length > 0) {
+    if (data?.length > 0) {
       const returnValue = data[0].open - data[data.length - 1].open;
       const returnPercentage =
         ((data[0].open - data[data.length - 1].open) /
@@ -141,81 +204,108 @@ const StockScreen = () => {
           <PropagateLoader color='#000000' size={10} />
         </div>
       ) : (
-        <div className='stock-screen-grid container metrics-container'>
-          <div className='card'>Stock</div>
-          <div className='card stock-chart-outter-container'>
-            <div className='stock-chart-container'>
-              <div>
-                <li className='btn-outline'>
-                  <a
-                    style={selectedFilter('5d')}
-                    onClick={() => changeFilter('5d')}
-                  >
-                    5 D
-                  </a>
-                  <a
-                    onClick={() => changeFilter('1m')}
-                    style={selectedFilter('1m')}
-                  >
-                    1 M
-                  </a>
-                  <a
-                    onClick={() => changeFilter('6m')}
-                    style={selectedFilter('6m')}
-                  >
-                    6 M
-                  </a>
-                  {fetchLoad && <SyncLoader color='#000000' size={3} />}
-                </li>
-                {historicalPerformance()}
-              </div>
-              {data?.length > 0 ? (
-                <StockChart dateFilter={dateFilter} />
-              ) : (
-                <p>Couldn&apos;t fetch the data</p>
-              )}
+        <div>
+          {openCard && (
+            <div className='flex-center'>
+              <StockCard />
             </div>
-            <div className='chart-info-flex'>
-              <div className=''>
-                <p className='xss'>Open</p>
-                {data ? (
-                  <p className='semi-bold xss'>{data[data.length - 1].open}</p>
+          )}
+          <div className='stock-screen-grid container metrics-container'>
+            <div className='card'>Stock</div>
+            <div className='card stock-chart-outter-container'>
+              <div className='stock-chart-container'>
+                <div>
+                  <li className='btn-outline'>
+                    <a
+                      style={selectedFilter('5d')}
+                      onClick={() => changeFilter('5d')}
+                    >
+                      5 D
+                    </a>
+                    <a
+                      onClick={() => changeFilter('1m')}
+                      style={selectedFilter('1m')}
+                    >
+                      1 M
+                    </a>
+                    <a
+                      onClick={() => changeFilter('6m')}
+                      style={selectedFilter('6m')}
+                    >
+                      6 M
+                    </a>
+                    {fetchLoad && <SyncLoader color='#000000' size={3} />}
+                  </li>
+                  {historicalPerformance()}
+                </div>
+                {data?.length > 0 ? (
+                  <StockChart dateFilter={dateFilter} />
                 ) : (
-                  <p>-</p>
+                  <p>Couldn&apos;t fetch the data</p>
                 )}
               </div>
-              <div>
-                <p className='xss'>High</p>
-                {data ? (
-                  <p className='semi-bold xss'>
-                    {Math.max(...data.map((item) => item.high))}
-                  </p>
-                ) : (
-                  <p>-</p>
-                )}
+              <div className='chart-info-flex'>
+                <div className=''>
+                  <p className='xss'>Open</p>
+                  {data ? (
+                    <p className='semi-bold xss'>
+                      {data[data.length - 1].open}
+                    </p>
+                  ) : (
+                    <p>-</p>
+                  )}
+                </div>
+                <div>
+                  <p className='xss'>High</p>
+                  {data ? (
+                    <p className='semi-bold xss'>
+                      {Math.max(...data.map((item) => item.high))}
+                    </p>
+                  ) : (
+                    <p>-</p>
+                  )}
+                </div>
+                <div>
+                  <p className='xss'>Low</p>
+                  {data ? (
+                    <p className='semi-bold xss'>
+                      {Math.min(...data.map((item) => item.high))}
+                    </p>
+                  ) : (
+                    <p>-</p>
+                  )}
+                </div>
+                <div>
+                  <p className='xss'>Close</p>
+                  {data ? (
+                    <p className='semi-bold xss'>{data[0].close}</p>
+                  ) : (
+                    <p>-</p>
+                  )}
+                </div>
               </div>
-              <div>
-                <p className='xss'>Low</p>
-                {data ? (
-                  <p className='semi-bold xss'>
-                    {Math.min(...data.map((item) => item.high))}
-                  </p>
-                ) : (
-                  <p>-</p>
-                )}
-              </div>
-              <div>
-                <p className='xss'>Close</p>
-                {data ? (
-                  <p className='semi-bold xss'>{data[0].close}</p>
-                ) : (
-                  <p>-</p>
-                )}
+            </div>
+            <div className='box card'>Stock Info</div>
+            <div>
+              <div className='table-pagination-container'>
+                <TransactionTable
+                  userTransactions={userTransactions}
+                  setMetricsPerPage={setMetricsPerPage}
+                  metricsPerPage={metricsPerPage}
+                  setCurrentPage={setCurrentPage}
+                  isLoading={isLoading}
+                  searchBox={ticker}
+                  paginate={paginate}
+                />
+                <Pagination
+                  currentPage={currentPage}
+                  metricsPerPage={metricsPerPage}
+                  totalMetrics={userTransactions?.transactions?.count}
+                  paginate={paginate}
+                />
               </div>
             </div>
           </div>
-          <div className='box card'>Stock Info</div>
-          <div className='box card'>Stock transactions</div>
         </div>
       )}
     </div>

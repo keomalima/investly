@@ -23,6 +23,7 @@ const stockSlice = createSlice({
     },
     editStock: (state, action) => {
       return {
+        ...state,
         stockData: action.payload,
         openCard: true,
         editStock: true,
