@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
 import bodyParser from 'body-parser';
@@ -26,7 +27,19 @@ app.use('/api/users', userRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 
-app.get('/', (req, res) => res.send('API running'));
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+
+  // Serve static files from the frontend/dist directory
+  app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+  // Handle all GET requests by sending back the index.html file
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  );
+} else {
+  app.get('/', (req, res) => res.send('API running'));
+}
 
 app.listen(port, () => {
   console.log('Listening');

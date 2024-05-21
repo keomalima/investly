@@ -137,7 +137,6 @@ const StockForm = () => {
         setPrice('');
       }, 1000);
     } catch (err) {
-      console.log(err);
       if (err?.data?.error?.type) {
         setErrorMessage(err?.data?.error.type);
       } else if (err?.data?.error) {

@@ -35,7 +35,6 @@ const Transactions = () => {
         setInitialLoad(false);
       } catch (error) {
         setInitialLoad(false);
-        console.log(error);
       }
     };
 
@@ -63,7 +62,6 @@ const Transactions = () => {
       dispatch(setTransactions({ ...transactions }));
     } catch (error) {
       setInitialLoad(false);
-      console.log(error);
     } finally {
       setTimeout(() => {
         setInitialLoad(false); // Set loading state to false after a short delay

@@ -56,9 +56,7 @@ const StockScreen = () => {
     try {
       const res = await getStockDataAPI(ticker[2]);
       dispatch(setStockInfo(res));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const fetchTransactions = async () => {
@@ -68,9 +66,7 @@ const StockScreen = () => {
         searchQuery: ticker[2],
       }).unwrap();
       dispatch(setTransactions({ ...transactions }));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   // Change page
@@ -94,7 +90,6 @@ const StockScreen = () => {
       dispatch(setTransactions({ ...transactions }));
     } catch (error) {
       setInitialLoad(false);
-      console.log(error);
     } finally {
       setTimeout(() => {
         setInitialLoad(false); // Set loading state to false after a short delay
@@ -109,7 +104,6 @@ const StockScreen = () => {
         dispatch(setStockChartData(res));
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setInitialLoad(false);
       setFetchLoad(false);
@@ -170,9 +164,7 @@ const StockScreen = () => {
     e.preventDefault();
     try {
       paginate({ searchQuery: searchQuery.toUpperCase() });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const historicalPerformance = () => {

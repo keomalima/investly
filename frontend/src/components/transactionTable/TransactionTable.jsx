@@ -66,9 +66,7 @@ const TransactionTable = ({
     e.preventDefault();
     try {
       paginate({ searchQuery: searchQuery.toUpperCase() });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const confirmDelete = (id) => {

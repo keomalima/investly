@@ -63,7 +63,6 @@ const getAllTransactions = async (req, res) => {
       searchQuery: req.query.searchQuery,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error:
         'An unexpected error occurred while retrieving transactions. Please try again later.',
