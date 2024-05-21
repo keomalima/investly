@@ -4,40 +4,46 @@ import './styles.css';
 const StockInfo = () => {
   const { stockInfo: data } = useSelector((state) => state.stockData);
 
+  if (!data || data.length === 0) {
+    return (
+      <div className='stock-info-container'>
+        <p>No stock information available.</p>
+      </div>
+    );
+  }
+
+  const stock = data[0];
+
   return (
     <div className='stock-info-container'>
       <div>
         <p className='semi-bold smm stock-info-detail'>CEO</p>
-        <p className=''>{!data.length > 0 ? '-' : data[0].ceo}</p>
+        <p>{stock.ceo || '-'}</p>
       </div>
       <div>
         <p className='semi-bold smm stock-info-detail'>Site</p>
-        <a href={data[0].website} target='blank' className=''>
-          {!data.length > 0 ? '-' : data[0].website}
+        <a href={stock.website} target='_blank' rel='noopener noreferrer'>
+          {stock.website || '-'}
         </a>
       </div>
       <div>
         <p className='semi-bold smm stock-info-detail'>Exchange</p>
-        <p className=''>{!data.length > 0 ? '-' : data[0].exchangeShortName}</p>
+        <p>{stock.exchangeShortName || '-'}</p>
       </div>
       <div>
         <p className='semi-bold smm stock-info-detail'>IPO Date</p>
-        <p className=''>{!data.length > 0 ? '-' : data[0].ipoDate}</p>
+        <p>{stock.ipoDate || '-'}</p>
       </div>
       <div>
         <p className='semi-bold smm stock-info-detail'>Country</p>
-        <p className=''>{!data.length > 0 ? '-' : data[0].country}</p>
+        <p>{stock.country || '-'}</p>
       </div>
-
       <div>
         <p className='semi-bold smm stock-info-detail'>Company</p>
-        <p className=''>
-          {!data.length > 0
-            ? '-'
-            : data[0].description.split('.')[0] +
-              '.' +
-              data[0].description.split('.')[1]}
-          .
+        <p>
+          {stock.description
+            ? stock.description.split('.').slice(0, 2).join('.') + '.'
+            : '-'}
         </p>
       </div>
     </div>

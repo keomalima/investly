@@ -92,3 +92,16 @@
 .positive-return {
     color: var(--success-color)
 }
+
+@media screen and (max-width: 960px) {
+    .hide-on-small {
+        display: none;
+    }
+
+        .stock-screen-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 5px;
+        }
+
+}

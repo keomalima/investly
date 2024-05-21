@@ -223,7 +223,7 @@ const StockScreen = () => {
             </div>
           )}
           <div className='stock-screen-grid container metrics-container'>
-            <div className='card'>
+            <div className='card hide-on-small'>
               <StockPrice />
             </div>
             <div className='card stock-chart-outter-container'>
@@ -305,7 +305,7 @@ const StockScreen = () => {
                 </div>
               )}
             </div>
-            <div className='card'>
+            <div className='card hide-on-small'>
               <StockInfo />
             </div>
             <div className=''>
