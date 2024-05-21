@@ -5,6 +5,7 @@ const initialState = {
   openCard: false,
   editStock: false,
   stockChartData: null,
+  stockInfo: null,
   stockChartDateFilter: '5d',
 };
 
@@ -21,9 +22,10 @@ const stockSlice = createSlice({
         editStock: false,
       };
     },
-    openStockForm: (state) => {
+    openStockForm: (state, action) => {
       return {
         ...state,
+        stockData: action.payload,
         openCard: true,
         editStock: false,
       };
@@ -31,7 +33,7 @@ const stockSlice = createSlice({
     setStockInfo: (state, action) => {
       return {
         ...state,
-        stockData: action.payload,
+        stockInfo: action.payload,
         openCard: false,
         editStock: false,
       };

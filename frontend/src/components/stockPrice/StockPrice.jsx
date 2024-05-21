@@ -5,7 +5,11 @@ import { openStockForm } from '../../slices/stock/stockSlice';
 const StockPrice = () => {
   const dispatch = useDispatch();
 
-  const { stockData: data } = useSelector((state) => state.stockData);
+  const { stockInfo: data } = useSelector((state) => state.stockData);
+
+  const buyStock = () => {
+    dispatch(openStockForm(data));
+  };
 
   return (
     <div className='stock-price-container-column'>
@@ -42,7 +46,7 @@ const StockPrice = () => {
         </div>
       </div>
       <div className='stock-price-btn-container'>
-        <button onClick={() => dispatch(openStockForm())} className='btn'>
+        <button onClick={() => buyStock()} className='btn'>
           Buy / Sell
         </button>
       </div>
