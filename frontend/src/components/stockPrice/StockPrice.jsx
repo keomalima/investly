@@ -11,12 +11,16 @@ const StockPrice = () => {
     <div className='stock-price-container-column'>
       <div className='stock-price-container'>
         <p className='md strong'>{data ? data[0]?.symbol : '-'}</p>
-        <img
-          className='image-logo'
-          width='25'
-          src={data[0].image || ''}
-          alt='Company Logo'
-        />
+        {data ? (
+          <img
+            className='image-logo'
+            width='25'
+            src={data[0].image || '/'}
+            alt='Company Logo'
+          />
+        ) : (
+          <p>-</p>
+        )}
       </div>
       <div className='stock-price-container'>
         <div>

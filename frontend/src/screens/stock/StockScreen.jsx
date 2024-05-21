@@ -17,6 +17,7 @@ import Pagination from '../../components/pagination/Pagination';
 import { useGetTransactionsMutation } from '../../slices/transaction/transactionApiSlice';
 import { setTransactions } from '../../slices/transaction/transactionSlice';
 import StockPrice from '../../components/stockPrice/StockPrice';
+import StockInfo from '../../components/stockInfo/StockInfo';
 
 const StockScreen = () => {
   const dispatch = useDispatch();
@@ -227,78 +228,86 @@ const StockScreen = () => {
             </div>
             <div className='card stock-chart-outter-container'>
               <div className='stock-chart-container'>
-                <div>
-                  <li className='btn-outline'>
-                    <a
-                      style={selectedFilter('5d')}
-                      onClick={() => changeFilter('5d')}
-                    >
-                      5 D
-                    </a>
-                    <a
-                      onClick={() => changeFilter('1m')}
-                      style={selectedFilter('1m')}
-                    >
-                      1 M
-                    </a>
-                    <a
-                      onClick={() => changeFilter('6m')}
-                      style={selectedFilter('6m')}
-                    >
-                      6 M
-                    </a>
-                    {fetchLoad && <SyncLoader color='#000000' size={3} />}
-                  </li>
-                  {historicalPerformance()}
-                </div>
+                {data?.length > 0 && (
+                  <div>
+                    <li className='btn-outline'>
+                      <a
+                        style={selectedFilter('5d')}
+                        onClick={() => changeFilter('5d')}
+                      >
+                        5 D
+                      </a>
+                      <a
+                        onClick={() => changeFilter('1m')}
+                        style={selectedFilter('1m')}
+                      >
+                        1 M
+                      </a>
+                      <a
+                        onClick={() => changeFilter('6m')}
+                        style={selectedFilter('6m')}
+                      >
+                        6 M
+                      </a>
+                      {fetchLoad && <SyncLoader color='#000000' size={3} />}
+                    </li>
+                    {historicalPerformance()}
+                  </div>
+                )}
                 {data?.length > 0 ? (
                   <StockChart dateFilter={dateFilter} />
                 ) : (
-                  <p>Couldn&apos;t fetch the data</p>
+                  <div className='error-stock-fetch'>
+                    <p>Couldn&apos;t fetch the data!</p>
+                  </div>
                 )}
               </div>
-              <div className='chart-info-flex'>
-                <div className=''>
-                  <p className='xss'>Open</p>
-                  {data ? (
-                    <p className='semi-bold xss'>
-                      {data[data.length - 1].open}
-                    </p>
-                  ) : (
-                    <p>-</p>
-                  )}
+              {data?.length > 0 && (
+                <div className='chart-info-flex'>
+                  <div className=''>
+                    <p className='xss'>Open</p>
+                    {data?.length > 0 ? (
+                      <p className='semi-bold xss'>
+                        {data[data.length - 1].open}
+                      </p>
+                    ) : (
+                      <p>-</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className='xss'>High</p>
+                    {data?.length > 0 ? (
+                      <p className='semi-bold xss'>
+                        {Math.max(...data.map((item) => item.high))}
+                      </p>
+                    ) : (
+                      <p>-</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className='xss'>Low</p>
+                    {data?.length > 0 ? (
+                      <p className='semi-bold xss'>
+                        {Math.min(...data.map((item) => item.high))}
+                      </p>
+                    ) : (
+                      <p>-</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className='xss'>Close</p>
+                    {data?.length > 0 ? (
+                      <p className='semi-bold xss'>{data[0].close}</p>
+                    ) : (
+                      <p>-</p>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <p className='xss'>High</p>
-                  {data ? (
-                    <p className='semi-bold xss'>
-                      {Math.max(...data.map((item) => item.high))}
-                    </p>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </div>
-                <div>
-                  <p className='xss'>Low</p>
-                  {data ? (
-                    <p className='semi-bold xss'>
-                      {Math.min(...data.map((item) => item.high))}
-                    </p>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </div>
-                <div>
-                  <p className='xss'>Close</p>
-                  {data ? (
-                    <p className='semi-bold xss'>{data[0].close}</p>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </div>
-              </div>
+              )}
             </div>
-            <div className='card'>Stock Info</div>
+            <div className='card'>
+              <StockInfo />
+            </div>
             <div className=''>
               <div className='table-pagination-container'>
                 <TransactionTable
