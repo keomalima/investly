@@ -3,11 +3,11 @@ import { setupCache } from 'axios-cache-interceptor';
 
 //Makes the call for the external api and caches the response
 const instance = Axios.create();
-const axios = setupCache(instance);
+const cachedAxios = setupCache(instance);
 
 export async function getStockDataAPI(stocks) {
   try {
-    const response = await axios.get(`/fmp-api/v3/profile/${stocks}`, {
+    const response = await cachedAxios.get(`/fmp-api/v3/profile/${stocks}`, {
       params: {
         apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
       },
@@ -25,7 +25,7 @@ export async function getStockDataChartAPI(
   timeFrame
 ) {
   try {
-    const response = await axios.get(
+    const response = await cachedAxios.get(
       `/fmp-api/v3/historical-chart/${timeFrame}/${ticker}`,
       {
         params: {
