@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:4000/',
+        target: 'https://investly.onrender.com/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/backend-api/, ''),
       },
