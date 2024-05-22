@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "investlydb_user",
+    "password": "oC5HhYjT1zFbpJsAvRMD5LffxbQHSay2",
+    "database": "investlydb",
+    "host": "dpg-cp6hctjtg9os73a8r570-a",
+    "dialect": "postgres"
+  }
+}
