@@ -8,6 +8,7 @@ import { testDbConnection } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
+import { sequelize } from './config/db.js';
 
 const port = process.env.PORT || 5000;
 
