@@ -1,9 +1,7 @@
 {
-  "routes": [
-    { "src": "/[^.]+", "dest": "/", "status": 200 }
-  ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/backend-api" },
-    { "source": "/fmp-api/:path*", "destination": "/api/fmp-api" }
+    { "source": "/fmp-api/:path*", "destination": "/api/fmp-api" },
+    { "source": "/:path*", "destination": "/" }
   ]
 }
