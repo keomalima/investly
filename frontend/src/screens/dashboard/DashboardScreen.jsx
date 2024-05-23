@@ -42,6 +42,7 @@ const DashboardScreen = () => {
         }
         setInitialLoad(false);
       } catch (error) {
+        console.log(error);
         setInitialLoad(false);
       }
     };
