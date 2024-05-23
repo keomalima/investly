@@ -10,6 +10,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}`,
         method: 'GET',
         params,
+        credentials: 'include',
       }),
     }),
     addTransaction: builder.mutation({
@@ -17,6 +18,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}`,
         method: 'POST',
         body: data,
+        credentials: 'include',
       }),
     }),
     updateTransaction: builder.mutation({
@@ -24,12 +26,14 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/${id}`,
         method: 'PUT',
         body: data,
+        credentials: 'include',
       }),
     }),
     deleteTransaction: builder.mutation({
       query: ({ id }) => ({
         url: `${USERS_URL}/${id}`,
         method: 'DELETE',
+        credentials: 'include',
       }),
     }),
   }),

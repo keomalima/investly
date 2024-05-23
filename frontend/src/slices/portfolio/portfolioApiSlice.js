@@ -9,6 +9,7 @@ export const portfolioApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: `${USERS_URL}`,
         method: 'GET',
+        credentials: 'include',
       }),
     }),
   }),
