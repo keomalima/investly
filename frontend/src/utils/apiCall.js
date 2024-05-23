@@ -7,11 +7,14 @@ const cachedAxios = setupCache(instance);
 
 export async function getStockDataAPI(stocks) {
   try {
-    const response = await cachedAxios.get(`/fmp-api/v3/profile/${stocks}`, {
-      params: {
-        apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
-      },
-    });
+    const response = await cachedAxios.get(
+      `${import.meta.env.VITE_API_STOCK_BASE_URL}/v3/profile/${stocks}`,
+      {
+        params: {
+          apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch stock data from the API');

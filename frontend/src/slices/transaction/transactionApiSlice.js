@@ -1,5 +1,6 @@
 import { apiSlice } from '../apiSlice';
-const USERS_URL = '/api/transactions';
+//const USERS_URL = '/api/transactions';
+const USERS_URL = `${import.meta.env.VITE_API_BASE_URL}/api/transactions`;
 
 // Responsible for making the API call for the database
 export const transactionsApiSlice = apiSlice.injectEndpoints({
