@@ -13,9 +13,9 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/backend-api/, ''),
       },
       '/fmp-api': {
-        target: 'https://financialmodelingprep.com/api',
+        target: 'https://investly.onrender.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/fmp-api/, ''),
+        rewrite: (path) => path.replace(/^\/fmp-api/, '/fmp-api'),
       },
     },
   },
