@@ -1,7 +1,11 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-export default createProxyMiddleware({
+const backendApiProxy = createProxyMiddleware({
   target: 'https://investly.onrender.com/',
   changeOrigin: true,
   pathRewrite: { '^/api': '' },
 });
+
+export default function handler(req, res) {
+  return backendApiProxy(req, res);
+}
