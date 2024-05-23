@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://investly.onrender.com/"
+      "destination": "https://investly.onrender.com/:path*"
     },
     {
       "source": "/fmp-api/:path*",
