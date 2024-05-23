@@ -17,8 +17,6 @@ import ErrorPage from './screens/error-page.jsx';
 import Transactions from './screens/transactions/Transactions.jsx';
 import StockScreen from './screens/stock/StockScreen.jsx';
 
-console.log('VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     // Creates the routh tree and route protection
