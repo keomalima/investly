@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
