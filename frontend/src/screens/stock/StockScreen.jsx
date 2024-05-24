@@ -18,6 +18,10 @@ import { useGetTransactionsMutation } from '../../slices/transaction/transaction
 import { setTransactions } from '../../slices/transaction/transactionSlice';
 import StockPrice from '../../components/stockPrice/StockPrice';
 import StockInfo from '../../components/stockInfo/StockInfo';
+import {
+  useGetStockHistoryMutation,
+  useGetStockDataMutation,
+} from '../../slices/stock/stockSliceApi';
 
 const StockScreen = () => {
   const dispatch = useDispatch();
@@ -46,6 +50,9 @@ const StockScreen = () => {
   const { userTransactions } = useSelector((state) => state.transactionData);
   const { stockChartData: data } = useSelector((state) => state.stockData);
 
+  const [getStockHistory] = useGetStockHistoryMutation();
+  const [getStockData] = useGetStockDataMutation();
+
   useEffect(() => {
     fetchHistoricalData(ticker[ticker.length - 1], dateFrom, dateTo, timeFrame);
     fetchTransactions();
@@ -54,7 +61,8 @@ const StockScreen = () => {
 
   const fetchStockData = async () => {
     try {
-      const res = await getStockDataAPI(ticker[2]);
+      const res = await getStockData({ ticker: ticker[2] }).unwrap();
+      //const res = await getStockDataAPI(ticker[2]);
       dispatch(setStockInfo(res));
     } catch (error) {}
   };
@@ -99,7 +107,13 @@ const StockScreen = () => {
 
   const fetchHistoricalData = async (symbol, from, to, interval) => {
     try {
-      const res = await getStockDataChartAPI(symbol, from, to, interval);
+      const res = await getStockHistory({
+        symbol,
+        from,
+        to,
+        interval,
+      }).unwrap();
+      //const res = await getStockDataChartAPI(symbol, from, to, interval);
       if (res) {
         dispatch(setStockChartData(res));
       }

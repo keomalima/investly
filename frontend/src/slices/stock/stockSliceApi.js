@@ -13,14 +13,16 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
-    deleteTransaction: builder.mutation({
-      query: ({ id }) => ({
-        url: `${USERS_URL}/${id}`,
-        method: 'DELETE',
+    getStockHistory: builder.mutation({
+      query: ({ symbol, from, to, interval }) => ({
+        url: `${USERS_URL}/historical-chart/${interval}/${symbol}`,
+        method: 'GET',
+        params: { apikey: import.meta.env.VITE_FINANCIAL_API_KEY, from, to },
         credentials: 'include',
       }),
     }),
   }),
 });
 
-export const { useGetStockDataMutation } = stocksApiSlice;
+export const { useGetStockDataMutation, useGetStockHistoryMutation } =
+  stocksApiSlice;

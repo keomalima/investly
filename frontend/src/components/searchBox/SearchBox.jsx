@@ -12,7 +12,6 @@ const SearchBox = () => {
 
   const dispatch = useDispatch();
 
-  // Gets the get transactions and portofolio API methods
   const [getStockData] = useGetStockDataMutation();
 
   // Deals with the search box form
