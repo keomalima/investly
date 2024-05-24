@@ -29,7 +29,9 @@ export async function getStockDataChartAPI(
 ) {
   try {
     const response = await cachedAxios.get(
-      `/fmp-api/v3/historical-chart/${timeFrame}/${ticker}`,
+      `${
+        import.meta.env.VITE_API_STOCK_BASE_URL
+      }/historical-chart/${timeFrame}/${ticker}`,
       {
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,

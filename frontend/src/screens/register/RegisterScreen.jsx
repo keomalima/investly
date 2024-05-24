@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRegisterMutation } from '../../slices/auth/usersApiSlice';
 import { setCredentials } from '../../slices/auth/authSlice';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -115,9 +116,15 @@ const RegisterScreen = () => {
           </div>
           <div className='register-input-container'>
             {error && <p className='error-message xs'>*{error}</p>}
-            <button className='btn my-1' type='submit' disabled={isLoading}>
-              Register
-            </button>
+            {isLoading ? (
+              <div className='flex-center my-2'>
+                <PropagateLoader color='black' size={5} />
+              </div>
+            ) : (
+              <button className='btn my-1' type='submit' disabled={isLoading}>
+                Register
+              </button>
+            )}
             <p className='light xss'>
               Already have an account?{' '}
               <Link to={'/login'}>

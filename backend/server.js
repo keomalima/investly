@@ -18,7 +18,6 @@ const port = process.env.PORT || 5000;
 async function initializeServer() {
   try {
     await sequelize.sync(); // This creates the tables in the database if they don't exist
-    console.log('Database synchronized successfully.');
 
     const app = express();
 

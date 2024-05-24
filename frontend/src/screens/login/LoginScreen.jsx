@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../../slices/auth/usersApiSlice';
 import { setCredentials } from '../../slices/auth/authSlice';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -85,9 +86,16 @@ const LoginScreen = () => {
           </div>
           <div className='register-input-container'>
             {error && <p className='error-message xs'>*{error}</p>}
-            <button className='btn my-1' type='submit' disabled={isLoading}>
-              Login
-            </button>
+            {isLoading ? (
+              <div className='flex-center my-2'>
+                <PropagateLoader color='black' size={5} />
+              </div>
+            ) : (
+              // Render regular button when isLoading is false
+              <button className='btn my-1' type='submit'>
+                Login
+              </button>
+            )}
             <p className='light xss'>
               Does not have an account?{' '}
               <Link to={'/register'}>
