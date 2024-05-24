@@ -34,6 +34,18 @@ async function initializeServer() {
       })
     );
 
+    app.use(function (req, res, next) {
+      res.header(
+        'Access-Control-Allow-Origin',
+        'https://investly-ten.vercel.app'
+      );
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+      );
+      next();
+    });
+
     // Sets the API route paths
     app.use('/api/users', userRoutes);
     app.use('/api/transactions', transactionRoutes);
