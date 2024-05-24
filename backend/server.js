@@ -36,26 +36,8 @@ async function initializeServer() {
           'X-Requested-With',
           'pragma',
         ],
-        credentials: true, // Allow cookies if needed
       })
     );
-
-    // Alternative manual handling
-    app.options('*', (req, res) => {
-      res.header(
-        'Access-Control-Allow-Origin',
-        'http://your-frontend-domain.com'
-      );
-      res.header(
-        'Access-Control-Allow-Methods',
-        'GET,HEAD,PUT,PATCH,POST,DELETE'
-      );
-      res.header(
-        'Access-Control-Allow-Headers',
-        'Content-Type, Authorization, X-Requested-With, pragma'
-      );
-      res.sendStatus(204);
-    });
 
     // Sets the API route paths
     app.use('/api/users', userRoutes);
