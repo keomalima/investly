@@ -10,7 +10,6 @@ export async function getStockDataAPI(stocks) {
     const response = await cachedAxios.get(
       `${import.meta.env.VITE_API_STOCK_BASE_URL}/v3/profile/${stocks}`,
       {
-        withCredentials: false,
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
@@ -35,7 +34,6 @@ export async function getStockDataChartAPI(
       }/historical-chart/${timeFrame}/${ticker}`,
 
       {
-        withCredentials: false,
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
           from: dateFrom,
