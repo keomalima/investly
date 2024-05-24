@@ -14,7 +14,9 @@ export async function getStockDataAPI(stocks) {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer token', // Include authorization if needed
+          pragma: 'no-cache', // Ensure pragma header is included if needed
         },
+        withCredentials: true, // Include credentials in the request
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
@@ -42,7 +44,9 @@ export async function getStockDataChartAPI(
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer token', // Include authorization if needed
+          pragma: 'no-cache', // Ensure pragma header is included if needed
         },
+        withCredentials: true, // Include credentials in the request
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
           from: dateFrom,

@@ -26,18 +26,44 @@ async function initializeServer() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
 
-    app.use(
-      cors({
-        origin: 'https://investly-ten.vercel.app', // Your Vercel deployment domain
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-        allowedHeaders: [
-          'Content-Type',
-          'Authorization',
-          'X-Requested-With',
-          'pragma',
-        ],
-      })
-    );
+    // CORS configuration
+    const corsOptions = {
+      origin: 'https://investly-ten.vercel.app', // Your Vercel deployment domain
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'pragma',
+        'auth-token',
+        'stripe-signature',
+        'APPS',
+        'publicauthkey',
+        'privateauthkey',
+      ],
+      credentials: true, // Allow credentials
+    };
+
+    // Apply CORS middleware
+    app.use(cors(corsOptions));
+
+    // Enable preflight across-the-board
+    app.options('*', (req, res) => {
+      res.header(
+        'Access-Control-Allow-Origin',
+        'https://investly-ten.vercel.app'
+      ); // Use the same origin as in corsOptions
+      res.header(
+        'Access-Control-Allow-Methods',
+        'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'
+      );
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Authorization, X-Requested-With, pragma, auth-token, stripe-signature, APPS, publicauthkey, privateauthkey'
+      );
+      res.header('Access-Control-Allow-Credentials', 'true');
+      res.sendStatus(204); // No Content
+    });
 
     // Sets the API route paths
     app.use('/api/users', userRoutes);
