@@ -6,7 +6,6 @@ dotenv.config();
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { testDbConnection } from './config/db.js';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 import userRoutes from './routes/userRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
@@ -31,21 +30,6 @@ async function initializeServer() {
         origin: 'https://investly-ten.vercel.app', // Your Vercel deployment domain
         methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
         credentials: true, // Allow cookies if needed
-      })
-    );
-
-    app.use(
-      '/fmp-api',
-      (req, res, next) => {
-        console.log('Proxying request:', req.method, req.url);
-        next();
-      },
-      createProxyMiddleware({
-        target: 'https://financialmodelingprep.com',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/fmp-api': '/api/v3', // Rewrite path to match the API endpoint
-        },
       })
     );
 

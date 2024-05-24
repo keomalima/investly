@@ -15,7 +15,7 @@ export default defineConfig({
       '/fmp-api': {
         target: 'https://financialmodelingprep.com/api',
         changeOrigin: true,
-        rewrite: (path) => path,
+        rewrite: (path) => path.replace(/^\/fmp-api/, ''),
       },
     },
   },
