@@ -13,6 +13,9 @@ export async function getStockDataAPI(stocks) {
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
+        headers: {
+          Pragma: undefined, // Disable Pragma header
+        },
       }
     );
     return response.data;
@@ -37,6 +40,9 @@ export async function getStockDataChartAPI(
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
           from: dateFrom,
           to: dateTo,
+        },
+        headers: {
+          Pragma: undefined, // Disable Pragma header
         },
       }
     );
