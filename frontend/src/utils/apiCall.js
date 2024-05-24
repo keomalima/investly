@@ -9,7 +9,7 @@ const cachedAxios = setupCache(instance);
 export async function getStockDataAPI(stocks) {
   try {
     const response = await cachedAxios.get(
-      `${import.meta.env.VITE_API_STOCK_BASE_URL}/v3/profile/${stocks}`,
+      `/api/proxy/api/v3/profile/${stocks}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -37,9 +37,7 @@ export async function getStockDataChartAPI(
 ) {
   try {
     const response = await cachedAxios.get(
-      `${
-        import.meta.env.VITE_API_STOCK_BASE_URL
-      }/historical-chart/${timeFrame}/${ticker}`,
+      `/api/proxy/historical-chart/${timeFrame}/${ticker}`,
       {
         headers: {
           'Content-Type': 'application/json',

@@ -48,22 +48,22 @@ async function initializeServer() {
     app.use(cors(corsOptions));
 
     // Enable preflight across-the-board
-    app.options('*', (req, res) => {
-      res.header(
-        'Access-Control-Allow-Origin',
-        'https://investly-ten.vercel.app'
-      ); // Use the same origin as in corsOptions
-      res.header(
-        'Access-Control-Allow-Methods',
-        'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'
-      );
-      res.header(
-        'Access-Control-Allow-Headers',
-        'Content-Type, Authorization, X-Requested-With, pragma, auth-token, stripe-signature, APPS, publicauthkey, privateauthkey'
-      );
-      res.header('Access-Control-Allow-Credentials', 'true');
-      res.sendStatus(204); // No Content
-    });
+    app.options('*', cors(corsOptions));
+
+    // Proxy setup for financialmodelingprep API
+    app.use(
+      '/api/proxy',
+      createProxyMiddleware({
+        target: 'https://financialmodelingprep.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/proxy': '', // Remove the /api/proxy prefix when forwarding the request
+        },
+        onProxyReq: (proxyReq, req, res) => {
+          // Add custom headers or modify the request here if needed
+        },
+      })
+    );
 
     // Sets the API route paths
     app.use('/api/users', userRoutes);
