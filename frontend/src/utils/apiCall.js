@@ -14,7 +14,8 @@ export async function getStockDataAPI(stocks) {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
         headers: {
-          Pragma: undefined, // Disable Pragma header
+          // Set Pragma header only for the actual request (GET), not for preflight (OPTIONS)
+          ...(typeof window !== 'undefined' ? { Pragma: 'no-cache' } : {}),
         },
       }
     );
@@ -42,7 +43,8 @@ export async function getStockDataChartAPI(
           to: dateTo,
         },
         headers: {
-          Pragma: undefined, // Disable Pragma header
+          // Set Pragma header only for the actual request (GET), not for preflight (OPTIONS)
+          ...(typeof window !== 'undefined' ? { Pragma: 'no-cache' } : {}),
         },
       }
     );
