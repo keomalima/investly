@@ -1,22 +1,15 @@
 import Axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
-// Set up Axios instance with caching
+//Makes the call for the external api and caches the response
 const instance = Axios.create();
 const cachedAxios = setupCache(instance);
 
-// Fetch stock profile data with caching
 export async function getStockDataAPI(stocks) {
   try {
     const response = await cachedAxios.get(
-      `/api/proxy/api/v3/profile/${stocks}`,
+      `${import.meta.env.VITE_API_STOCK_BASE_URL}/v3/profile/${stocks}`,
       {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer token', // Include authorization if needed
-          pragma: 'no-cache', // Ensure pragma header is included if needed
-        },
-        withCredentials: true, // Include credentials in the request
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
         },
@@ -28,7 +21,6 @@ export async function getStockDataAPI(stocks) {
   }
 }
 
-// Fetch historical stock data with caching
 export async function getStockDataChartAPI(
   ticker,
   dateFrom,
@@ -37,14 +29,11 @@ export async function getStockDataChartAPI(
 ) {
   try {
     const response = await cachedAxios.get(
-      `/api/proxy/historical-chart/${timeFrame}/${ticker}`,
+      `${
+        import.meta.env.VITE_API_STOCK_BASE_URL
+      }/historical-chart/${timeFrame}/${ticker}`,
+
       {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer token', // Include authorization if needed
-          pragma: 'no-cache', // Ensure pragma header is included if needed
-        },
-        withCredentials: true, // Include credentials in the request
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
           from: dateFrom,

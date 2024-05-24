@@ -26,42 +26,10 @@ async function initializeServer() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
 
-    // CORS configuration
-    const corsOptions = {
-      origin: 'https://investly-ten.vercel.app', // Your Vercel deployment domain
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: [
-        'Content-Type',
-        'Authorization',
-        'X-Requested-With',
-        'pragma',
-        'auth-token',
-        'stripe-signature',
-        'APPS',
-        'publicauthkey',
-        'privateauthkey',
-      ],
-      credentials: true, // Allow credentials
-    };
-
-    // Apply CORS middleware
-    app.use(cors(corsOptions));
-
-    // Enable preflight across-the-board
-    app.options('*', cors(corsOptions));
-
-    // Proxy setup for financialmodelingprep API
     app.use(
-      '/api/proxy',
-      createProxyMiddleware({
-        target: 'https://financialmodelingprep.com',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api/proxy': '', // Remove the /api/proxy prefix when forwarding the request
-        },
-        onProxyReq: (proxyReq, req, res) => {
-          // Add custom headers or modify the request here if needed
-        },
+      cors({
+        origin: 'https://investly-ten.vercel.app', // Your Vercel deployment domain
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
       })
     );
 
