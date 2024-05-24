@@ -34,14 +34,17 @@ async function initializeServer() {
       })
     );
 
-    // Proxy setup for financialmodelingprep API
     app.use(
       '/fmp-api',
+      (req, res, next) => {
+        console.log('Proxying request:', req.method, req.url);
+        next();
+      },
       createProxyMiddleware({
         target: 'https://financialmodelingprep.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/fmp-api': '/api/v3',
+          '^/fmp-api': '/api/v3', // Rewrite path to match the API endpoint
         },
       })
     );
