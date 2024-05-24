@@ -26,12 +26,17 @@ async function initializeServer() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
 
-    app.use(
-      cors({
-        origin: 'https://investly-ten.vercel.app', // Your Vercel deployment domain
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-      })
-    );
+    app.use(function (req, res, next) {
+      res.header(
+        'Access-Control-Allow-Origin',
+        'https://investly-ten.vercel.app'
+      ); // update to match the domain you will make the request from
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+      );
+      next();
+    });
 
     // Sets the API route paths
     app.use('/api/users', userRoutes);
