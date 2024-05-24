@@ -10,12 +10,9 @@ export async function getStockDataAPI(stocks) {
     const response = await cachedAxios.get(
       `${import.meta.env.VITE_API_STOCK_BASE_URL}/v3/profile/${stocks}`,
       {
+        withCredentials: false,
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
-        },
-        headers: {
-          // Set Pragma header only for the actual request (GET), not for preflight (OPTIONS)
-          ...(typeof window !== 'undefined' ? { Pragma: 'no-cache' } : {}),
         },
       }
     );
@@ -36,15 +33,13 @@ export async function getStockDataChartAPI(
       `${
         import.meta.env.VITE_API_STOCK_BASE_URL
       }/historical-chart/${timeFrame}/${ticker}`,
+
       {
+        withCredentials: false,
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
           from: dateFrom,
           to: dateTo,
-        },
-        headers: {
-          // Set Pragma header only for the actual request (GET), not for preflight (OPTIONS)
-          ...(typeof window !== 'undefined' ? { Pragma: 'no-cache' } : {}),
         },
       }
     );
