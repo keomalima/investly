@@ -33,6 +33,22 @@ async function initializeServer() {
       })
     );
 
+    app.use(
+      '/api/fmp-proxy',
+      createProxyMiddleware({
+        target: 'https://financialmodelingprep.com/api',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/fmp-proxy': '', // Remove the '/api/fmp-proxy' prefix
+        },
+        onProxyReq: (proxyReq, req) => {
+          // Modify headers if necessary
+          // Example: Remove the Pragma header
+          proxyReq.removeHeader('Pragma');
+        },
+      })
+    );
+
     // Sets the API route paths
     app.use('/api/users', userRoutes);
     app.use('/api/transactions', transactionRoutes);

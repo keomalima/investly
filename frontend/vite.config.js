@@ -12,11 +12,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/backend-api/, ''),
       },
-      '/fmp-api': {
-        target: 'https://financialmodelingprep.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/fmp-api/, ''),
-      },
     },
   },
 });
