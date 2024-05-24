@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { getStockDataAPI } from '../../utils/apiCall';
 import { setStock } from '../../slices/stock/stockSlice';
 import './styles.css';
+import { useGetStockDataMutation } from '../../slices/stock/stockSliceApi';
 
 const SearchBox = () => {
   const [ticker, setTicker] = useState('');
@@ -11,12 +12,16 @@ const SearchBox = () => {
 
   const dispatch = useDispatch();
 
+  // Gets the get transactions and portofolio API methods
+  const [getStockData] = useGetStockDataMutation();
+
   // Deals with the search box form
   const searchStock = async (e) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const res = await getStockDataAPI(ticker);
+      const res = await getStockData({ ticker }).unwrap();
+      //const res = await getStockDataAPI(ticker);
       dispatch(setStock(res));
       setTicker('');
       setIsLoading(false);
