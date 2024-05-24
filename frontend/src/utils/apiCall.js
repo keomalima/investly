@@ -8,7 +8,7 @@ const cachedAxios = setupCache(instance);
 export async function getStockDataAPI(stocks) {
   try {
     const response = await cachedAxios.get(
-      `/api/fmp-proxy/v3/profile/${stocks}`,
+      `${import.meta.env.VITE_API_STOCK_BASE_URL}/v3/profile/${stocks}`,
       {
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
@@ -33,7 +33,9 @@ export async function getStockDataChartAPI(
 ) {
   try {
     const response = await cachedAxios.get(
-      `/api/fmp-proxy/v3/profile/historical-chart/${timeFrame}/${ticker}`,
+      `${
+        import.meta.env.VITE_API_STOCK_BASE_URL
+      }/historical-chart/${timeFrame}/${ticker}`,
       {
         params: {
           apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
