@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCheckCircle } from 'react-icons/fa';
+import moment from 'moment';
 import {
   useAddTransactionMutation,
   useGetTransactionsMutation,
@@ -25,11 +26,13 @@ const StockForm = () => {
   const [type, setType] = useState('buy' || '');
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10) || '');
   const [price, setPrice] = useState(stockData[0].price || '');
+
+  console.log(date);
   // Updates the state of the form when editing
   useEffect(() => {
     if (editStock) {
       setPrice(parseFloat(stockData[0]?.stock_price).toFixed(2));
-      setDate(stockData[0]?.date);
+      setDate(moment(stockData[0]?.date).format('YYYY-MM-DD'));
       setShares(stockData[0]?.shares);
       setType(stockData[0]?.type);
     }

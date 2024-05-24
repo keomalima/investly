@@ -15,7 +15,7 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
     }),
     getStockHistory: builder.mutation({
       query: ({ symbol, from, to, interval }) => ({
-        url: `${USERS_URL}/historical-chart/${interval}/${symbol}`,
+        url: `${USERS_URL}/v3/historical-chart/${interval}/${symbol}`,
         method: 'GET',
         params: { apikey: import.meta.env.VITE_FINANCIAL_API_KEY, from, to },
         credentials: 'include',
