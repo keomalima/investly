@@ -28,7 +28,7 @@ async function initializeServer() {
 
     app.use(
       cors({
-        origin: 'https://investly-frontend.onrender.com', // Your Vercel deployment domain
+        origin: 'https://investly.keomalima.com', // Your Vercel deployment domain
         methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
         credentials: true, // Allow cookies if needed
       })

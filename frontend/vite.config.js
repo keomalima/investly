@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://investly.onrender.com/',
+        target: 'https://api.investly.keomalima.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/backend-api/, ''),
       },
