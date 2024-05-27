@@ -13,7 +13,7 @@ const generateToken = (res, userId) => {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true, // Accessible only by the web server
     secure: true, // Send only over HTTPS
-    sameSite: 'None',
+    sameSite: 'Strict',
   });
 };
 
