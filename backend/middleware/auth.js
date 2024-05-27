@@ -7,9 +7,9 @@ dotenv.config();
 const protect = async (req, res, next) => {
   let token;
 
+  // Get token from cookies
   token = req.cookies.jwt;
 
-  // Check for JWT in headers
   if (token) {
     try {
       // Verify token
@@ -17,6 +17,11 @@ const protect = async (req, res, next) => {
 
       // Attach user data to the request object
       req.user = await User.findByPk(decoded.userId);
+
+      if (!req.user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
       next(); // Proceed to the route handler
     } catch (error) {
       res.status(403).json({ error: 'Not authorized, invalid token' });
