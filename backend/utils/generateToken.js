@@ -9,12 +9,15 @@ const generateToken = (res, userId) => {
     expiresIn: '1d',
   });
 
-  res.cookie('jwt', token, {
+  {
+    /* res.cookie('jwt', token, {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true, // Accessible only by the web server
     secure: true,
     sameSite: 'None',
   });
+*/
+  }
 
   return token;
 };
