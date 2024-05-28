@@ -3,9 +3,9 @@ import { logout } from './auth/authSlice'; // Assuming logout action
 import { redirect } from 'react-router-dom';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_API_BASE_URL}`, // Adjust the base URL as needed
+  baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
   prepareHeaders: (headers, { getState }) => {
-    const token = localStorage.getItem('token'); // Or sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }

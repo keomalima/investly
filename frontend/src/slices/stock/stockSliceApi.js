@@ -1,6 +1,6 @@
 import { apiSlice } from '../apiSlice';
 //const USERS_URL = '/api/transactions';
-const USERS_URL = '/fmp-api';
+const USERS_URL = 'https://financialmodelingprep.com/api';
 
 // Responsible for making the API call for the database
 export const stocksApiSlice = apiSlice.injectEndpoints({
