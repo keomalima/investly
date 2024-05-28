@@ -14,8 +14,6 @@ import Pagination from '../../components/pagination/Pagination';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
-  console.log(token);
 
   // Sets the state for the metrics dashboard and initial load
   const [metrics, setMetrics] = useState('');
