@@ -7,11 +7,15 @@ dotenv.config();
 const protect = async (req, res, next) => {
   let token;
 
-  // Get token from cookies
-  token = req.cookies.jwt;
-
-  if (token) {
+  // Get token from the Authorization header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
     try {
+      // Extract token from the Authorization header
+      token = req.headers.authorization.split(' ')[1];
+
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

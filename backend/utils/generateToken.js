@@ -9,6 +9,7 @@ const generateToken = (res, userId) => {
     expiresIn: '1d',
   });
 
+  // Problems to implement JWT with cookies because of third-party cookies being blocked by the browser
   {
     /* res.cookie('jwt', token, {
     maxAge: 24 * 60 * 60 * 1000,

@@ -33,6 +33,11 @@ const LoginScreen = () => {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate('/');
+      if (res.token) {
+        localStorage.setItem('token', res.token);
+      } else {
+        console.error('Login failed');
+      }
     } catch (err) {
       setError(err?.data?.error);
     }
