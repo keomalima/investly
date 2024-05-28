@@ -28,13 +28,14 @@ const registerNewUser = async (req, res) => {
     // Method for hashing the password
     const hash = await bcrypt.hash(password, saltRounds);
     const user = await User.create({ email, username, password: hash });
-    generateToken(res, user.id);
+    const token = generateToken(res, user.id);
 
     // Returns the user id, email and token
     res.status(201).json({
       id: user.id,
       email: user.email,
       username: user.username,
+      token,
     });
   } catch (err) {
     res.status(500).json({ error: 'Something went wrong' });
@@ -54,12 +55,13 @@ const authUser = async (req, res) => {
   const user = await User.findOne({ where: { email } });
 
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user.id);
+    const token = generateToken(res, user.id);
 
     res.json({
       id: user.id,
       name: user.username,
       email: user.email,
+      token,
     });
   } else {
     res.status(401).json({ error: 'Invalid email or password' });
