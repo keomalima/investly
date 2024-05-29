@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 export const useFilterAndSortableTable = (data) => {
   const [tableData, setTableData] = useState(data);
 

@@ -31,6 +31,10 @@ const MetricTable = ({
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
 
+  useEffect(() => {
+    handleFilteringAndSorting('company', 'asc', searchQuery, setTotalMetrics);
+  }, [portfolioMetrics]);
+
   // Handles the sort changes
   const handleFilteringAndSortingChange = (accessor) => {
     const sortOrder =
