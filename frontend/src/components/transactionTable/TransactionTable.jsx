@@ -12,6 +12,7 @@ import { useDeleteTransactionMutation } from '../../slices/transaction/transacti
 import { FaCheckCircle } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const TransactionTable = ({
   setMetricsPerPage,
@@ -250,7 +251,9 @@ const TransactionTable = ({
                   : '-'}
               </td>
               <td data-cell='transaction_date' className='table-column'>
-                {transaction?.date ? convertDate(transaction.date) : '-'}
+                {transaction?.date
+                  ? moment.utc(transaction.date).format('DD-MM-YYYY')
+                  : '-'}
               </td>
               <td data-cell='transaction_options' className='table-column'>
                 {isDelete.state && transaction.id === isDelete.id ? (

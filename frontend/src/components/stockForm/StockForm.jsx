@@ -12,6 +12,7 @@ import { resetStock } from '../../slices/stock/stockSlice';
 import { setPortfolioMetrics } from '../../slices/portfolio/portfolioSlice';
 import { useGetPortfolioMetricsMutation } from '../../slices/portfolio/portfolioApiSlice';
 import { setTransactions } from '../../slices/transaction/transactionSlice';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const StockForm = () => {
   const dispatch = useDispatch();
@@ -27,12 +28,11 @@ const StockForm = () => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10) || '');
   const [price, setPrice] = useState(stockData[0].price || '');
 
-  console.log(date);
   // Updates the state of the form when editing
   useEffect(() => {
     if (editStock) {
       setPrice(parseFloat(stockData[0]?.stock_price).toFixed(2));
-      setDate(moment(stockData[0]?.date).format('YYYY-MM-DD'));
+      setDate(moment.utc(stockData[0]?.date).format('YYYY-MM-DD'));
       setShares(stockData[0]?.shares);
       setType(stockData[0]?.type);
     }
@@ -42,9 +42,12 @@ const StockForm = () => {
   const [formVisible, setFormVisible] = useState(editStock || false);
 
   // Instantiates the add transation API method
-  const [addTransaction, { isSuccess }] = useAddTransactionMutation();
-  const [updateTransaction, { isSuccess: isSuccessAdded }] =
-    useUpdateTransactionMutation();
+  const [addTransaction, { isLoading, isSuccess }] =
+    useAddTransactionMutation();
+  const [
+    updateTransaction,
+    { isLoading: editLoad, isSuccess: isSuccessAdded },
+  ] = useUpdateTransactionMutation();
 
   const [getPortolioMetrics] = useGetPortfolioMetricsMutation();
 
@@ -211,8 +214,12 @@ const StockForm = () => {
           <div className='container-form-footer'>
             <FaCheckCircle size={45} color='#A3B18A' />
             <p className='alert-success light'>
-              {!editStock ? 'Transaction added!' : 'Transaction Edited!'}!
+              {!editStock ? 'Transaction added!' : 'Transaction Edited!'}
             </p>
+          </div>
+        ) : isLoading || editLoad ? (
+          <div className='flex-center my-2'>
+            <PropagateLoader color='black' size={5} />
           </div>
         ) : (
           <button className='btn' type='submit'>
