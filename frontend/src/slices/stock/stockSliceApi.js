@@ -10,7 +10,6 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/v3/profile/${ticker}`,
         method: 'GET',
         params: { apikey: import.meta.env.VITE_FINANCIAL_API_KEY },
-        credentials: 'include',
       }),
     }),
     getStockHistory: builder.mutation({
@@ -18,7 +17,6 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/v3/historical-chart/${interval}/${symbol}`,
         method: 'GET',
         params: { apikey: import.meta.env.VITE_FINANCIAL_API_KEY, from, to },
-        credentials: 'include',
       }),
     }),
   }),
