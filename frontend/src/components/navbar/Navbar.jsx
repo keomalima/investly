@@ -26,12 +26,16 @@ const Navbar = ({ load, showSearchBox }) => {
     dispatch(resetStock());
   };
 
+  // Capitalizes the first letters of the username
   const capitalizeFirstLetters = (str) => {
-    const words = str.split(' '); // Split the string into an array of words
-    const capitalizedWords = words.map((word) => {
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    });
-    return capitalizedWords.join(' '); // Join the capitalized words back into a string
+    if (str) {
+      const capitalizedStr = str.replace(/(^\w{1})|(\s\w{1})/g, (match) =>
+        match.toUpperCase()
+      );
+      return capitalizedStr;
+    } else {
+      return '';
+    }
   };
 
   // Dinamically changes the font weight of selected menu option
@@ -104,6 +108,7 @@ const Navbar = ({ load, showSearchBox }) => {
             {capitalizeFirstLetters(userInfo?.username) ||
               capitalizeFirstLetters(userInfo?.name)}
           </p>
+
           <a className='btn-outline' onClick={logoutHandler}>
             Logout
           </a>
