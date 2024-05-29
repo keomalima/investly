@@ -26,6 +26,14 @@ const Navbar = ({ load, showSearchBox }) => {
     dispatch(resetStock());
   };
 
+  const capitalizeFirstLetters = (str) => {
+    const words = str.split(' '); // Split the string into an array of words
+    const capitalizedWords = words.map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+    return capitalizedWords.join(' '); // Join the capitalized words back into a string
+  };
+
   // Dinamically changes the font weight of selected menu option
   const menuStyle = (path) => {
     if (pathname === path) {
@@ -42,6 +50,7 @@ const Navbar = ({ load, showSearchBox }) => {
       dispatch(logout());
       dispatch(resetPortfolio());
       dispatch(resetTransactios());
+      localStorage.removeItem('token');
       navigate('/login');
     } catch (err) {
       console.error(err);
@@ -91,7 +100,10 @@ const Navbar = ({ load, showSearchBox }) => {
         </div>
         {load ? <></> : showSearchBox && <SearchBox />}
         <div className='flex'>
-          <p>{userInfo?.username || userInfo?.name}</p>
+          <p>
+            {capitalizeFirstLetters(userInfo?.username) ||
+              capitalizeFirstLetters(userInfo?.name)}
+          </p>
           <a className='btn-outline' onClick={logoutHandler}>
             Logout
           </a>

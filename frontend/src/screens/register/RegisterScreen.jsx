@@ -39,6 +39,11 @@ const RegisterScreen = () => {
       }
       const res = await register({ email, username, password }).unwrap();
       dispatch(setCredentials({ ...res }));
+      if (res.token) {
+        localStorage.setItem('token', res.token);
+      } else {
+        console.error('Login failed');
+      }
       navigate('/');
     } catch (err) {
       setError(err?.data?.error);
