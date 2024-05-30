@@ -4,6 +4,7 @@ import { getStockDataAPI } from '../../utils/apiCall';
 import { setStock } from '../../slices/stock/stockSlice';
 import './styles.css';
 import { useGetStockDataMutation } from '../../slices/stock/stockSliceApi';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchBox = () => {
   const [ticker, setTicker] = useState('');
@@ -13,6 +14,10 @@ const SearchBox = () => {
   const dispatch = useDispatch();
 
   const [getStockData] = useGetStockDataMutation();
+
+  const navigate = useNavigate();
+
+  const { pathname } = useLocation();
 
   // Deals with the search box form
   const searchStock = async (e) => {
@@ -24,6 +29,7 @@ const SearchBox = () => {
       dispatch(setStock(res));
       setTicker('');
       setIsLoading(false);
+      if (pathname.includes('stock')) navigate('/');
     } catch (error) {
       setTicker('');
       setIsError(true);

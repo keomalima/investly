@@ -6,6 +6,7 @@ import tableMetricsColumns from '../../utils/tableMetricColumns.json';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { useFilterAndSortableTable } from '../../utils/useFilterAndSortTable';
 import { Link } from 'react-router-dom';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 const MetricTable = ({
   isLoading,
@@ -85,7 +86,7 @@ const MetricTable = ({
 
   return (
     <div className='container-metrics-table'>
-      <div>
+      <div className='table-header'>
         <div className='select-container-table'>
           <p className='xss'>Show</p>
           <select
@@ -174,7 +175,13 @@ const MetricTable = ({
                 </td>
                 <td data-cell='symbol'>
                   <Link to={`/stock/${metric.ticker}`}>
-                    {metric.ticker ? metric.ticker : '-'}
+                    <span className='table-link-icon'>
+                      {metric.ticker ? metric.ticker : '-'}
+                      <FaExternalLinkAlt
+                        size={11}
+                        className='table-link-icon'
+                      />
+                    </span>
                   </Link>
                 </td>
                 <td className='image-filter metric-table-responsive'>

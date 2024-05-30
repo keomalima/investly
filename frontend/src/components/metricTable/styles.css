@@ -28,6 +28,14 @@
     gap: 8px
 }
 
+.table-header{
+    background-color: var(--card-color);
+}
+
+.table-link-icon{
+    margin-left: 5px;
+}
+
 .container-metrics-table select {
     border-radius: 5px;
     width: 60px;
@@ -95,6 +103,11 @@
     color: white;
 }
 
+.table-link-icon:hover{
+    color:var(--success-color);
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+}
+
 .container-metrics-table tbody tr:hover .image-filter {
     filter: none
 }
@@ -111,7 +124,7 @@ th div {
 }
 
 .image-filter{
-    filter: grayscale(100%) brightness(0%);
+    filter: var(--icon-filter);
     transition: filter 0.2s ease;
 }
 

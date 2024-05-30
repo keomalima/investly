@@ -3,6 +3,8 @@ import { IoIosClose } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import StockForm from '../stockForm/StockForm';
 import { resetStock } from '../../slices/stock/stockSlice';
+import { Link } from 'react-router-dom';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 const StockCard = () => {
   const dispatch = useDispatch();
@@ -50,9 +52,22 @@ const StockCard = () => {
           </div>
           <div className='container-form-subheader'>
             <div>
-              <p className='strong md mb'>
-                {!editStock ? stockData[0]?.symbol : stockData[0]?.stock.ticker}
-              </p>
+              {!editStock ? (
+                <Link to={`/stock/${stockData[0]?.symbol}`}>
+                  <div className='stock-ticker-link'>
+                    <p className='strong md mb'>{stockData[0]?.symbol}</p>
+                    <FaExternalLinkAlt
+                      size={11}
+                      className='table-link-icon mb'
+                    />
+                  </div>
+                </Link>
+              ) : (
+                <Link to={`/stock/${stockData[0]?.stock.ticker}`}>
+                  <p className='strong md mb'>{stockData[0]?.stock.ticker}</p>
+                </Link>
+              )}
+
               {!editStock && (
                 <>
                   <p className='semi-bold'>${stockData[0]?.price}</p>

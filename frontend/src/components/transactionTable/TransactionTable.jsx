@@ -13,6 +13,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 const TransactionTable = ({
   setMetricsPerPage,
@@ -122,7 +123,7 @@ const TransactionTable = ({
 
   return (
     <div className='container-metrics-table'>
-      <div>
+      <div className='table-header'>
         <div className='select-container-table'>
           <p className='xss'>Show</p>
           <select
@@ -203,8 +204,10 @@ const TransactionTable = ({
 
               <td data-cell='symbol'>
                 <Link to={`/stock/${transaction.stock.ticker}`}>
-                  {' '}
-                  {transaction?.stock.ticker ? transaction.stock.ticker : '-'}
+                  <span className='table-link-icon'>
+                    {transaction?.stock.ticker ? transaction.stock.ticker : '-'}
+                    <FaExternalLinkAlt size={10} className='table-link-icon' />
+                  </span>
                 </Link>
               </td>
               <td
