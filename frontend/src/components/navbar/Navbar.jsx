@@ -83,7 +83,7 @@ const Navbar = ({ load, showSearchBox }) => {
             <li>
               <a
                 style={menuStyle('/')}
-                className='btn-outline'
+                className='btn-outline xss'
                 onClick={() => {
                   navigate('/');
                   closeCard();
@@ -99,7 +99,7 @@ const Navbar = ({ load, showSearchBox }) => {
                   navigate('/transactions');
                   closeCard();
                 }}
-                className='btn-outline'
+                className='btn-outline xss'
               >
                 Transactions
               </a>
@@ -109,12 +109,12 @@ const Navbar = ({ load, showSearchBox }) => {
         {load ? <></> : showSearchBox && <SearchBox />}
         <div className='flex'>
           <ThemeToggle />
-          <p>
+          <p className='xss'>
             {capitalizeFirstLetters(userInfo?.username) ||
               capitalizeFirstLetters(userInfo?.name)}
           </p>
 
-          <a className='btn-outline' onClick={logoutHandler}>
+          <a className='btn-outline xss' onClick={logoutHandler}>
             Logout
           </a>
         </div>

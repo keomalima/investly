@@ -5,16 +5,16 @@
 }
 
 .stock-info-container a{
-    color:#0000EE;
+    color:var(--link-color);
     border-bottom: 1px solid;
 }
 
 
 .stock-info-container a:visited {
-    color: #551A8B;
+    color: var(--link-visited);
 }
 
 .stock-info-container a:hover {
-    color: #FF4500;
+    color: var(--link-hover);
   
 }

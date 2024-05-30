@@ -193,8 +193,8 @@ const MetricTable = ({
                 <td data-cell='company' className='metric-table-responsive'>
                   {!metric.company
                     ? '-'
-                    : metric.company.length > 20
-                    ? metric.company.slice(0, 18 - 3) + '...'
+                    : metric.company.length > 16
+                    ? metric.company.slice(0, 14 - 3) + '...'
                     : metric.company}
                 </td>
                 <td data-cell='price' className='table-column'>

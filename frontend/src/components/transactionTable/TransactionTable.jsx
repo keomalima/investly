@@ -227,8 +227,8 @@ const TransactionTable = ({
               <td data-cell='company' className='metric-table-responsive'>
                 {!transaction?.stock.company
                   ? '-'
-                  : transaction.stock.company.length > 20
-                  ? transaction.stock.company.slice(0, 18 - 3) + '...'
+                  : transaction.stock.company.length > 15
+                  ? transaction.stock.company.slice(0, 14 - 3) + '...'
                   : transaction.stock.company}
               </td>
               <td data-cell='transaction_type'>
