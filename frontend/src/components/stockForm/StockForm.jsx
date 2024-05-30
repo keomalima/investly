@@ -165,6 +165,7 @@ const StockForm = () => {
                 value={shares}
                 onChange={(e) => setShares(e.target.value)}
                 step='any'
+                style={{ color: 'var(--text-color)' }}
                 placeholder='Ex: 2'
                 className='search-box-form'
               />
@@ -174,6 +175,7 @@ const StockForm = () => {
               <select
                 disabled={editStock}
                 value={type}
+                style={{ color: 'var(--text-color)' }}
                 onChange={(e) => setType(e.target.value)}
                 className='search-box-form'
               >
@@ -188,6 +190,7 @@ const StockForm = () => {
               <input
                 type='date'
                 value={date}
+                style={{ color: 'var(--text-color)' }}
                 onChange={(e) => setDate(e.target.value)}
                 placeholder='Ex: 15.02.2024'
                 className='search-box-form'
@@ -199,6 +202,7 @@ const StockForm = () => {
                 type='number'
                 value={price}
                 min='0'
+                style={{ color: 'var(--text-color)' }}
                 onChange={(e) => setPrice(e.target.value)}
                 step='any'
                 placeholder='Ex: 125.23'
@@ -219,7 +223,7 @@ const StockForm = () => {
           </div>
         ) : isLoading || editLoad ? (
           <div className='flex-center my-2'>
-            <PropagateLoader color='black' size={5} />
+            <PropagateLoader color='var(--text-color)' size={5} />
           </div>
         ) : (
           <button className='btn' type='submit'>

@@ -88,7 +88,7 @@ const Transactions = () => {
         )}
         {initialLoad ? (
           <div className='search-box-dashboard'>
-            <PropagateLoader color='#000000' size={10} />
+            <PropagateLoader color='var(--text-color)' size={10} />
           </div>
         ) : userTransactions?.transactions?.rows?.length > 0 ||
           userTransactions?.searchQuery ? (

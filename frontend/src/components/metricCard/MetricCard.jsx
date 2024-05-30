@@ -49,7 +49,7 @@ const MetricCard = ({ title, value, isLoading }) => {
       ) : (
         <div className='flex-center'>
           <PropagateLoader
-            color='#000000'
+            color='var(--text-color)'
             cssOverride={{ margin: '40px' }}
             size={10}
           />

@@ -123,7 +123,7 @@ const RegisterScreen = () => {
             {error && <p className='error-message xs'>*{error}</p>}
             {isLoading ? (
               <div className='flex-center my-2'>
-                <PropagateLoader color='black' size={5} />
+                <PropagateLoader color='var(--text-color)' size={5} />
               </div>
             ) : (
               <button className='btn my-1' type='submit' disabled={isLoading}>

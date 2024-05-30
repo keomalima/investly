@@ -7,9 +7,12 @@
   --text-color: rgba(0, 34, 64, 1);
   --bg-color: rgba(244, 244, 244, 1);
   --card-color: rgba(244, 244, 244, 1);
+  --card-color2: rgba(244, 244, 244, 1);
+  --card-hover: rgba(0, 0, 0, 0.05);
   --success-color: rgba(163, 177, 138, 1);
   --error-color: rgba(200, 68, 60, 1);
   --icon-filter: grayscale(100%) brightness(0%);
+  --search-icon: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E%0A") no-repeat center;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -19,11 +22,13 @@
   --secondary-color: rgba(200, 204, 214, 1);
   --text-color: rgba(244, 244, 244, 1);
   --bg-color: rgba(33, 37, 41, 1);
-  --card-color:#2b2d42;
+  --card-color:#36393D;
+  --card-color2: black;
+  --card-hover: rgba(54, 57, 61, 0.7);
   --success-color: rgba(163, 177, 138, 1);
   --icon-filter: none;
   --error-color: rgba(200, 68, 60, 1);
-
+  --search-icon: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffffff' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E%0A") no-repeat center;
   transition: background-color 0.3s ease, color 0.3s ease;
   
 }

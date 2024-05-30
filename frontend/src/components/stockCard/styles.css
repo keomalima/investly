@@ -1,7 +1,6 @@
 .image-logo{
     width: 18px;
-    filter: drop-shadow(0px 1000px 0 black);
-    transform: translateY(-1000px);
+    filter: var(--icon-filter);
 }
 
 .stock-ticker-link{

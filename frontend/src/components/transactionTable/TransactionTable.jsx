@@ -113,7 +113,7 @@ const TransactionTable = ({
     return (
       <div className='flex-center'>
         <PropagateLoader
-          color='#000000'
+          color='var(--text-color)'
           cssOverride={{ margin: '40px' }}
           size={10}
         />
@@ -145,6 +145,7 @@ const TransactionTable = ({
             className='search_box_input'
             type='search'
             maxLength={20}
+            style={{ color: 'var(--text-color)' }}
             placeholder='Search stock symbols'
             value={searchQuery}
             onChange={(e) => {
@@ -347,6 +348,8 @@ const TransactionTable = ({
                 )
               )}
             </td>
+            <td className='metric-table-responsive'></td>
+            <td className='metric-table-responsive'></td>
           </tr>
         </tfoot>
       </table>

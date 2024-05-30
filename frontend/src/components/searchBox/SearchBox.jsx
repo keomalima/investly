@@ -42,6 +42,7 @@ const SearchBox = () => {
         <input
           className='search_box_input'
           type='search'
+          style={{ color: 'var(--text-color)' }}
           required
           maxLength={5}
           value={ticker}

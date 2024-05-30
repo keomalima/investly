@@ -20,8 +20,13 @@
     color: #555;
     display: flex;
     padding: 2px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 0.5px solid var(--text-color);
     border-radius: 5px;
+}
+
+::placeholder {
+    color: var(--text-color);
+    
 }
 
 /* Tablets and under */

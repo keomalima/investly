@@ -219,7 +219,7 @@ const StockScreen = () => {
       <Navbar initialLoad={initialLoad} showSearchBox={true} />
       {initialLoad ? (
         <div className='search-box-dashboard'>
-          <PropagateLoader color='#000000' size={10} />
+          <PropagateLoader color='var(--text-color)' size={10} />
         </div>
       ) : (
         <div>

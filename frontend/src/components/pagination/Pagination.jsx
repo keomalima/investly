@@ -64,16 +64,23 @@ const Pagination = ({
               changePage(number);
             }}
             style={{
-              backgroundColor: number == currentPage ? 'black' : 'white',
+              backgroundColor:
+                number == currentPage
+                  ? 'var(--text-color)'
+                  : 'var(--card-color2)',
               borderRadius: '5px',
-              color: number == currentPage ? 'white' : 'black',
+              color:
+                number == currentPage
+                  ? 'var(--card-color2)'
+                  : 'var(--text-color)',
             }}
+            className={currentPage === number ? 'disabled' : ''}
           >
             <a
               style={{
                 fontWeight: number == currentPage ? '700' : '500',
               }}
-              className='xss'
+              className={'xss'}
             >
               {number}
             </a>

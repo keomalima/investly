@@ -18,15 +18,16 @@
 }
 
 .pagination-button li:hover, .pagination-button a:hover{
-    background-color: black;
+    background-color: var(--text-color);
     border-radius: 5px;
-    color: white
+    color: var(--card-color2)
 }
 
 .disabled {
     pointer-events: none;
     opacity: 0.5;
     cursor: not-allowed;
+    
 }
 
 
