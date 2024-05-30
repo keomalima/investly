@@ -9,6 +9,7 @@ const ThemeToggle = () => {
   const theme = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
+  // Persists the theme even after a refresh
   useEffect(() => {
     // Retrieve theme preference from local storage on component mount
     const savedTheme = localStorage.getItem('theme');
