@@ -32,6 +32,10 @@
     background-color: var(--card-hover);
 }
 
+.demo:hover{
+    color: var(--secondary-color);
+}
+
 .form-center{
     display:flex;
     justify-content: center;

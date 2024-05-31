@@ -23,7 +23,7 @@
 
 - **Portfolio Performance**: Monitor the performance of your investment portfolio in real-time.
 
-![Dashboard](images/dashboard.png)
+![Dashboard](./frontend/src/assets/readmePictures/dashboard.png)
 
 - **Stock Information**: Access detailed information about stocks, including price history and key metrics, using a third-party API.
 

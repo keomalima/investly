@@ -43,6 +43,25 @@ const LoginScreen = () => {
     }
   };
 
+  // Logs the demo user in
+  const demoUserLogin = async () => {
+    try {
+      const res = await login({
+        email: import.meta.env.VITE_DEMO_USER_EMAIL,
+        password: import.meta.env.VITE_DEMO_USER_PASSWORD,
+      }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      if (res.token) {
+        localStorage.setItem('token', res.token);
+      } else {
+        console.error('Login failed');
+      }
+      navigate('/');
+    } catch (err) {
+      setError(err?.data?.error);
+    }
+  };
+
   return (
     <div className='flex-center register-container'>
       <div className='card register-card'>
@@ -95,6 +114,9 @@ const LoginScreen = () => {
             />
           </div>
           <div className='register-input-container'>
+            <a onClick={demoUserLogin} className='btn-outline flex-center demo'>
+              Demo User
+            </a>
             {error && <p className='error-message xs'>*{error}</p>}
             {isLoading ? (
               <div className='flex-center my-2'>
