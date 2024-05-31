@@ -24,6 +24,7 @@ const SearchBox = () => {
     try {
       const res2 = await getStockData({ ticker }).unwrap();
       const res = await getStockDataAPI(ticker);
+      console.log(res);
       dispatch(setStock(res));
       setTicker('');
       if (pathname.includes('stock')) navigate('/');
