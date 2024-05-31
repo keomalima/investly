@@ -18,14 +18,12 @@ const SearchBox = () => {
 
   const { pathname } = useLocation();
 
-  console.log(isLoading);
-
   // Deals with the search box form
   const searchStock = async (e) => {
     e.preventDefault();
     try {
-      const res = await getStockData({ ticker }).unwrap();
-      //const res = await getStockDataAPI(ticker);
+      const res2 = await getStockData({ ticker }).unwrap();
+      const res = await getStockDataAPI(ticker);
       dispatch(setStock(res));
       setTicker('');
       if (pathname.includes('stock')) navigate('/');

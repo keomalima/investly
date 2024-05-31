@@ -3,6 +3,8 @@
     {
       "source": "/:path*",
       "destination": "/"
-    }
+    },
+    { "source": "/fmp-api/:path*", "destination": "https://financialmodelingprep.com/api/:path*" }
   ]
 }
+
