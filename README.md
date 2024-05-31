@@ -39,7 +39,7 @@
 
 <br>
 
-- **Theme M:** Customizable theme that includes both light and dark options for a more comfortable viewing experience.
+- **Theme Selector:** Customizable theme that includes both light and dark options for a more comfortable viewing experience.
 
 <img src="./frontend/src/assets/readmePictures/light-mode1-modified.png" alt="Light Mode" width="500"/>
 
