@@ -1,6 +1,6 @@
 # Investly
 
-**Investly** is a stock management app that allows users to add new transactions, track the performance of their portfolio, and check detailed information about stocks. This full-stack application provides an efficient way to manage your investments and track their performance.
+**Investly** is a full-stack stock management app that allows users to add, edit, and delete transactions, track the performance of their portfolio, and check detailed information about stocks.
 
 ## Table of Contents
 
@@ -14,38 +14,48 @@
 ## Technologies Used
 
 - **Design**: ![Figma](https://img.shields.io/badge/Figma%20-%23F24E1E.svg?style=flat&logo=figma&logoColor=white)
-- **Frontend**: ![Vite](https://img.shields.io/badge/Vite%20-%23646CFF.svg?style=flat&logo=vite&logoColor=white) ![React](https://img.shields.io/badge/React%20-%2361DAFB.svg?style=flat&logo=react&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js%20-%23339933.svg?style=flat&logo=nodedotjs&logoColor=white)
+- **Frontend**: ![Vite](https://img.shields.io/badge/Vite%20-%23646CFF.svg?style=flat&logo=vite&logoColor=white) ![React](https://img.shields.io/badge/React%20-%2361DAFB.svg?style=flat&logo=react&logoColor=white) ![Redux](https://img.shields.io/badge/Redux-%23764ABC.svg?style=flat&logo=redux&logoColor=white)
 - **Backend**: ![Node.js](https://img.shields.io/badge/Node.js%20-%23339933.svg?style=flat&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express%20-%23000000.svg?style=flat&logo=express&logoColor=white)
 - **Database**: ![PostgreSQL](https://img.shields.io/badge/PostgreSQL%20-%23336791.svg?style=flat&logo=postgresql&logoColor=white) ![Sequelize](https://img.shields.io/badge/Sequelize%20-%2338B2AC.svg?style=flat&logo=sequelize&logoColor=white)
 - **Hosting**: ![Render](https://img.shields.io/badge/Render%20-%2346E3B7.svg?style=flat&logo=render&logoColor=white)
 
 ## Features
 
-- **Portfolio Performance**: Monitor the performance of your investment portfolio in real-time.
-
-![Dashboard](./frontend/src/assets/readmePictures/dashboard.png)
-
 - **Stock Information**: Access detailed information about stocks, including price history and key metrics, using a third-party API.
 
-![Stock Details](images/dashboard.png)
+<img src="./frontend/src/assets/readmePictures/stock-info.png" alt="Stock Info" width="500"/>
 
-- **Add New Transactions**: Easily log your stock transactions including buys and sells.
+<br>
 
-![Add Transaction](images/add-transaction.png)
+- **Portfolio Performance**: Monitor the performance of your investment portfolio in real-time.
 
-- **Dark Mode:**: Enjoy a dark theme for a more comfortable viewing experience in low-light environments.
+<img src="./frontend/src/assets/readmePictures/dashboard.png" alt="Dashboard" width="500"/>
 
-![Dark Mode](images/add-transaction.png)
+<br>
+
+- **Manage Transactions**: Easily log and edit your stock transactions including buys and sells.
+
+<img src="./frontend/src/assets/readmePictures/new-transaction.png" alt="New Transaction" width="500"/>
+
+<br>
+
+- **Theme M:** Customizable theme that includes both light and dark options for a more comfortable viewing experience.
+
+<img src="./frontend/src/assets/readmePictures/light-mode1-modified.png" alt="Light Mode" width="500"/>
+
+<br>
 
 - **User Authentication**: Secure user authentication and session management.
+
+<img src="./frontend/src/assets/readmePictures/login.png" alt="Login" width="500"/>
 
 ## Usage
 
 To use the application:
 
-1. Open your browser and navigate to [Investly Live Demo](http://investly.keomalima.com).
+1. Navigate to [Investly Live Demo](http://investly.keomalima.com).
 2. Register or use the demo user.
-3. Start adding transactions and monitor your portfolio performance.
+3. Start adding transactions from your favorite stocks (ie: AAPL, MSFT, DIS etc) and monitor your portfolio performance.
 
 ## Project Structure
 
