@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../../slices/auth/usersApiSlice';
 import { setCredentials } from '../../slices/auth/authSlice';
 import PropagateLoader from 'react-spinners/PropagateLoader';
+import emailjs from '@emailjs/browser';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const form = useRef();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,8 +40,24 @@ const LoginScreen = () => {
         console.error('Login failed');
       }
       navigate('/');
+      sendEmail();
     } catch (err) {
       setError(err?.data?.error);
+    }
+  };
+
+  const sendEmail = () => {
+    try {
+      emailjs.sendForm(
+        import.meta.env.VITE_SERVICE_ID,
+        import.meta.env.VITE_TEMPLATE_ID,
+        form.current,
+        {
+          publicKey: import.meta.env.VITE_PUBLIC_KEY,
+        }
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -57,6 +75,7 @@ const LoginScreen = () => {
         console.error('Login failed');
       }
       navigate('/');
+      sendEmail();
     } catch (err) {
       setError(err?.data?.error);
     }
@@ -88,11 +107,13 @@ const LoginScreen = () => {
         <form
           className='register-input-container register-form-container'
           onSubmit={submitHandler}
+          ref={form}
         >
           <div className='register-input-container'>
             <p className='xss light placeholder-container'>Email address</p>
             <input
               type='email'
+              name='email'
               value={email}
               style={{ color: 'var(--text-color)' }}
               required
