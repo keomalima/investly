@@ -11,6 +11,8 @@ services:
         value: production
       - key: NODE_VERSION
         value: 22
+      - key: DEMO_ENABLED
+        value: "true"
       - key: JWT_SECRET
         generateValue: true
       - key: POSTGRESQL_DB_URI

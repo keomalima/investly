@@ -5,6 +5,9 @@ const USERS_URL = '/api/users';
 // Responsible for making the API calls
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    demoLogin: builder.mutation({
+      query: () => ({ url: `${USERS_URL}/demo`, method: 'POST', timeout: 120000 }),
+    }),
     login: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/auth`,
@@ -31,5 +34,5 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } =
+export const { useLoginMutation, useDemoLoginMutation, useLogoutMutation, useRegisterMutation } =
   userApiSlice;

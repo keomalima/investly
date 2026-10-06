@@ -24,6 +24,7 @@ const DashboardScreen = () => {
   // Retrieves the states from the redux store
   const { openCard } = useSelector((state) => state.stockData);
   const { portfolioMetrics } = useSelector((state) => state.portfolioMetrics);
+  const { userInfo } = useSelector((state) => state.auth);
 
   // Sets the total metrics to be used in the pagination component
   const [totalMetrics, setTotalMetrics] = useState('');
@@ -73,6 +74,7 @@ const DashboardScreen = () => {
         }
       />
       <div className='metrics-container container'>
+        {userInfo?.isDemo && <p className='xs light'>Demo portfolio · Fictional transactions in a shared account</p>}
         {openCard && (
           <div className='flex-center'>
             <StockCard />

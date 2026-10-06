@@ -33,6 +33,7 @@ The `render.yaml` blueprint contains equivalent settings. Use it for a new servi
 | `POSTGRESQL_DB_URI` | Current database connection URL; for Render Postgres use its internal URL in the same region |
 | `JWT_SECRET` | A new random secret, e.g. `openssl rand -hex 32` on your computer |
 | `FINANCIAL_API_KEY` | Your FMP dashboard API key |
+| `DEMO_ENABLED` | `true` to create the sample account automatically and enable demo login |
 
 `DATABASE_URL` is also accepted instead of `POSTGRESQL_DB_URI`. Set only the intended database URL. Never commit real credentials or paste them into a PR, issue, or chat.
 
@@ -53,7 +54,15 @@ Optional: if you keep Vercel, set `VITE_API_BASE_URL` there to the Render backen
 
 FMP profile and chart endpoints now use `/stable/`. Actual access depends on your API key and plan. A valid key can still be denied access to intraday charts. Check the endpoints in your FMP dashboard before buying any plan. The application reports provider access and quota errors without exposing your key.
 
-The Demo User button needs `VITE_DEMO_USER_EMAIL` and `VITE_DEMO_USER_PASSWORD` set at build time, plus a matching account in the new/current database. Create a dedicated disposable demo account through Register, then rebuild with those optional values. Its password is public in the frontend bundle. Optional EmailJS notifications are skipped when their configuration is absent.
+## Demo portfolio
+
+Set `DEMO_ENABLED=true` in the backend environment and redeploy. After database synchronization, startup creates the dedicated `demo@investly.example` account and six fictional transactions across AAPL, MSFT, NVDA and DIS. No FMP calls are needed to seed it; portfolio valuations and charts still require your live FMP key.
+
+The `Explore demo portfolio` button uses `POST /api/users/demo` and needs no frontend credentials. Remove the old `VITE_DEMO_USER_EMAIL` and `VITE_DEMO_USER_PASSWORD` variables and rebuild the frontend. The account receives a random password that is never sent to visitors. Its email and password cannot be changed through the user update endpoint.
+
+Visitors share this demo account and can try adding, editing and deleting transactions. Existing transactions and edits are preserved on startup; missing sample trades are added again on the next restart without duplicating existing sample trades. Keep personal or real investment data out of this public account.
+
+The demo button shows a spinner immediately and a longer startup message after eight seconds. It allows up to two minutes for the server to wake up, prevents duplicate submissions, and offers retry after an error. Test once with an already-running service and once after the service has gone idle. Optional EmailJS notifications are skipped when their configuration is absent and are not sent for demo visits.
 
 ## Local validation
 

@@ -1,6 +1,19 @@
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import generateToken from '../utils/generateToken.js';
+import { DEMO_EMAIL, demoEnabled } from '../utils/demoPortfolio.js';
+
+// Public portfolio demo: credentials never need to be shipped to the browser.
+const authDemoUser = async (req, res) => {
+  if (!demoEnabled()) return res.status(503).json({ error: 'The demo portfolio is currently unavailable.' });
+  try {
+    const user = await User.findOne({ where: { email: DEMO_EMAIL } });
+    if (!user) return res.status(503).json({ error: 'The demo portfolio is not ready yet. Please try again shortly.' });
+    res.json({ id: user.id, name: user.username, email: user.email, isDemo: true, token: generateToken(res, user.id) });
+  } catch {
+    res.status(503).json({ error: 'Could not open the demo portfolio. Please try again.' });
+  }
+};
 
 // @desc Register new user
 // @route POST /api/users
@@ -13,6 +26,10 @@ const registerNewUser = async (req, res) => {
     return res
       .status(409)
       .json({ error: 'Email, username and password are required' });
+  }
+
+  if (String(email).trim().toLowerCase() === DEMO_EMAIL) {
+    return res.status(409).json({ error: 'This email is reserved for the demo portfolio.' });
   }
 
   const saltRounds = 10;
@@ -72,6 +89,9 @@ const authUser = async (req, res) => {
 // @route PUT /api/users
 // @access Public
 const updateUserById = async (req, res) => {
+  if (req.user.email === DEMO_EMAIL || String(req.body.email || '').trim().toLowerCase() === DEMO_EMAIL) {
+    return res.status(409).json({ error: 'The shared demo account cannot be changed. Create your own account to save personal details.' });
+  }
   const user_id = req.user.id;
 
   try {
@@ -120,4 +140,4 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
-export { registerNewUser, authUser, logoutUser, updateUserById };
+export { registerNewUser, authUser, authDemoUser, logoutUser, updateUserById };

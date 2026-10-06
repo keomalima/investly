@@ -32,8 +32,79 @@
     background-color: var(--card-hover);
 }
 
-.demo:hover{
-    color: var(--secondary-color);
+.demo-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.demo-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    border: 1px solid #bdcba6;
+    border-radius: 8px;
+    background: #bdcba6;
+    color: #18251b;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.demo-button:hover:not(:disabled) {
+    background: #ced9bd;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.demo-button:focus-visible {
+    outline: 2px solid var(--text-color);
+    outline-offset: 3px;
+}
+
+.demo-button:disabled {
+    cursor: wait;
+    opacity: 0.8;
+}
+
+.demo-arrow { font-size: 20px; line-height: 1; }
+.demo-caption { font-size: 12px; opacity: 0.75; }
+.demo-status { font-size: 12px; line-height: 1.6; }
+.demo-status:empty { display: none; }
+
+.demo-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(24, 37, 27, 0.25);
+    border-top-color: #18251b;
+    border-radius: 50%;
+    animation: demo-spin 800ms linear infinite;
+}
+
+@keyframes demo-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+    .demo-spinner { animation-duration: 2000ms; }
+    .demo-button { transition: none; }
+}
+
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    opacity: 0.6;
+}
+.login-divider::before, .login-divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: var(--primary-color);
 }
 
 .form-center{
