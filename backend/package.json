@@ -5,10 +5,11 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
-    "client": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm run dev --prefix ../frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "node --test"
   },
   "keywords": [],
   "author": "",

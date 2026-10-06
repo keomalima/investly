@@ -11,6 +11,8 @@ const StockPrice = () => {
     dispatch(openStockForm(data));
   };
 
+  if (!data?.length) return <p>No stock information available.</p>;
+
   return (
     <div className='stock-price-container-column'>
       <div className='stock-price-container'>

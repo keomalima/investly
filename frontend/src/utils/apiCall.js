@@ -1,45 +1,27 @@
 import Axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
-//Makes the call for the external api and caches the response
-const instance = Axios.create();
-const cachedAxios = setupCache(instance);
+const cachedAxios = setupCache(Axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || '',
+}));
 
-export async function getStockDataAPI(stocks) {
-  try {
-    const response = await cachedAxios.get(`/fmp-api/v3/profile/${stocks}`, {
-      params: {
-        apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to fetch stock data from the API');
-  }
+function authHeaders() {
+  const token = localStorage.getItem('token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-export async function getStockDataChartAPI(
-  ticker,
-  dateFrom,
-  dateTo,
-  timeFrame
-) {
-  try {
-    const response = await cachedAxios.get(
-      `${
-        import.meta.env.VITE_API_STOCK_BASE_URL
-      }/historical-chart/${timeFrame}/${ticker}`,
+export async function getStockDataAPI(stocks) {
+  const response = await cachedAxios.get('/api/stocks/profile', {
+    params: { symbol: Array.isArray(stocks) ? stocks.join(',') : stocks },
+    headers: authHeaders(),
+  });
+  return response.data;
+}
 
-      {
-        params: {
-          apikey: import.meta.env.VITE_FINANCIAL_API_KEY,
-          from: dateFrom,
-          to: dateTo,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to fetch stock historical data from the API');
-  }
+export async function getStockDataChartAPI(ticker, dateFrom, dateTo, timeFrame) {
+  const response = await cachedAxios.get('/api/stocks/history', {
+    params: { symbol: ticker, from: dateFrom, to: dateTo, interval: timeFrame },
+    headers: authHeaders(),
+  });
+  return response.data;
 }

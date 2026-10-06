@@ -35,6 +35,8 @@ const StockScreen = () => {
   const [metricsPerPage, setMetricsPerPage] = useState(5);
   const [initialLoad, setInitialLoad] = useState(true);
   const [fetchLoad, setFetchLoad] = useState(true);
+  const [stockError, setStockError] = useState('');
+  const [historyError, setHistoryError] = useState('');
   const [dateFilter, setDateFilter] = useState('5d');
   const [timeFrame, setTimeFrame] = useState('30min');
   const [dateFrom, setDateFrom] = useState(
@@ -60,11 +62,15 @@ const StockScreen = () => {
   }, []);
 
   const fetchStockData = async () => {
+    setStockError('');
+    dispatch(setStockInfo(null));
     try {
       const res = await getStockData({ ticker: ticker[2] }).unwrap();
       //const res = await getStockDataAPI(ticker[2]);
       dispatch(setStockInfo(res));
-    } catch (error) {}
+    } catch (error) {
+      setStockError(error?.data?.error || 'Could not fetch stock information.');
+    }
   };
 
   const fetchTransactions = async () => {
@@ -106,6 +112,8 @@ const StockScreen = () => {
   };
 
   const fetchHistoricalData = async (symbol, from, to, interval) => {
+    setHistoryError('');
+    dispatch(setStockChartData(null));
     try {
       const res = await getStockHistory({
         symbol,
@@ -118,6 +126,7 @@ const StockScreen = () => {
         dispatch(setStockChartData(res));
       }
     } catch (error) {
+      setHistoryError(error?.data?.error || 'Could not fetch chart data.');
     } finally {
       setInitialLoad(false);
       setFetchLoad(false);
@@ -223,6 +232,7 @@ const StockScreen = () => {
         </div>
       ) : (
         <div>
+          {stockError && <p className='error-message container'>{stockError}</p>}
           {openCard && (
             <div className='flex-center'>
               <StockCard />
@@ -264,7 +274,7 @@ const StockScreen = () => {
                   <StockChart dateFilter={dateFilter} />
                 ) : (
                   <div className='error-stock-fetch'>
-                    <p>Couldn&apos;t fetch the data!</p>
+                    <p>{historyError || 'No chart data available for this period.'}</p>
                   </div>
                 )}
               </div>
