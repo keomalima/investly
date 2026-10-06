@@ -11,6 +11,7 @@ import transactionRoutes from './routes/transactionRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
 import { sequelize } from './config/db.js';
 import stockRoutes from './routes/stockRoutes.js';
+import { demoEnabled, seedDemoPortfolio } from './utils/demoPortfolio.js';
 
 const port = process.env.PORT || 5000;
 const frontendDist = fileURLToPath(new URL('../frontend/dist/', import.meta.url));
@@ -29,6 +30,10 @@ async function initializeServer() {
     }
     await sequelize.authenticate();
     await sequelize.sync(); // This creates the tables in the database if they don't exist
+    if (demoEnabled()) {
+      await seedDemoPortfolio();
+      console.log('Demo portfolio is ready.');
+    }
 
     const app = express();
 

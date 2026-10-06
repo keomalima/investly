@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from '../../slices/auth/usersApiSlice';
+import { useLoginMutation, useDemoLoginMutation } from '../../slices/auth/usersApiSlice';
 import { setCredentials } from '../../slices/auth/authSlice';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import emailjs from '@emailjs/browser';
@@ -11,12 +11,25 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const form = useRef();
+  const requestInProgress = useRef(false);
+  const [slowDemo, setSlowDemo] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Instantiate the login API method
   const [login, { isLoading }] = useLoginMutation();
+  const [demoLogin, { isLoading: isDemoLoading }] = useDemoLoginMutation();
+  const busy = isLoading || isDemoLoading;
+
+  useEffect(() => {
+    if (!isDemoLoading) {
+      setSlowDemo(false);
+      return;
+    }
+    const timer = setTimeout(() => setSlowDemo(true), 8000);
+    return () => clearTimeout(timer);
+  }, [isDemoLoading]);
 
   // Selects the user info from the redux store
   const { userInfo } = useSelector((state) => state.auth);
@@ -31,6 +44,9 @@ const LoginScreen = () => {
   // Handles the login form
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (requestInProgress.current) return;
+    requestInProgress.current = true;
+    setError('');
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
@@ -42,7 +58,9 @@ const LoginScreen = () => {
       navigate('/');
       sendEmail();
     } catch (err) {
-      setError(err?.data?.error);
+      setError(err?.data?.error || 'Could not connect. Please try again.');
+    } finally {
+      requestInProgress.current = false;
     }
   };
 
@@ -65,11 +83,11 @@ const LoginScreen = () => {
 
   // Logs the demo user in
   const demoUserLogin = async () => {
+    if (requestInProgress.current) return;
+    requestInProgress.current = true;
+    setError('');
     try {
-      const res = await login({
-        email: import.meta.env.VITE_DEMO_USER_EMAIL,
-        password: import.meta.env.VITE_DEMO_USER_PASSWORD,
-      }).unwrap();
+      const res = await demoLogin().unwrap();
       dispatch(setCredentials({ ...res }));
       if (res.token) {
         localStorage.setItem('token', res.token);
@@ -77,9 +95,10 @@ const LoginScreen = () => {
         console.error('Login failed');
       }
       navigate('/');
-      sendEmail();
     } catch (err) {
-      setError(err?.data?.error);
+      setError(err?.data?.error || 'Could not open the demo. Please try again.');
+    } finally {
+      requestInProgress.current = false;
     }
   };
 
@@ -106,6 +125,28 @@ const LoginScreen = () => {
           <p className='normal strong'>Login</p>
           <p className='xs light'>Input your details below</p>
         </div>
+        <div className='demo-entry'>
+          <button
+            type='button'
+            className='demo-button'
+            onClick={demoUserLogin}
+            disabled={busy}
+            aria-busy={isDemoLoading}
+          >
+            <span className={isDemoLoading ? 'demo-spinner' : 'demo-arrow'} aria-hidden='true'>
+              {!isDemoLoading && '↗'}
+            </span>
+            {isDemoLoading ? 'Opening demo…' : 'Explore demo portfolio'}
+          </button>
+          <p className='demo-caption'>No signup · Sample stocks and transactions</p>
+          <div className='demo-status' role='status' aria-live='polite'>
+            {isDemoLoading && (slowDemo
+              ? 'Starting the demo can take about a minute. Keep this page open — we’ll take you in automatically.'
+              : 'Connecting to your sample portfolio…')}
+          </div>
+        </div>
+        <div className='login-divider'><span>or sign in</span></div>
+        {error && <p className='error-message xs' role='alert'>{error}</p>}
         <form
           className='register-input-container register-form-container'
           onSubmit={submitHandler}
@@ -119,8 +160,9 @@ const LoginScreen = () => {
               value={email}
               style={{ color: 'var(--text-color)' }}
               required
+              disabled={busy}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder='Enter username'
+              placeholder='Enter email address'
               className='input-box-form'
             />
           </div>
@@ -131,25 +173,20 @@ const LoginScreen = () => {
               value={password}
               style={{ color: 'var(--text-color)' }}
               required
+              disabled={busy}
               onChange={(e) => setPassword(e.target.value)}
               placeholder='Enter password'
               className='input-box-form'
             />
           </div>
           <div className='register-input-container'>
-            {import.meta.env.VITE_DEMO_USER_EMAIL && import.meta.env.VITE_DEMO_USER_PASSWORD && (
-              <a onClick={demoUserLogin} className='btn-outline flex-center demo'>
-                Demo User
-              </a>
-            )}
-            {error && <p className='error-message xs'>*{error}</p>}
             {isLoading ? (
               <div className='flex-center my-2'>
                 <PropagateLoader color='var(--text-color)' size={5} />
               </div>
             ) : (
               // Render regular button when isLoading is false
-              <button className='btn my-1' type='submit'>
+              <button className='btn my-1' type='submit' disabled={busy}>
                 Login
               </button>
             )}
