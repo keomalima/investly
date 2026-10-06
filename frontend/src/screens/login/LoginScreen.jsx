@@ -46,9 +46,11 @@ const LoginScreen = () => {
     }
   };
 
-  const sendEmail = () => {
+  const sendEmail = async () => {
+    if (!import.meta.env.VITE_SERVICE_ID || !import.meta.env.VITE_TEMPLATE_ID ||
+        !import.meta.env.VITE_PUBLIC_KEY) return;
     try {
-      emailjs.sendForm(
+      await emailjs.sendForm(
         import.meta.env.VITE_SERVICE_ID,
         import.meta.env.VITE_TEMPLATE_ID,
         form.current,
@@ -135,9 +137,11 @@ const LoginScreen = () => {
             />
           </div>
           <div className='register-input-container'>
-            <a onClick={demoUserLogin} className='btn-outline flex-center demo'>
-              Demo User
-            </a>
+            {import.meta.env.VITE_DEMO_USER_EMAIL && import.meta.env.VITE_DEMO_USER_PASSWORD && (
+              <a onClick={demoUserLogin} className='btn-outline flex-center demo'>
+                Demo User
+              </a>
+            )}
             {error && <p className='error-message xs'>*{error}</p>}
             {isLoading ? (
               <div className='flex-center my-2'>

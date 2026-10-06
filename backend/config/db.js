@@ -4,7 +4,7 @@ dotenv.config();
 
 // Connects to the database
 const sequelize = new Sequelize(
-  process.env.POSTGRESQL_DB_URI ||
+  process.env.POSTGRESQL_DB_URI || process.env.DATABASE_URL ||
     `postgres://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`,
   {
     dialect: 'postgres',

@@ -3,7 +3,7 @@ import { logout } from './auth/authSlice'; // Assuming logout action
 import { redirect } from 'react-router-dom';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
+  baseUrl: import.meta.env.VITE_API_BASE_URL || '',
   prepareHeaders: (headers, { getState }) => {
     const token = localStorage.getItem('token');
     if (token) {

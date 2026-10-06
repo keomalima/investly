@@ -1,22 +1,22 @@
 import { apiSlice } from '../apiSlice';
 //const USERS_URL = '/api/transactions';
-const USERS_URL = 'https://financialmodelingprep.com/api';
+const USERS_URL = '/api/stocks';
 
 // Responsible for making the API call for the database
 export const stocksApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStockData: builder.mutation({
       query: ({ ticker }) => ({
-        url: `${USERS_URL}/v3/profile/${ticker}`,
+        url: `${USERS_URL}/profile`,
         method: 'GET',
-        params: { apikey: import.meta.env.VITE_FINANCIAL_API_KEY },
+        params: { symbol: ticker },
       }),
     }),
     getStockHistory: builder.mutation({
       query: ({ symbol, from, to, interval }) => ({
-        url: `${USERS_URL}/v3/historical-chart/${interval}/${symbol}`,
+        url: `${USERS_URL}/history`,
         method: 'GET',
-        params: { apikey: import.meta.env.VITE_FINANCIAL_API_KEY, from, to },
+        params: { symbol, from, to, interval },
       }),
     }),
   }),
